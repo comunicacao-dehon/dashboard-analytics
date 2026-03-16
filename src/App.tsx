@@ -14,12 +14,15 @@ import YouTube from "./pages/YouTube";
 import Comparison from "./pages/Comparison";
 import Insights from "./pages/Insights";
 import Settings from "./pages/Settings";
+import VerifyOTP from "./pages/VerifyOTP";
+import Profile from "./pages/Profile";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Login} />
       <Route path="/login" component={Login} />
+      <Route path="/verify-otp" component={VerifyOTP} />
       <Route>
         <Layout>
           <Switch>
@@ -32,6 +35,7 @@ function Router() {
             <Route path={"/insights"} component={Insights} />
             <Route path={"/reports"} component={Reports} />
             <Route path={"/settings"} component={Settings} />
+            <Route path={"/profile"} component={Profile} />
             <Route path={"/404"} component={NotFound} />
             {/* Final fallback route */}
             <Route component={NotFound} />

@@ -36,8 +36,8 @@ export default function Login() {
           }
         });
         if (error) throw error;
-        toast.success("Conta criada! Verifique seu e-mail para confirmar.");
-        setIsSignUp(false);
+        toast.success("Código enviado! Verifique seu e-mail.");
+        setLocation(`/verify-otp?email=${encodeURIComponent(email)}`);
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,

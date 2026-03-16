@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { LayoutDashboard, Instagram, Facebook, Youtube, BarChart2, FileText, LogOut } from "lucide-react";
+import { LayoutDashboard, Instagram, Facebook, Youtube, BarChart2, FileText, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
@@ -9,7 +9,7 @@ const mobileItems = [
   { label: "Instagram", href: "/instagram", icon: Instagram },
   { label: "Facebook", href: "/facebook", icon: Facebook },
   { label: "YouTube", href: "/youtube", icon: Youtube },
-  { label: "Comparar", href: "/comparison", icon: BarChart2 },
+  { label: "Perfil", href: "/profile", icon: User },
   { label: "Sair", href: "#logout", icon: LogOut },
 ];
 
