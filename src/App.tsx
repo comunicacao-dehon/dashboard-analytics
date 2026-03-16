@@ -18,11 +18,12 @@ import Settings from "./pages/Settings";
 function Router() {
   return (
     <Switch>
+      <Route path="/" component={Login} />
       <Route path="/login" component={Login} />
       <Route>
         <Layout>
           <Switch>
-            <Route path={"/"} component={Home} />
+            <Route path={"/dashboard"} component={Home} />
             <Route path={"/instagram"} component={Followers} />
             <Route path={"/followers"} component={Followers} />
             <Route path={"/facebook"} component={Facebook} />

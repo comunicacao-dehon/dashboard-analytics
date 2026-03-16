@@ -16,7 +16,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { label: "Visão Geral", href: "/", icon: LayoutDashboard },
+  { label: "Visão Geral", href: "/dashboard", icon: LayoutDashboard },
   { label: "Instagram", href: "/instagram", icon: Instagram },
   { label: "Facebook", href: "/facebook", icon: Facebook },
   { label: "YouTube", href: "/youtube", icon: Youtube },

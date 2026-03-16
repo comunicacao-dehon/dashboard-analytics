@@ -20,7 +20,7 @@ export default function Login() {
     // Simulate login delay
     setTimeout(() => {
       setLoading(false);
-      setLocation("/");
+      setLocation("/dashboard");
     }, 1500);
   };
 

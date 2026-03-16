@@ -3,7 +3,7 @@ import { LayoutDashboard, Instagram, Facebook, Youtube, BarChart2, FileText } fr
 import { cn } from "@/lib/utils";
 
 const mobileItems = [
-  { label: "Geral", href: "/", icon: LayoutDashboard },
+  { label: "Geral", href: "/dashboard", icon: LayoutDashboard },
   { label: "Instagram", href: "/instagram", icon: Instagram },
   { label: "Facebook", href: "/facebook", icon: Facebook },
   { label: "YouTube", href: "/youtube", icon: Youtube },
@@ -18,7 +18,7 @@ export function MobileNav() {
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 glass border-t border-border/40 px-2 py-2">
       <div className="flex items-center justify-around gap-1">
         {mobileItems.map((item) => {
-          const isActive = item.href === "/" ? location === "/" : location.startsWith(item.href);
+          const isActive = item.href === "/dashboard" ? location === "/dashboard" : location.startsWith(item.href);
           return (
             <Link key={item.href} href={item.href}>
               <div
