@@ -1,48 +1,45 @@
-# Social Media Analytics — Premium SaaS Dashboard
+# Dashboard Analytics — Premium Social Media Platform
 
-Este é um painel analítico de alta performance para redes sociais (Instagram, Facebook e YouTube), desenvolvido com foco em estética premium e experiência do usuário (UX).
+Plataforma SaaS profissional de Social Media Analytics (Instagram, Facebook e YouTube), ultra moderna e pronta para produção.
 
-## 🚀 Funcionalidades
+## ✨ Destaques do Projeto
 
-- **Visão Geral Multicanal**: Monitoramento de métricas do Instagram, Facebook e YouTube em um único dashboard.
-- **Gráficos Avançados**: Visualizações dinâmicas de alcance, engajamento, crescimento de seguidores e performance por tipo de conteúdo.
-- **Insights com IA**: Recomendações automáticas baseadas nos dados de performance.
-- **Comparativo de Plataformas**: Gráficos de radar e barras comparando a performance entre diferentes redes.
-- **Relatórios Detalhados**: Análise profunda de posts, melhores e piores desempenhos.
-- **Design Premium**: Interface moderna com Dark Mode, Glassmorphism e micro-animações suaves.
+- **Dashboard Multicanal**: Visão unificada de performance para as 3 maiores redes sociais.
+- **Interface SaaS Premium**: Design elegante com glassmorphism, modo claro/escuro e animações fluidas.
+- **Login Moderno**: Página de autenticação estilizada com layout profissional.
+- **Analytics de Performance**: Gráficos de barra, radar e dispersão para análise profunda de crescimento e engajamento.
+- **Deployment Ready**: Totalmente compatível com **Vercel** para hospedagem rápida e segura.
 
-## 🛠️ Tecnologias Utilizadas
+## 🚀 Tecnologias
 
-- **Frontend**: React.js com TypeScript
-- **Estilização**: Tailwind CSS & Framer Motion (animações)
+- **Frontend**: React 19 + TypeScript
+- **Styling**: Tailwind CSS 4 + Framer Motion
 - **Gráficos**: Recharts
-- **Roteamento**: Wouter
-- **Iconografia**: Lucide React
-- **Design System**: Shadcn/UI
+- **Router**: Wouter (leve e eficiente)
+- **Deployment**: Vercel
 
-## 📦 Como Instalar e Rodar
+## 📦 Como começar
 
-1. Clone este repositório:
-   ```bash
-   git clone https://github.com/SEU_USUARIO/instagram_analysis_site.git
-   ```
+### 1. Clonar o repositório
+```bash
+git clone https://github.com/comunicacao-dehon/dashboard-analytics.git
+```
 
-2. Instale as dependências:
-   ```bash
-   npm install
-   # ou
-   pnpm install
-   ```
+### 2. Instalar dependências
+```bash
+npm install
+# ou
+pnpm install
+```
 
-3. Inicie o servidor de desenvolvimento:
-   ```bash
-   npm run dev
-   ```
+### 3. Rodar em desenvolvimento
+```bash
+npm run dev
+```
 
-## 🔐 Autenticação
-
-O sistema conta com uma tela de login moderna em `/login`, preparada para integração com sistemas de autenticação (Firebase, Auth0, etc).
+### 4. Deploy no Vercel
+Basta conectar este repositório no dashboard do Vercel. O arquivo `vercel.json` cuidará do roteamento automático das páginas.
 
 ---
 
-Desenvolvido por Antigravity.
+Desenvolvido para **comunicacao-dehon**.
