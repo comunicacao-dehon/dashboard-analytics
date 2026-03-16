@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Mail, Lock, Loader2, ArrowRight, Instagram, Facebook, Youtube } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 import { slideUp, fadeIn } from "@/lib/animations";
 
 export default function Login() {
@@ -14,14 +16,33 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate login delay
-    setTimeout(() => {
-      setLoading(false);
+
+    try {
+      // Aqui está o código preparado para o Supabase
+      // Quando você tiver as chaves, basta descomentar as linhas abaixo:
+      
+      /*
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+      */
+
+      // Simulando delay para UI premium
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      
+      toast.success("Login realizado com sucesso!");
       setLocation("/dashboard");
-    }, 1500);
+    } catch (error: any) {
+      toast.error(error.message || "Erro ao realizar login");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
