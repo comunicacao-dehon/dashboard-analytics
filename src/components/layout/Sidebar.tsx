@@ -11,9 +11,12 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  LogOut,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 
 const navItems = [
   { label: "Visão Geral", href: "/dashboard", icon: LayoutDashboard },
@@ -153,10 +156,38 @@ export function Sidebar() {
         })}
       </nav>
 
+      {/* Logout Button */}
+      <div className="px-2 pb-4">
+        <button
+          onClick={async () => {
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+              toast.error("Erro ao sair");
+            } else {
+              toast.success("Até logo!");
+            }
+          }}
+          className={cn(
+            "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group text-muted-foreground hover:bg-red-50 hover:text-red-500",
+            collapsed && "justify-center"
+          )}
+        >
+          <LogOut className="w-5 h-5 shrink-0" />
+          {!collapsed && <span className="text-sm font-medium">Sair</span>}
+          {collapsed && (
+            <div className="absolute left-full ml-2 pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+              <div className="bg-red-500 text-white text-sm px-3 py-1.5 rounded-lg shadow-lg">
+                Sair
+              </div>
+            </div>
+          )}
+        </button>
+      </div>
+
       {/* Collapse Toggle */}
       <button
         onClick={() => setCollapsed((c) => !c)}
-        className="flex items-center justify-center m-3 p-2 rounded-xl hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+        className="flex items-center justify-center m-3 p-2 rounded-xl hover:bg-muted transition-colors text-muted-foreground hover:text-foreground border-t border-border/40"
       >
         {collapsed ? (
           <ChevronRight className="w-4 h-4" />
