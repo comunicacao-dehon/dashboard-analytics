@@ -60,7 +60,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row items-center gap-5">
               <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 rounded-full border-4 border-primary/20 bg-white shadow-xl flex items-center justify-center overflow-hidden hover:-translate-y-1 hover:shadow-2xl transition-all duration-500 cursor-pointer group/avatar">
                 <img
-                  src="/logo.png.png"
+                  src="/logo.png"
                   alt="Logotipo"
                   loading="lazy"
                   className="w-full h-full object-contain p-2 group-hover/avatar:scale-110 transition-transform duration-500"

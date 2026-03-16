@@ -67,7 +67,7 @@ export function Sidebar() {
           className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center overflow-hidden shrink-0"
         >
           <img
-            src="/logo.png.png"
+            src="/logo.png"
             alt="Logo"
             loading="lazy"
             className="w-5 h-5 object-contain"
