@@ -57,123 +57,115 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-background font-sans text-foreground">
-      {/* Brand Section (Column A) - Desktop Only */}
-      <div className="hidden lg:flex flex-col relative overflow-hidden bg-[#050505]">
-        {/* Animated Ultra-Premium Background Mesh */}
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-[-15%] left-[-15%] w-[70%] h-[70%] bg-primary/25 blur-[140px] rounded-full animate-pulse opacity-60" />
-          <div className="absolute bottom-[-15%] right-[-15%] w-[70%] h-[70%] bg-blue-600/15 blur-[140px] rounded-full animate-pulse [animation-delay:3s] opacity-50" />
-          <div className="absolute top-[20%] right-[5%] w-[40%] h-[40%] bg-pink-600/10 blur-[120px] rounded-full [animation-delay:5s]" />
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03] mix-blend-overlay" />
+    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 bg-background font-sans text-foreground overflow-hidden">
+      {/* Brand Section (Column A) - Minimalist & Sophisticated */}
+      <div className="hidden lg:flex flex-col relative overflow-hidden bg-[#0A0A0B]">
+        {/* Subtle dynamic background */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/10 via-transparent to-blue-500/5" />
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 blur-[120px] rounded-full animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/10 blur-[120px] rounded-full [animation-delay:4s]" />
+          {/* Noise effect */}
+          <div className="absolute inset-0 opacity-[0.015] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] pointer-events-none" />
         </div>
 
         <div className="relative z-10 flex flex-col h-full p-16 justify-between">
           <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
             className="flex items-center gap-4"
           >
-            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-xl shadow-2xl relative group">
-              <div className="absolute inset-0 bg-primary/20 blur-xl group-hover:bg-primary/40 transition-colors rounded-2xl" />
-              <img src="/logo1.png" alt="Logo" className="w-8 h-8 object-contain relative z-10" />
+            <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-md shadow-[0_8px_16px_rgba(0,0,0,0.3)]">
+              <img src="/logo1.png" alt="Logo" className="w-6 h-6 object-contain" />
             </div>
-            <span className="text-white text-2xl font-black tracking-tighter uppercase italic">Painel <span className="text-primary/90">Analítico</span></span>
+            <span className="text-white text-xl font-bold tracking-tight">Painel <span className="text-white/40 font-medium">Analítico</span></span>
           </motion.div>
 
-          <div className="max-w-xl">
+          <div className="max-w-lg">
             <motion.div initial="hidden" animate="visible" variants={slideUp}>
-              <h1 className="text-6xl lg:text-7xl font-black text-white leading-[1.05] tracking-tight mb-8">
-                Domine sua presença <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-orange-500 to-pink-500">Digital</span> com inteligência.
+              <h1 className="text-5xl font-bold text-white leading-[1.15] tracking-tight mb-6">
+                Dados que inspiram <br />
+                <span className="text-primary italic">estratégias reais.</span>
               </h1>
-              <p className="text-gray-400 text-xl leading-relaxed mb-12 font-medium max-w-lg">
-                Performance, engajamento e insights estratégicos para suas redes sociais em uma plataforma feita para quem busca o extraordinário.
+              <p className="text-gray-400 text-lg leading-relaxed mb-10 max-w-sm">
+                Acesse insights profundos e transforme a maneira como você gerencia sua presença digital.
               </p>
 
-              <div className="flex flex-wrap gap-8 items-center border-t border-white/5 pt-12">
+              {/* Refined social icons */}
+              <div className="flex items-center gap-6 pt-8 border-t border-white/5">
                 {[
-                  { icon: Instagram, label: "Instagram", color: "text-pink-500" },
-                  { icon: Facebook, label: "Facebook", color: "text-blue-500" },
-                  { icon: Youtube, label: "YouTube", color: "text-red-500" }
+                  { icon: Instagram, color: "text-pink-500", label: "Instagram" },
+                  { icon: Facebook, color: "text-blue-500", label: "Facebook" },
+                  { icon: Youtube, color: "text-red-500", label: "YouTube" }
                 ].map((s) => (
                   <div key={s.label} className="flex items-center gap-2 group cursor-default">
-                    <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 group-hover:bg-white/10 transition-colors shadow-inner">
-                      <s.icon className={`w-4 h-4 ${s.color}`} />
-                    </div>
-                    <span className="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] group-hover:text-gray-300 transition-colors">{s.label}</span>
+                    <s.icon className={`w-5 h-5 ${s.color} opacity-70 group-hover:opacity-100 transition-opacity`} />
+                    <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest">{s.label}</span>
                   </div>
                 ))}
               </div>
             </motion.div>
           </div>
 
-          <div className="flex items-center justify-between text-gray-500 text-[10px] font-bold uppercase tracking-widest opacity-60">
-            <span>© 2026 Painel Analítico. Todos os direitos reservados.</span>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-white transition-colors">Termos</a>
-              <a href="#" className="hover:text-white transition-colors">Privacidade</a>
-            </div>
+          <div className="text-gray-500 text-xs font-medium tracking-wide">
+            <span>© 2026 Painel Analítico. Sofisticação em análise de dados.</span>
           </div>
         </div>
       </div>
 
       {/* Login Section (Column B) */}
-      <div className="flex items-center justify-center p-8 md:p-16 lg:p-24 relative bg-[#FAFAFA] dark:bg-transparent">
-        <div className="lg:hidden absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-primary/10 blur-[100px] rounded-full" />
-        </div>
-
+      <div className="flex items-center justify-center p-8 md:p-16 relative">
         <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full max-w-[460px] relative z-10"
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-[420px] relative z-10"
         >
-          {/* Logo - Mobile/Tablet only */}
+          {/* Logo Mobile */}
           <div className="lg:hidden flex flex-col items-center mb-12">
-             <div className="w-20 h-20 rounded-3xl bg-primary shadow-2xl shadow-primary/30 flex items-center justify-center mb-6">
-                <img src="/logo1.png" alt="Logo" className="w-12 h-12 object-contain invert" />
+             <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-4">
+                <img src="/logo1.png" alt="Logo" className="w-8 h-8 object-contain" />
              </div>
-             <h2 className="text-3xl font-black tracking-tighter uppercase italic text-foreground">Painel <span className="text-primary">Analítico</span></h2>
+             <h2 className="text-2xl font-bold tracking-tight">Painel Analítico</h2>
           </div>
 
-          <div className="mb-10">
-            <h2 className="text-4xl font-black tracking-tight mb-3">
-              {isSignUp ? "Criar Conta" : "Bem-vindo"}
+          <div className="mb-10 text-center lg:text-left">
+            <h2 className="text-3xl font-bold tracking-tight mb-2">
+              {isSignUp ? "Criar conta" : "Bem-vindo de volta"}
             </h2>
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              {isSignUp ? "Preencha seus dados e comece sua jornada estratégica." : "Entre para gerenciar seu império digital com dados reais."}
+            <p className="text-muted-foreground">
+              {isSignUp ? "Preencha os campos abaixo para começar." : "Acesse seu painel estratégico agora."}
             </p>
           </div>
 
           <form onSubmit={handleAuth} className="space-y-5">
             {isSignUp && (
-              <div className="grid grid-cols-1 gap-5">
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-xs font-black ml-1 text-gray-500 uppercase tracking-widest">Nome Completo</Label>
-                  <div className="relative group">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                  <Label htmlFor="name" className="text-sm font-semibold ml-1">Nome Completo</Label>
+                  <div className="relative">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input 
                       id="name"
-                      placeholder="Seu Nome"
+                      placeholder="Ex: João Silva"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       required
-                      className="pl-12 h-14 rounded-2xl bg-white dark:bg-muted/30 border-border/80 hover:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all shadow-sm"
+                      className="pl-11 h-12 rounded-xl bg-muted/20 border-border/50 focus:bg-background transition-all"
                     />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-xs font-black ml-1 text-gray-500 uppercase tracking-widest">Telefone</Label>
-                  <div className="relative group">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                  <Label htmlFor="phone" className="text-sm font-semibold ml-1">Telefone</Label>
+                  <div className="relative">
+                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input 
                       id="phone"
                       placeholder="(00) 00000-0000"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       required
-                      className="pl-12 h-14 rounded-2xl bg-white dark:bg-muted/30 border-border/80 hover:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all shadow-sm"
+                      className="pl-11 h-12 rounded-xl bg-muted/20 border-border/50 focus:bg-background transition-all"
                     />
                   </div>
                 </div>
@@ -181,32 +173,28 @@ export default function Login() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-xs font-black ml-1 text-gray-500 uppercase tracking-widest">Email profissional</Label>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-primary transition-colors">
-                  <Mail className="w-4.5 h-4.5" />
-                </div>
+              <Label htmlFor="email" className="text-sm font-semibold ml-1">Email</Label>
+              <div className="relative">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input 
                   id="email"
                   type="email"
-                  placeholder="voce@empresa.com"
+                  placeholder="nome@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="pl-12 h-14 rounded-2xl bg-white dark:bg-muted/30 border-border/80 hover:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all shadow-sm"
+                  className="pl-11 h-12 rounded-xl bg-muted/20 border-border/50 focus:bg-background transition-all"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center justify-between ml-1">
-                <Label htmlFor="password" title="password" className="text-xs font-black text-gray-500 uppercase tracking-widest">Sua Senha</Label>
-                {!isSignUp && <a href="#" className="text-xs font-black text-primary hover:text-primary/80 transition-colors uppercase tracking-widest">Esqueceu?</a>}
+                <Label htmlFor="password" title="password" className="text-sm font-semibold">Senha</Label>
+                {!isSignUp && <a href="#" className="text-xs font-bold text-primary hover:underline">Esqueceu a senha?</a>}
               </div>
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-primary transition-colors">
-                  <Lock className="w-4.5 h-4.5" />
-                </div>
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input 
                   id="password"
                   type="password"
@@ -214,51 +202,48 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="pl-12 h-14 rounded-2xl bg-white dark:bg-muted/30 border-border/80 hover:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all shadow-sm"
+                  className="pl-11 h-12 rounded-xl bg-muted/20 border-border/50 focus:bg-background transition-all"
                 />
               </div>
             </div>
 
             {!isSignUp && (
-              <div className="flex items-center space-x-2 ml-1 pb-2">
-                <Checkbox id="remember" className="rounded-md border-border/80 data-[state=checked]:bg-primary" />
-                <Label htmlFor="remember" className="text-sm font-medium text-muted-foreground cursor-pointer select-none">Mantenha-me conectado</Label>
+              <div className="flex items-center space-x-2 ml-1">
+                <Checkbox id="remember" className="rounded-md border-border/50" />
+                <Label htmlFor="remember" className="text-sm font-medium text-muted-foreground cursor-pointer select-none">Lembrar de mim</Label>
               </div>
             )}
 
             <Button 
               type="submit" 
               disabled={loading}
-              className="w-full h-14 rounded-2xl text-lg font-black shadow-2xl shadow-primary/25 hover:shadow-primary/35 hover:-translate-y-0.5 active:scale-[0.98] transition-all bg-primary text-white"
+              className="w-full h-12 rounded-xl text-base font-bold shadow-lg shadow-primary/20 transition-all active:scale-[0.98] mt-2"
             >
               {loading ? (
                 <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Processando...
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  {isSignUp ? "Criando conta..." : "Entrando..."}
                 </>
               ) : (
                 <>
-                  {isSignUp ? "Criar minha conta" : "Entrar no Painel"}
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  {isSignUp ? "Cadastrar agora" : "Acessar dashboard"}
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </>
               )}
             </Button>
           </form>
 
-          <div className="mt-10 text-center flex flex-col items-center gap-4">
+          <div className="mt-8 text-center text-sm">
             <button 
               onClick={() => setIsSignUp(!isSignUp)}
-              className="text-sm font-bold text-muted-foreground hover:text-primary transition-colors duration-300"
+              className="text-muted-foreground hover:text-primary transition-colors font-medium"
             >
               {isSignUp ? (
-                <span>Já possui conta? <span className="text-primary underline underline-offset-4 font-black">Faça login agora</span></span>
+                <span>Já tem conta? <span className="text-primary font-bold">Faça login</span></span>
               ) : (
-                <span>Novo por aqui? <span className="text-primary underline underline-offset-4 font-black">Crie sua conta VIP</span></span>
+                <span>Ainda não tem conta? <span className="text-primary font-bold">Crie uma agora</span></span>
               )}
             </button>
-            <p className="text-[10px] text-muted-foreground uppercase tracking-[0.4em] font-black opacity-30 mt-6 leading-relaxed">
-              Leading Analysis for Digital Creators
-            </p>
           </div>
         </motion.div>
       </div>
