@@ -21,17 +21,12 @@ export default function Login() {
     setLoading(true);
 
     try {
-      // Aqui está o código preparado para o Supabase
-      // Quando você tiver as chaves, basta descomentar as linhas abaixo:
-      
-      /*
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) throw error;
-      */
 
       // Simulando delay para UI premium
       await new Promise(resolve => setTimeout(resolve, 1200));
