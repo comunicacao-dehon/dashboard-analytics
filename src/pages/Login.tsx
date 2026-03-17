@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Mail, Lock, Loader2, ArrowRight, User, Phone } from "lucide-react";
+import { Loader2, ArrowRight, User, Phone, Mail, Lock } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
-import { fadeIn } from "@/lib/animations";
 
 export default function Login() {
   const [, setLocation] = useLocation();
@@ -57,147 +55,189 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#121212] font-sans text-foreground overflow-hidden relative">
-      {/* Background Decorative Elements - Spheres */}
-      <motion.div 
-        animate={{ 
-          y: [0, -40, 0],
-          x: [0, 20, 0],
-          rotate: [0, 10, 0]
-        }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[15%] right-[15%] w-32 h-32 md:w-48 md:h-48 rounded-full bg-gradient-to-br from-[#FFD700] to-[#FFA500] shadow-[0_0_80px_rgba(255,215,0,0.3)] z-0"
-      />
-      
-      <motion.div 
-        animate={{ 
-          y: [0, 50, 0],
-          x: [0, -30, 0],
-        }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="absolute bottom-[10%] left-[10%] w-24 h-24 md:w-40 md:h-40 rounded-full bg-gradient-to-tr from-[#FFD700] to-[#CCAC00] shadow-[0_0_60px_rgba(255,215,0,0.2)] z-0"
-      />
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#050505] font-sans text-foreground overflow-hidden relative selection:bg-primary/30">
+      {/* Dynamic Background Elements - Organic Blobs & Spheres */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {/* Large Blue Blob */}
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.2, 0.1],
+            x: [-100, 50, -100],
+            y: [-50, 100, -50]
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-20 -left-20 w-[500px] h-[500px] rounded-full bg-blue-600/20 blur-[120px]"
+        />
+        
+        {/* Large Purple Blob */}
+        <motion.div 
+          animate={{ 
+            scale: [1.2, 1, 1.2],
+            opacity: [0.1, 0.15, 0.1],
+            x: [100, -50, 100],
+            y: [50, -100, 50]
+          }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -bottom-40 -right-40 w-[600px] h-[600px] rounded-full bg-purple-600/10 blur-[140px]"
+        />
 
-      <motion.div 
-        animate={{ 
-          scale: [1, 1.1, 1],
-          opacity: [0.1, 0.2, 0.1]
-        }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-[150%] h-[150%] pointer-events-none z-0 overflow-hidden"
-      >
-        <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(255,215,0,0.05)_0%,transparent_70%)]" />
-      </motion.div>
+        {/* Golden Spheres (Reference Inspired) */}
+        <motion.div 
+          animate={{ 
+            y: [0, -30, 0],
+            rotate: [0, 5, 0]
+          }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[10%] right-[10%] w-32 h-32 md:w-56 md:h-56 rounded-full bg-gradient-to-br from-amber-300 via-amber-500 to-orange-600 shadow-[0_0_100px_rgba(251,191,36,0.2)]"
+        />
+        
+        <motion.div 
+          animate={{ 
+            y: [0, 40, 0],
+            x: [0, -20, 0],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute bottom-[15%] left-[5%] w-20 h-20 md:w-40 md:h-40 rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 shadow-[0_0_80px_rgba(251,191,36,0.15)] opacity-80"
+        />
 
-      {/* Main Glass Card */}
-      <motion.div 
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
-        className="relative z-10 w-full max-w-[440px] px-6 py-10 rounded-[2.5rem] bg-white/[0.03] backdrop-blur-[30px] border border-white/10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] flex flex-col items-center mx-4"
-      >
-        {/* Header section inspired by the reference image */}
-        <div className="flex flex-col items-center mb-8 gap-2">
-           <img src="/logo1.png" alt="Logo" className="w-10 h-10 object-contain drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]" />
-           <h1 className="text-white text-2xl font-bold tracking-tight text-center">
-              Painel Analítico <br />
-              <span className="text-xs uppercase tracking-[0.4em] text-white/40 font-medium">Glassmorphism Dashboard</span>
-           </h1>
-        </div>
+        {/* Subtle Grid Overlay */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] mix-blend-overlay" />
+      </div>
 
-        <div className="w-full">
-           <div className="mb-6 flex justify-between items-end">
-              <h2 className="text-[#FFA500] text-xl font-bold tracking-wide italic">
-                {isSignUp ? "Register" : "Login"}
-              </h2>
-              {/* Optional smaller branding */}
-           </div>
+      {/* Main Glassmorphism Container */}
+      <AnimatePresence mode="wait">
+        <motion.div 
+          key={isSignUp ? "signup" : "login"}
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: -10 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="relative z-10 w-full max-w-[460px] mx-4"
+        >
+          <div className="p-8 md:p-12 rounded-[3rem] bg-white/[0.04] backdrop-blur-[40px] border border-white/[0.08] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)] flex flex-col items-center">
+            
+            {/* Branding / Logo */}
+            <div className="flex flex-col items-center mb-10 text-center">
+              <div className="w-14 h-14 rounded-2xl bg-white/[0.05] border border-white/[0.1] flex items-center justify-center mb-4 shadow-inner backdrop-blur-md relative group">
+                <div className="absolute inset-0 bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
+                <img src="/logo1.png" alt="Logo" className="w-8 h-8 object-contain relative z-10 brightness-110 drop-shadow-[0_0_8px_rgba(251,191,36,0.3)]" />
+              </div>
+              <h1 className="text-white text-3xl font-bold tracking-tight mb-1">
+                {isSignUp ? "Create Account" : "Welcome Back"}
+              </h1>
+              <p className="text-white/40 text-sm font-medium tracking-wide uppercase">
+                {isSignUp ? "Join the analytical elite" : "Secure access to your dashboard"}
+              </p>
+            </div>
 
-           <form onSubmit={handleAuth} className="space-y-5">
-             {isSignUp && (
-               <div className="space-y-4">
-                 <div className="space-y-1.5">
-                   <Input 
-                     id="name"
-                     placeholder="your name here"
-                     value={fullName}
-                     onChange={(e) => setFullName(e.target.value)}
-                     required
-                     className="h-12 rounded-xl bg-white/10 border-white/10 text-white placeholder:text-white/30 focus:bg-white/15 focus:border-white/20 transition-all text-sm"
-                   />
-                 </div>
-                 <div className="space-y-1.5">
-                   <Input 
-                     id="phone"
-                     placeholder="your phone here"
-                     value={phone}
-                     onChange={(e) => setPhone(e.target.value)}
-                     required
-                     className="h-12 rounded-xl bg-white/10 border-white/10 text-white placeholder:text-white/30 focus:bg-white/15 focus:border-white/20 transition-all text-sm"
-                   />
-                 </div>
-               </div>
-             )}
+            <form onSubmit={handleAuth} className="w-full space-y-6">
+              {isSignUp && (
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="name" className="text-xs font-bold text-white/50 uppercase tracking-widest ml-1">Full Name</Label>
+                    <div className="relative group">
+                      <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
+                      <Input 
+                        id="name"
+                        placeholder="John Doe"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        required
+                        className="h-14 pl-12 rounded-2xl bg-white/[0.05] border-white/[0.1] text-white placeholder:text-white/20 focus:bg-white/[0.08] focus:border-primary/50 transition-all font-medium"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="text-xs font-bold text-white/50 uppercase tracking-widest ml-1">Phone Number</Label>
+                    <div className="relative group">
+                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
+                      <Input 
+                        id="phone"
+                        placeholder="+55 (00) 00000-0000"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        required
+                        className="h-14 pl-12 rounded-2xl bg-white/[0.05] border-white/[0.1] text-white placeholder:text-white/20 focus:bg-white/[0.08] focus:border-primary/50 transition-all font-medium"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
 
-             <div className="space-y-1.5">
-               <Input 
-                 id="email"
-                 type="email"
-                 placeholder="your mail here"
-                 value={email}
-                 onChange={(e) => setEmail(e.target.value)}
-                 required
-                 className="h-12 rounded-xl bg-white/10 border-white/10 text-white placeholder:text-white/30 focus:bg-white/15 focus:border-white/20 transition-all text-sm"
-               />
-             </div>
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-xs font-bold text-white/50 uppercase tracking-widest ml-1">Email Address</Label>
+                <div className="relative group">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
+                  <Input 
+                    id="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="h-14 pl-12 rounded-2xl bg-white/[0.05] border-white/[0.1] text-white placeholder:text-white/20 focus:bg-white/[0.08] focus:border-primary/50 transition-all font-medium"
+                  />
+                </div>
+              </div>
 
-             <div className="space-y-1.5">
-               <Input 
-                 id="password"
-                 type="password"
-                 placeholder="your password here"
-                 value={password}
-                 onChange={(e) => setPassword(e.target.value)}
-                 required
-                 className="h-12 rounded-xl bg-white/10 border-white/10 text-white placeholder:text-white/30 focus:bg-white/15 focus:border-white/20 transition-all text-sm"
-               />
-               {!isSignUp && (
-                 <div className="flex justify-end">
-                    <a href="#" className="text-[10px] font-medium text-[#FFA500]/70 hover:text-[#FFA500] transition-colors">forgot your password</a>
-                 </div>
-               )}
-             </div>
+              <div className="space-y-2">
+                <div className="flex justify-between items-center ml-1">
+                  <Label htmlFor="password" title="password" className="text-xs font-bold text-white/50 uppercase tracking-widest">Secret Password</Label>
+                  {!isSignUp && (
+                    <a href="#" className="text-[10px] font-bold text-amber-500/80 hover:text-amber-400 transition-colors uppercase tracking-wider">
+                      Forgot Password?
+                    </a>
+                  )}
+                </div>
+                <div className="relative group">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
+                  <Input 
+                    id="password"
+                    type="password"
+                    placeholder="••••••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="h-14 pl-12 rounded-2xl bg-white/[0.05] border-white/[0.1] text-white placeholder:text-white/20 focus:bg-white/[0.08] focus:border-primary/50 transition-all font-medium"
+                  />
+                </div>
+              </div>
 
-             <Button 
-               type="submit" 
-               disabled={loading}
-               className="w-full mt-2 h-12 rounded-xl bg-[#D4AF37]/90 hover:bg-[#D4AF37] text-[#121212] font-heavy text-base shadow-xl shadow-black/20 hover:scale-[1.02] transition-all active:scale-[0.98] border-none"
-             >
-               {loading ? (
-                 <Loader2 className="h-5 w-5 animate-spin mx-auto" />
-               ) : (
-                 <span className="font-bold">{isSignUp ? "Sign Up" : "Login"}</span>
-               )}
-             </Button>
-           </form>
+              <Button 
+                type="submit" 
+                disabled={loading}
+                className="w-full h-14 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-[#050505] font-heavy text-lg shadow-xl shadow-amber-500/20 hover:shadow-amber-500/30 hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] border-none mt-4 group"
+              >
+                {loading ? (
+                  <Loader2 className="h-6 w-6 animate-spin mx-auto" />
+                ) : (
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="font-black italic uppercase tracking-wider">{isSignUp ? "Create My Account" : "Unlock Portal"}</span>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                )}
+              </Button>
+            </form>
 
-           <div className="mt-8 text-center">
-             <button 
-               onClick={() => setIsSignUp(!isSignUp)}
-               className="text-[11px] font-bold text-white/50 hover:text-white transition-colors uppercase tracking-widest"
-             >
-               {isSignUp ? (
-                 <span>Already have an account? <span className="text-[#FFA500]">Login here</span></span>
-               ) : (
-                 <span>Don't have an account? <span className="text-[#FFA500]">Create one</span></span>
-               )}
-             </button>
-           </div>
-        </div>
-      </motion.div>
-      
-      {/* Decorative Noise or leaf pattern if needed, but let's keep it clean like the spheres */}
-      <div className="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/leaf.png')] pointer-events-none" />
+            <div className="mt-10 text-center">
+              <button 
+                onClick={() => setIsSignUp(!isSignUp)}
+                className="text-[10px] font-black text-white/30 hover:text-white transition-colors uppercase tracking-[0.3em] group"
+              >
+                {isSignUp ? (
+                  <>Already a member? <span className="text-amber-500 group-hover:underline underline-offset-4 decoration-2">Sign In</span></>
+                ) : (
+                  <>New to the platform? <span className="text-amber-500 group-hover:underline underline-offset-4 decoration-2">Get Started</span></>
+                )}
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Decorative leaf/organic pattern from reference */}
+      <div className="absolute inset-0 opacity-[0.04] bg-[url('https://www.transparenttextures.com/patterns/leaf.png')] pointer-events-none mix-blend-overlay" />
     </div>
   );
 }
