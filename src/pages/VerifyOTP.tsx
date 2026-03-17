@@ -26,7 +26,7 @@ export default function VerifyOTP() {
 
   const handleVerify = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (otp.length !== 8) return;
+    if (otp.length !== 6) return;
 
     setLoading(true);
     try {
@@ -96,24 +96,24 @@ export default function VerifyOTP() {
 
           <h1 className="text-3xl font-bold tracking-tight mb-3 text-white">Verifique seu e-mail</h1>
           <p className="text-white/40 leading-relaxed mb-10">
-            Enviamos um código de <span className="text-amber-500 font-bold">8 dígitos</span> para o e-mail <span className="text-white font-bold">{email}</span>. Insira-o abaixo para ativar sua conta.
+            Enviamos um código de <span className="text-amber-500 font-bold">6 dígitos</span> para o e-mail <span className="text-white font-bold">{email}</span>. Insira-o abaixo para ativar sua conta.
           </p>
 
           <form onSubmit={handleVerify} className="space-y-10">
             <div className="flex justify-center overflow-x-auto pb-4">
               <InputOTP 
-                maxLength={8} 
+                maxLength={6} 
                 value={otp} 
                 onChange={setOtp}
                 onComplete={() => handleVerify()}
                 autoFocus
               >
-                <InputOTPGroup className="gap-2 sm:gap-3">
-                  {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+                <InputOTPGroup className="gap-2 sm:gap-4">
+                  {[0, 1, 2, 3, 4, 5].map((i) => (
                     <InputOTPSlot 
                       key={i} 
                       index={i} 
-                      className="w-10 h-14 sm:w-12 sm:h-16 text-2xl font-black bg-white/[0.04] border-white/[0.1] text-white rounded-xl focus:ring-4 focus:ring-amber-500/10 transition-all"
+                      className="w-12 h-14 sm:w-14 sm:h-16 text-2xl font-black bg-white/[0.04] border-white/[0.1] text-white rounded-xl focus:ring-4 focus:ring-amber-500/10 transition-all"
                     />
                   ))}
                 </InputOTPGroup>
@@ -122,7 +122,7 @@ export default function VerifyOTP() {
 
             <Button 
                 type="submit"
-                disabled={loading || otp.length !== 8}
+                disabled={loading || otp.length !== 6}
                 className="w-full h-15 rounded-2xl bg-amber-500 hover:bg-amber-600 text-[#050505] text-lg font-black uppercase tracking-widest shadow-xl shadow-amber-500/20 hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98]"
             >
               {loading ? (
