@@ -81,18 +81,67 @@ export default function Login() {
           className="absolute bottom-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-blue-500/10 blur-[130px]"
         />
 
-        {/* Golden Spheres Inspired by Dehon Branding */}
+        {/* Floating Analytical & Spiritual Elements */}
+        {/* Analytics Card 1 */}
         <motion.div 
-          animate={{ y: [0, -25, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[20%] right-[12%] w-32 h-32 md:w-52 md:h-52 rounded-full bg-gradient-to-br from-amber-200 via-amber-400 to-amber-600 shadow-[0_0_80px_rgba(212,175,55,0.15)] opacity-80"
-        />
-        
+          animate={{ 
+            y: [0, -30, 0],
+            rotate: [10, 15, 10],
+            x: [0, 10, 0]
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[15%] right-[10%] w-48 h-32 hidden md:flex items-center justify-center rounded-3xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.1] shadow-2xl overflow-hidden"
+        >
+          <div className="flex flex-col gap-2 w-full p-4">
+            <div className="h-2 w-1/2 bg-amber-500/20 rounded-full" />
+            <div className="flex items-end gap-1.5 h-12">
+              {[40, 70, 45, 90, 60].map((h, i) => (
+                <div key={i} className="flex-1 bg-amber-500/40 rounded-t-sm" style={{ height: `${h}%` }} />
+              ))}
+            </div>
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/5 to-transparent pointer-events-none" />
+        </motion.div>
+
+        {/* Dehonian Heart Symbol */}
         <motion.div 
-          animate={{ y: [0, 30, 0], x: [0, -15, 0] }}
-          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-          className="absolute bottom-[18%] left-[8%] w-24 h-24 md:w-44 md:h-44 rounded-full bg-gradient-to-tr from-amber-500/80 to-amber-700/80 shadow-[0_0_60px_rgba(212,175,55,0.1)] opacity-60"
-        />
+          animate={{ 
+            scale: [1, 1.1, 1],
+            rotate: [-5, 5, -5],
+            y: [0, 20, 0]
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute bottom-[20%] left-[8%] w-32 h-32 hidden md:flex items-center justify-center"
+        >
+          <div className="relative">
+            <div className="absolute inset-0 bg-amber-500/20 blur-[40px] rounded-full" />
+            <svg viewBox="0 0 24 24" className="w-16 h-16 text-amber-500 drop-shadow-[0_0_15px_rgba(245,158,11,0.5)] fill-amber-500/10 stroke-[1px]" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg>
+          </div>
+        </motion.div>
+
+        {/* Analytics Card 2 */}
+        <motion.div 
+          animate={{ 
+            y: [0, 40, 0],
+            rotate: [-10, -5, -10],
+            x: [0, -15, 0]
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          className="absolute top-[40%] left-[5%] w-40 h-24 hidden md:flex items-center justify-center rounded-2xl bg-blue-500/[0.03] backdrop-blur-lg border border-white/[0.08] shadow-2xl"
+        >
+          <div className="flex flex-col gap-3 w-full p-4">
+            <div className="flex justify-between items-center">
+              <div className="h-1.5 w-8 bg-blue-400/30 rounded-full" />
+              <div className="h-1.5 w-1.5 bg-blue-400/50 rounded-full" />
+            </div>
+            <div className="flex flex-col gap-1.5 font-['Outfit']">
+              <div className="text-[10px] text-blue-300/40 uppercase font-black tracking-widest">Growth</div>
+              <div className="text-sm text-blue-200/60 font-medium">+24.5%</div>
+            </div>
+          </div>
+        </motion.div>
 
         {/* Subtle Texture Noise */}
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.015] mix-blend-overlay" />
