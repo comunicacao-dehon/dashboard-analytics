@@ -6,7 +6,7 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 import { Mail, ArrowLeft, Loader2, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
-import { slideUp, fadeIn } from "@/lib/animations";
+import { fadeIn } from "@/lib/animations";
 
 export default function VerifyOTP() {
   const [location, setLocation] = useLocation();
@@ -26,7 +26,7 @@ export default function VerifyOTP() {
 
   const handleVerify = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (otp.length !== 6) return;
+    if (otp.length !== 8) return;
 
     setLoading(true);
     try {
@@ -53,7 +53,7 @@ export default function VerifyOTP() {
 
   if (verified) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-6">
+      <div className="min-h-screen flex items-center justify-center bg-[#050505] p-6">
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -62,58 +62,58 @@ export default function VerifyOTP() {
           <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 className="w-10 h-10 text-green-500" />
           </div>
-          <h2 className="text-3xl font-bold mb-2 text-foreground">Verificado!</h2>
-          <p className="text-muted-foreground">Sua conta foi ativada. Redirecionando...</p>
+          <h2 className="text-3xl font-bold mb-2 text-white">Verificado!</h2>
+          <p className="text-white/60">Sua conta foi ativada. Redirecionando...</p>
         </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#FDFDFD] dark:bg-[#0A0A0B] p-6 relative overflow-hidden font-sans">
+    <div className="min-h-screen flex items-center justify-center bg-[#050505] p-6 relative overflow-hidden font-['Outfit']">
       {/* Background Decor */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-amber-500/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none" />
 
       <motion.div 
         initial="hidden"
         animate="visible"
         variants={fadeIn}
-        className="w-full max-w-md relative z-10"
+        className="w-full max-w-xl relative z-10"
       >
         <button 
           onClick={() => setLocation("/login")}
-          className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mb-12 group"
+          className="flex items-center gap-2 text-sm font-medium text-white/40 hover:text-white transition-colors mb-12 group"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
           Voltar para o login
         </button>
 
-        <div className="bg-white dark:bg-card border border-border/50 shadow-2xl rounded-[2.5rem] p-10 md:p-12">
-          <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-8">
-            <Mail className="w-7 h-7 text-primary" />
+        <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.8)] rounded-[2.5rem] p-10 md:p-14">
+          <div className="w-14 h-14 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center justify-center mb-8">
+            <Mail className="w-7 h-7 text-amber-500" />
           </div>
 
-          <h1 className="text-3xl font-extrabold tracking-tight mb-3 text-foreground">Verifique seu e-mail</h1>
-          <p className="text-muted-foreground leading-relaxed mb-10">
-            Enviamos um código de 6 dígitos para o e-mail <span className="text-foreground font-bold">{email}</span>. Insira-o abaixo para ativar sua conta.
+          <h1 className="text-3xl font-bold tracking-tight mb-3 text-white">Verifique seu e-mail</h1>
+          <p className="text-white/40 leading-relaxed mb-10">
+            Enviamos um código de <span className="text-amber-500 font-bold">8 dígitos</span> para o e-mail <span className="text-white font-bold">{email}</span>. Insira-o abaixo para ativar sua conta.
           </p>
 
           <form onSubmit={handleVerify} className="space-y-10">
-            <div className="flex justify-center">
+            <div className="flex justify-center overflow-x-auto pb-4">
               <InputOTP 
-                maxLength={6} 
+                maxLength={8} 
                 value={otp} 
                 onChange={setOtp}
                 onComplete={() => handleVerify()}
                 autoFocus
               >
-                <InputOTPGroup className="gap-2 sm:gap-4">
-                  {[0, 1, 2, 3, 4, 5].map((i) => (
+                <InputOTPGroup className="gap-2 sm:gap-3">
+                  {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
                     <InputOTPSlot 
                       key={i} 
                       index={i} 
-                      className="w-12 h-14 sm:w-14 sm:h-16 text-2xl font-bold bg-muted/30 border-border/60 rounded-xl focus:ring-4 focus:ring-primary/10"
+                      className="w-10 h-14 sm:w-12 sm:h-16 text-2xl font-black bg-white/[0.04] border-white/[0.1] text-white rounded-xl focus:ring-4 focus:ring-amber-500/10 transition-all"
                     />
                   ))}
                 </InputOTPGroup>
@@ -122,8 +122,8 @@ export default function VerifyOTP() {
 
             <Button 
                 type="submit"
-                disabled={loading || otp.length !== 6}
-                className="w-full h-14 rounded-2xl text-lg font-bold shadow-xl shadow-primary/20 hover:shadow-2xl transition-all duration-300 active:scale-[0.98]"
+                disabled={loading || otp.length !== 8}
+                className="w-full h-15 rounded-2xl bg-amber-500 hover:bg-amber-600 text-[#050505] text-lg font-black uppercase tracking-widest shadow-xl shadow-amber-500/20 hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98]"
             >
               {loading ? (
                 <>
@@ -131,13 +131,13 @@ export default function VerifyOTP() {
                   Verificando...
                 </>
               ) : (
-                "Verificar Código"
+                "Ativar Conta"
               )}
             </Button>
           </form>
 
-          <div className="mt-10 text-center">
-            <p className="text-sm text-muted-foreground">
+          <div className="mt-12 text-center pt-8 border-t border-white/5">
+            <p className="text-sm text-white/30 uppercase tracking-[0.2em] font-bold">
               Não recebeu o código?{" "}
               <button 
                 onClick={async () => {
@@ -149,7 +149,7 @@ export default function VerifyOTP() {
                    if (error) toast.error(error.message);
                    else toast.success("Código enviado novamente!");
                 }}
-                className="text-primary font-bold hover:underline underline-offset-4"
+                className="text-amber-500 hover:text-amber-400 transition-colors"
               >
                 Reenviar
               </button>

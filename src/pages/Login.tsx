@@ -11,6 +11,7 @@ import { toast } from "sonner";
 export default function Login() {
   const [, setLocation] = useLocation();
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -51,6 +52,22 @@ export default function Login() {
       toast.error(error.message || "Erro na autenticação");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleAuth = async () => {
+    setGoogleLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`
+        }
+      });
+      if (error) throw error;
+    } catch (error: any) {
+      toast.error(error.message || "Erro ao conectar com Google");
+      setGoogleLoading(false);
     }
   };
 
@@ -155,12 +172,12 @@ export default function Login() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.98, y: -5 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="relative z-10 w-full max-w-[480px] mx-4"
+          className="relative z-10 w-full max-w-[500px] mx-4 my-10"
         >
           <div className="p-10 md:p-14 rounded-[2.5rem] bg-white/[0.06] backdrop-blur-[25px] border border-white/[0.12] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.7)] flex flex-col items-center">
             
             {/* Branding Header */}
-            <div className="flex flex-col items-center mb-10 text-center">
+            <div className="flex flex-col items-center mb-8 text-center">
               <div className="w-16 h-16 rounded-2xl bg-white/[0.05] border border-white/[0.1] flex items-center justify-center mb-6 shadow-inner backdrop-blur-md relative group">
                 <div className="absolute inset-0 bg-amber-500/10 blur-xl opacity-50 rounded-2xl" />
                 <img src="/logo1.png" alt="Logo" className="w-9 h-9 object-contain relative z-10 brightness-110 drop-shadow-[0_0_12px_rgba(212,175,55,0.4)]" />
@@ -178,6 +195,46 @@ export default function Login() {
               </div>
             </div>
 
+            {/* Google Social Login */}
+            <Button
+              type="button"
+              onClick={handleGoogleAuth}
+              disabled={googleLoading}
+              className="w-full h-14 rounded-2xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.1] text-white font-bold flex items-center justify-center gap-3 transition-all mb-8 shadow-sm group active:scale-95"
+            >
+              {googleLoading ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <>
+                  <svg className="w-5 h-5 group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
+                    <path
+                      fill="currentColor"
+                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                    />
+                    <path
+                      fill="currentColor"
+                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-1 .67-2.28 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    />
+                    <path
+                      fill="currentColor"
+                      d="M5.84 14.09c-.22-.67-.35-1.39-.35-2.09s.13-1.42.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
+                    />
+                    <path
+                      fill="currentColor"
+                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                    />
+                  </svg>
+                  <span>Continuar com Google</span>
+                </>
+              )}
+            </Button>
+
+            <div className="flex items-center w-full gap-4 mb-8">
+              <div className="h-[1px] flex-1 bg-white/[0.08]" />
+              <span className="text-[10px] text-white/20 font-bold uppercase tracking-[0.2em]">Ou entrar com e-mail</span>
+              <div className="h-[1px] flex-1 bg-white/[0.08]" />
+            </div>
+
             <form onSubmit={handleAuth} className="w-full space-y-6">
               {isSignUp && (
                 <div className="space-y-4">
@@ -187,11 +244,11 @@ export default function Login() {
                       <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/10 group-focus-within:text-amber-500 transition-colors" />
                       <Input 
                         id="name"
-                        placeholder="Seu nome aqui"
+                        placeholder="Seu nome"
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
                         required
-                        className="h-14 pl-12 rounded-2xl bg-white/[0.04] border-white/[0.1] text-white placeholder:text-white/20 focus:bg-white/[0.07] focus:border-amber-500/40 focus:ring-4 focus:ring-amber-500/5 transition-all"
+                        className="h-14 pl-12 rounded-2xl bg-white/[0.04] border-white/[0.1] text-white placeholder:text-white/20 focus:bg-white/[0.07] focus:border-amber-500/40 focus:ring-4 focus:ring-amber-500/5 transition-all outline-none"
                       />
                     </div>
                   </div>
@@ -205,7 +262,7 @@ export default function Login() {
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         required
-                        className="h-14 pl-12 rounded-2xl bg-white/[0.04] border-white/[0.1] text-white placeholder:text-white/20 focus:bg-white/[0.07] focus:border-amber-500/40 focus:ring-4 focus:ring-amber-500/5 transition-all"
+                        className="h-14 pl-12 rounded-2xl bg-white/[0.04] border-white/[0.1] text-white placeholder:text-white/20 focus:bg-white/[0.07] focus:border-amber-500/40 focus:ring-4 focus:ring-amber-500/5 transition-all outline-none"
                       />
                     </div>
                   </div>
@@ -223,7 +280,7 @@ export default function Login() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-14 pl-12 rounded-2xl bg-white/[0.04] border-white/[0.1] text-white placeholder:text-white/20 focus:bg-white/[0.07] focus:border-amber-500/40 focus:ring-4 focus:ring-amber-500/5 transition-all font-['Outfit']"
+                    className="h-14 pl-12 rounded-2xl bg-white/[0.04] border-white/[0.1] text-white placeholder:text-white/20 focus:bg-white/[0.07] focus:border-amber-500/40 focus:ring-4 focus:ring-amber-500/5 transition-all font-['Outfit'] outline-none"
                   />
                 </div>
               </div>
@@ -246,7 +303,7 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="h-14 pl-12 rounded-2xl bg-white/[0.04] border-white/[0.1] text-white placeholder:text-white/20 focus:bg-white/[0.07] focus:border-amber-500/40 focus:ring-4 focus:ring-amber-500/5 transition-all font-['Outfit']"
+                    className="h-14 pl-12 rounded-2xl bg-white/[0.04] border-white/[0.1] text-white placeholder:text-white/20 focus:bg-white/[0.07] focus:border-amber-500/40 focus:ring-4 focus:ring-amber-500/5 transition-all font-['Outfit'] outline-none"
                   />
                 </div>
               </div>
@@ -254,7 +311,7 @@ export default function Login() {
               <Button 
                 type="submit" 
                 disabled={loading}
-                className="w-full h-15 rounded-2xl bg-[#D4AF37] hover:bg-[#C5A028] text-[#050505] font-bold text-lg shadow-xl shadow-amber-500/20 hover:shadow-amber-500/30 hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] border-none mt-4 group"
+                className="w-full h-15 rounded-2xl bg-[#D4AF37] hover:bg-[#C5A028] text-[#050505] font-black text-lg shadow-xl shadow-amber-500/20 hover:shadow-amber-500/30 hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98] border-none mt-4 group"
               >
                 {loading ? (
                   <Loader2 className="h-6 w-6 animate-spin mx-auto text-[#050505]" />
@@ -288,7 +345,7 @@ export default function Login() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.35 }}
         transition={{ delay: 1, duration: 1 }}
-        className="mt-10 md:mt-14 relative z-10 text-center"
+        className="mt-6 mb-10 relative z-10 text-center"
       >
         <p className="text-white/60 text-xs italic tracking-widest font-['Crimson_Text']">
           “A nossa vocação é o amor.”
