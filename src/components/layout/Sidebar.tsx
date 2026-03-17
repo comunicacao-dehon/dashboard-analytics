@@ -27,8 +27,6 @@ const navItems = [
   { label: "Comparação", href: "/comparison", icon: BarChart2 },
   { label: "Insights", href: "/insights", icon: Lightbulb },
   { label: "Relatórios", href: "/reports", icon: FileText },
-  { label: "Meu Perfil", href: "/profile", icon: User },
-  { label: "Configurações", href: "/settings", icon: Settings },
 ];
 
 const platformStyle: Record<string, { bg: string; glow: string; text: string }> = {

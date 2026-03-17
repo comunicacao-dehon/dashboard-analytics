@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { TrendingUp, BarChart3, Target, Share2, Heart, ArrowRight, Activity, ArrowUpRight, BarChart, Instagram, Facebook, Youtube } from "lucide-react";
+import { TrendingUp, BarChart3, Target, Share2, Heart, ArrowRight, Activity, ArrowUpRight, BarChart, Instagram, Facebook, Youtube, Settings, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { slideUp, staggerContainer } from "@/lib/animations";
@@ -7,8 +7,11 @@ import { AnimatedCard } from "@/components/AnimatedCard";
 import { SocialGrowthChart } from "@/components/charts/SocialGrowthChart";
 import { InsightsPanel } from "@/components/social/InsightsPanel";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Home() {
+  const { user } = useAuth();
+  const avatarUrl = user?.user_metadata?.avatar_url;
   const instagramMetrics = [
     { label: "Seguidores", value: "5.377", icon: Heart, trend: "+12%", href: "/instagram" },
     { label: "Taxa de Engajamento", value: "4,19%", icon: TrendingUp, trend: "+0.8%" },
@@ -75,18 +78,36 @@ export default function Home() {
                 <p className="text-base font-medium text-muted-foreground mt-0.5">@amigosdocoracao_conventinho</p>
               </div>
             </div>
-            <div className="flex gap-3 shrink-0">
-              <Link href="/reports">
-                <Button className="rounded-full px-6 shadow-md">
-                  <BarChart3 className="w-4 h-4 mr-2" />
-                  Ver Dados
-                </Button>
-              </Link>
-              <Link href="/comparison">
-                <Button variant="outline" className="rounded-full px-5">
-                  Comparar
-                </Button>
-              </Link>
+            <div className="flex flex-col items-end gap-3 shrink-0">
+              <div className="flex items-center gap-2 mb-1">
+                <Link href="/settings">
+                  <button className="p-2 rounded-full hover:bg-muted text-muted-foreground transition-colors" title="Configurações">
+                    <Settings className="w-4 h-4" />
+                  </button>
+                </Link>
+                <Link href="/profile">
+                  <button className="w-8 h-8 rounded-full overflow-hidden border border-border hover:border-primary transition-all flex items-center justify-center bg-muted" title="Meu Perfil">
+                    {avatarUrl ? (
+                      <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                    ) : (
+                      <User className="w-4 h-4 text-muted-foreground" />
+                    )}
+                  </button>
+                </Link>
+              </div>
+              <div className="flex gap-3">
+                <Link href="/reports">
+                  <Button className="rounded-full px-6 shadow-md">
+                    <BarChart3 className="w-4 h-4 mr-2" />
+                    Ver Dados
+                  </Button>
+                </Link>
+                <Link href="/comparison">
+                  <Button variant="outline" className="rounded-full px-5">
+                    Comparar
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </motion.div>
