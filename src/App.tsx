@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { Layout } from "./components/layout/Layout";
@@ -16,28 +16,74 @@ import Insights from "./pages/Insights";
 import Settings from "./pages/Settings";
 import VerifyOTP from "./pages/VerifyOTP";
 import Profile from "./pages/Profile";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { useEffect } from "react";
+import { Loader2 } from "lucide-react";
+
+function ProtectedRoute({ component: Component, ...rest }: any) {
+  const { session, loading } = useAuth();
+  const [, setLocation] = useLocation();
+
+  useEffect(() => {
+    if (!loading && !session) {
+      setLocation("/login");
+    }
+  }, [session, loading, setLocation]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#050505]">
+        <Loader2 className="w-10 h-10 text-amber-500 animate-spin" />
+      </div>
+    );
+  }
+
+  return session ? <Component {...rest} /> : null;
+}
+
+function PublicRoute({ component: Component, ...rest }: any) {
+  const { session, loading } = useAuth();
+  const [, setLocation] = useLocation();
+
+  useEffect(() => {
+    if (!loading && session) {
+      setLocation("/dashboard");
+    }
+  }, [session, loading, setLocation]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#050505]">
+        <Loader2 className="w-10 h-10 text-amber-500 animate-spin" />
+      </div>
+    );
+  }
+
+  return !session ? <Component {...rest} /> : null;
+}
 
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Login} />
-      <Route path="/login" component={Login} />
+      <Route path="/" component={() => <PublicRoute component={Login} />} />
+      <Route path="/login" component={() => <PublicRoute component={Login} />} />
       <Route path="/verify-otp" component={VerifyOTP} />
+      
+      {/* Protected Routes inside Layout */}
       <Route>
         <Layout>
           <Switch>
-            <Route path={"/dashboard"} component={Home} />
-            <Route path={"/instagram"} component={Followers} />
-            <Route path={"/followers"} component={Followers} />
-            <Route path={"/facebook"} component={Facebook} />
-            <Route path={"/youtube"} component={YouTube} />
-            <Route path={"/comparison"} component={Comparison} />
-            <Route path={"/insights"} component={Insights} />
-            <Route path={"/reports"} component={Reports} />
-            <Route path={"/settings"} component={Settings} />
-            <Route path={"/profile"} component={Profile} />
-            <Route path={"/404"} component={NotFound} />
-            {/* Final fallback route */}
+            <Route path="/dashboard" component={() => <ProtectedRoute component={Home} />} />
+            <Route path="/instagram" component={() => <ProtectedRoute component={Followers} />} />
+            <Route path="/followers" component={() => <ProtectedRoute component={Followers} />} />
+            <Route path="/facebook" component={() => <ProtectedRoute component={Facebook} />} />
+            <Route path="/youtube" component={() => <ProtectedRoute component={YouTube} />} />
+            <Route path="/comparison" component={() => <ProtectedRoute component={Comparison} />} />
+            <Route path="/insights" component={() => <ProtectedRoute component={Insights} />} />
+            <Route path="/reports" component={() => <ProtectedRoute component={Reports} />} />
+            <Route path="/settings" component={() => <ProtectedRoute component={Settings} />} />
+            <Route path="/profile" component={() => <ProtectedRoute component={Profile} />} />
+            <Route path="/404" component={NotFound} />
             <Route component={NotFound} />
           </Switch>
         </Layout>
@@ -49,14 +95,17 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider defaultTheme="light">
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider defaultTheme="light">
+          <TooltipProvider>
+            <Toaster />
+            <Router />
+          </TooltipProvider>
+        </ThemeProvider>
+      </AuthProvider>
     </ErrorBoundary>
   );
 }
 
 export default App;
+
