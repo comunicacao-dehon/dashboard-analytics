@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,8 +20,11 @@ import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { slideUp, fadeIn } from "@/lib/animations";
 import { AnimatedCard } from "@/components/AnimatedCard";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Profile() {
+  const { user: authUser, signOut } = useAuth();
+  const [, setLocation] = useLocation();
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [user, setUser] = useState<any>(null);
@@ -113,7 +117,10 @@ export default function Profile() {
             <p className="text-muted-foreground">Gerencie suas informações e segurança da conta.</p>
           </div>
           <div className="flex gap-3">
-             <Button variant="outline" className="rounded-full shadow-sm" onClick={() => supabase.auth.signOut()}>
+             <Button variant="outline" className="rounded-full shadow-sm" onClick={async () => {
+                await signOut();
+                setLocation("/login");
+             }}>
                 <LogOut className="w-4 h-4 mr-2" />
                 Sair
              </Button>

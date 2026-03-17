@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
 const navItems = [
@@ -50,8 +50,9 @@ const platformStyle: Record<string, { bg: string; glow: string; text: string }> 
 };
 
 export function Sidebar() {
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+  const { signOut } = useAuth();
 
   return (
     <motion.aside
@@ -158,16 +159,12 @@ export function Sidebar() {
         })}
       </nav>
 
-      {/* Logout Button */}
       <div className="px-2 pb-4">
         <button
           onClick={async () => {
-            const { error } = await supabase.auth.signOut();
-            if (error) {
-              toast.error("Erro ao sair");
-            } else {
-              toast.success("Até logo!");
-            }
+            await signOut();
+            toast.success("Até logo!");
+            setLocation("/login");
           }}
           className={cn(
             "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group text-muted-foreground hover:bg-red-50 hover:text-red-500",

@@ -1,7 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { LayoutDashboard, Instagram, Facebook, Youtube, BarChart2, FileText, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
 const mobileItems = [
@@ -14,15 +14,13 @@ const mobileItems = [
 ];
 
 export function MobileNav() {
-  const [location] = useLocation();
+  const { signOut } = useAuth();
+  const [location, setLocation] = useLocation();
 
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast.error("Erro ao sair");
-    } else {
-      toast.success("Até logo!");
-    }
+    await signOut();
+    toast.success("Até logo!");
+    setLocation("/login");
   };
 
   return (
