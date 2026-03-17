@@ -199,28 +199,33 @@ export default function Profile() {
             <AnimatedCard className="p-8 text-center flex flex-col items-center border-primary/10 relative overflow-hidden group">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
               
-              <div className="relative mb-6">
+              <div className="relative mb-8">
                 <div className={cn(
-                  "w-36 h-36 rounded-[2.5rem] overflow-hidden border-4 border-background bg-muted flex items-center justify-center shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]",
+                  "w-32 h-32 rounded-full overflow-hidden border-2 border-primary/20 bg-background flex items-center justify-center relative z-10 transition-all duration-300 group-hover:border-primary/40",
                   uploading && "opacity-50"
                 )}>
                   {avatarUrl ? (
                     <img src={avatarUrl} alt="Profile" className="w-full h-full object-cover" />
                   ) : (
-                    <span className="text-6xl font-black text-primary/30">{fullName?.charAt(0) || email?.charAt(0).toUpperCase()}</span>
+                    <span className="text-4xl font-black text-primary/30">{fullName?.charAt(0) || email?.charAt(0).toUpperCase()}</span>
                   )}
                   {uploading && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                      <Loader2 className="w-8 h-8 text-white animate-spin" />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[2px]">
+                      <Loader2 className="w-6 h-6 text-primary animate-spin" />
                     </div>
                   )}
                 </div>
+                
+                {/* Decorative ring */}
+                <div className="absolute inset-[-4px] rounded-full border border-primary/5 pointer-events-none" />
+
                 <button 
                   onClick={triggerFileInput}
                   disabled={uploading}
-                  className="absolute -bottom-1 -right-1 p-3 bg-primary text-white rounded-2xl shadow-xl hover:scale-110 active:scale-95 transition-all z-10 hover:rotate-6"
+                  className="absolute bottom-0 right-0 p-2.5 bg-background border border-border shadow-sm text-primary rounded-full hover:bg-primary hover:text-white active:scale-90 transition-all z-20"
+                  title="Alterar foto"
                 >
-                  <Camera className="w-5 h-5" />
+                  <Camera className="w-4 h-4" />
                 </button>
                 <input 
                   type="file" 
