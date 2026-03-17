@@ -126,8 +126,8 @@ export default function Login() {
               <h1 className="text-white text-3xl font-bold tracking-tight mb-1">
                 {isSignUp ? "Create Account" : "Welcome Back"}
               </h1>
-              <p className="text-white/40 text-sm font-medium tracking-wide uppercase">
-                {isSignUp ? "Join the analytical elite" : "Secure access to your dashboard"}
+              <p className="text-white/40 text-[10px] font-bold tracking-[0.3em] uppercase max-w-[280px] leading-relaxed">
+                Dados que inspiram estratégias reais
               </p>
             </div>
 
