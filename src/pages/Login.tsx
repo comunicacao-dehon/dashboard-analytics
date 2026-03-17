@@ -55,7 +55,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-[#050505] font-sans text-foreground overflow-hidden relative selection:bg-amber-500/30">
+    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-[#050505] font-['Outfit'] text-foreground overflow-hidden relative selection:bg-amber-500/30">
       {/* Dynamic Background Elements */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         {/* Soft Organic Blobs */}
@@ -122,7 +122,7 @@ export default function Login() {
               </h1>
               
               <div className="relative">
-                <p className="text-amber-200/80 text-lg italic font-serif leading-relaxed px-4 tracking-wide">
+                <p className="text-amber-200/80 text-lg italic font-['Crimson_Text'] leading-relaxed px-4 tracking-wide">
                   “Tudo por Ele, tudo com Ele, <br className="hidden sm:block" /> tudo n’Ele.”
                 </p>
                 <span className="block text-[10px] uppercase tracking-[0.3em] font-medium text-white/30 mt-3">— Pe. Leão Dehon</span>
@@ -174,7 +174,7 @@ export default function Login() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-14 pl-12 rounded-2xl bg-white/[0.04] border-white/[0.1] text-white placeholder:text-white/20 focus:bg-white/[0.07] focus:border-amber-500/40 focus:ring-4 focus:ring-amber-500/5 transition-all"
+                    className="h-14 pl-12 rounded-2xl bg-white/[0.04] border-white/[0.1] text-white placeholder:text-white/20 focus:bg-white/[0.07] focus:border-amber-500/40 focus:ring-4 focus:ring-amber-500/5 transition-all font-['Outfit']"
                   />
                 </div>
               </div>
@@ -197,7 +197,7 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="h-14 pl-12 rounded-2xl bg-white/[0.04] border-white/[0.1] text-white placeholder:text-white/20 focus:bg-white/[0.07] focus:border-amber-500/40 focus:ring-4 focus:ring-amber-500/5 transition-all"
+                    className="h-14 pl-12 rounded-2xl bg-white/[0.04] border-white/[0.1] text-white placeholder:text-white/20 focus:bg-white/[0.07] focus:border-amber-500/40 focus:ring-4 focus:ring-amber-500/5 transition-all font-['Outfit']"
                   />
                 </div>
               </div>
@@ -241,7 +241,7 @@ export default function Login() {
         transition={{ delay: 1, duration: 1 }}
         className="mt-10 md:mt-14 relative z-10 text-center"
       >
-        <p className="text-white/60 text-xs italic tracking-widest font-serif">
+        <p className="text-white/60 text-xs italic tracking-widest font-['Crimson_Text']">
           “A nossa vocação é o amor.”
         </p>
         <span className="block text-[8px] uppercase tracking-[0.4em] text-white/40 mt-2">— Pe. Leão Dehon</span>
