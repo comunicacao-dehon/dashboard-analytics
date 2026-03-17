@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, ArrowRight, User, Phone, Mail, Lock } from "lucide-react";
+import { Loader2, ArrowRight, User, Phone, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 
@@ -13,6 +13,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -25,10 +26,8 @@ export default function Login() {
     setLoading(true);
 
     try {
-      console.log("Iniciando processo de autenticação...", { isSignUp, email });
-      
       if (isSignUp) {
-        const { data, error } = await supabase.auth.signUp({
+        const { error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -40,33 +39,23 @@ export default function Login() {
           }
         });
         
-        if (error) {
-          console.error("Erro no signUp:", error);
-          throw error;
-        }
+        if (error) throw error;
 
-        console.log("SignUp sucesso:", data);
         toast.success("Verifique seu e-mail para o código de 8 dígitos!");
         setLocation(`/verify-otp?email=${encodeURIComponent(email)}`);
       } else {
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
         
-        if (error) {
-          console.error("Erro no signIn:", error);
-          throw error;
-        }
+        if (error) throw error;
         
-        console.log("SignIn sucesso:", data);
         toast.success("Bem-vindo de volta!");
         setLocation("/dashboard");
       }
     } catch (error: any) {
-      console.error("Falha na autenticação:", error);
-      // Manuseio de erro mais robusto para evitar o "[object Object]" ou "{}" no toast
-      const errorMessage = error?.message || error?.error_description || (typeof error === 'string' ? error : "Erro desconhecido. Verifique seus dados.");
+      const errorMessage = error?.message || "Erro desconhecido. Verifique seus dados.";
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -81,16 +70,11 @@ export default function Login() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'select_account',
-          },
+          redirectTo: `${window.location.origin}/dashboard`
         }
       });
       if (error) throw error;
     } catch (error: any) {
-      console.error("Google Auth Error:", error);
       toast.error(error.message || "Erro ao conectar com Google");
       setGoogleLoading(false);
     }
@@ -234,13 +218,25 @@ export default function Login() {
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/10 group-focus-within:text-amber-500 transition-colors" />
                   <Input 
                     id="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="••••••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="h-14 pl-12 rounded-2xl bg-white/[0.03] border-white/10 text-white placeholder:text-white/20 focus:bg-white/[0.06] focus:border-amber-500/40 transition-all outline-none"
+                    className="h-14 pl-12 pr-12 rounded-2xl bg-white/[0.03] border-white/10 text-white placeholder:text-white/20 focus:bg-white/[0.06] focus:border-amber-500/40 transition-all outline-none"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 text-white/20 hover:text-amber-500 transition-colors z-10"
+                    title={showPassword ? "Ocultar senha" : "Ver senha"}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </button>
                 </div>
               </div>
 
@@ -263,7 +259,10 @@ export default function Login() {
             <div className="mt-10 text-center w-full">
               <button 
                 type="button"
-                onClick={() => setIsSignUp(!isSignUp)}
+                onClick={() => {
+                   setIsSignUp(!isSignUp);
+                   setShowPassword(false);
+                }}
                 className="text-[11px] font-black text-white/30 hover:text-white transition-colors uppercase tracking-[0.2em] py-4"
               >
                 {isSignUp ? (
