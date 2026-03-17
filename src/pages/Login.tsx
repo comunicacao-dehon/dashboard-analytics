@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, ArrowRight, User, Phone, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Loader2, ArrowRight, User, Phone, Mail, Lock, Eye, EyeOff, AlertTriangle } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 
@@ -25,9 +25,15 @@ export default function Login() {
     if (loading) return;
     setLoading(true);
 
+    // Adiciona um timeout manual para avisar o usuário se o servidor demorar (comum em envio de e-mail do Supabase)
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("timeout")), 20000)
+    );
+
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
+        // Envelopando a chamada do Supabase com o timeout
+        const signUpPromise = supabase.auth.signUp({
           email,
           password,
           options: {
@@ -38,6 +44,8 @@ export default function Login() {
             emailRedirectTo: `${window.location.origin}/dashboard`
           }
         });
+
+        const { error }: any = await Promise.race([signUpPromise, timeoutPromise]);
         
         if (error) throw error;
 
@@ -55,8 +63,15 @@ export default function Login() {
         setLocation("/dashboard");
       }
     } catch (error: any) {
-      const errorMessage = error?.message || "Erro desconhecido. Verifique seus dados.";
-      toast.error(errorMessage);
+      if (error.message === "timeout") {
+        toast.error("O servidor está demorando para responder. Isso geralmente acontece quando o Supabase tenta enviar o e-mail de confirmação e falha. Verifique as configurações de SMTP no painel do Supabase.", {
+          duration: 8000
+        });
+      } else {
+        const errorMessage = error?.message || "Erro desconhecido. Verifique seus dados e conexão.";
+        toast.error(errorMessage);
+        console.error("Auth error:", error);
+      }
     } finally {
       setLoading(false);
     }
@@ -246,7 +261,10 @@ export default function Login() {
                 className="w-full h-15 rounded-2xl bg-amber-500 hover:bg-amber-600 text-[#050505] font-black text-lg shadow-xl shadow-amber-500/10 hover:-translate-y-1 transition-all duration-300 mt-4 group"
               >
                 {loading ? (
-                  <Loader2 className="h-6 w-6 animate-spin mx-auto" />
+                  <div className="flex items-center gap-3">
+                    <Loader2 className="h-6 w-6 animate-spin mx-auto" />
+                    {isSignUp && <span className="text-xs animate-pulse">Enviando e-mail...</span>}
+                  </div>
                 ) : (
                   <div className="flex items-center justify-center gap-2 uppercase tracking-widest">
                     <span>{isSignUp ? "Criar Conta" : "Entrar No Painel"}</span>
@@ -276,7 +294,24 @@ export default function Login() {
         </motion.div>
       </AnimatePresence>
 
-      <div className="mb-8 opacity-40 text-center">
+      {/* Alerta de confirmação de e-mail */}
+      {isSignUp && !loading && (
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-4 p-4 rounded-xl bg-amber-500/5 border border-amber-500/20 max-w-[400px] text-center"
+        >
+          <div className="flex items-center gap-2 text-amber-500 mb-2 justify-center">
+            <AlertTriangle className="w-4 h-4" />
+            <span className="text-[10px] font-black uppercase tracking-widest">Atenção</span>
+          </div>
+          <p className="text-[10px] text-white/50 leading-relaxed uppercase tracking-tighter">
+            O Supabase exige confirmação de e-mail por padrão. Se o cadastro demorar, verifique se as configurações de SMTP estão ativas no painel.
+          </p>
+        </motion.div>
+      )}
+
+      <div className="mb-8 mt-10 opacity-40 text-center">
         <p className="text-[10px] uppercase tracking-[0.4em] text-white">Painel Analítico · Conventinho SCJ</p>
       </div>
     </div>
