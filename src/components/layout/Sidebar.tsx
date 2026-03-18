@@ -13,6 +13,7 @@ import {
   ChevronRight,
   LogOut,
   User,
+  Activity,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -21,6 +22,7 @@ import { toast } from "sonner";
 
 const navItems = [
   { label: "Visão Geral", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Métricas", href: "/metrics", icon: Activity },
   { label: "Instagram", href: "/instagram", icon: Instagram },
   { label: "Facebook", href: "/facebook", icon: Facebook },
   { label: "YouTube", href: "/youtube", icon: Youtube },

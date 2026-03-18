@@ -16,6 +16,7 @@ import Insights from "./pages/Insights";
 import Settings from "./pages/Settings";
 import VerifyOTP from "./pages/VerifyOTP";
 import Profile from "./pages/Profile";
+import Metrics from "./pages/Metrics";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
@@ -81,6 +82,7 @@ function Router() {
             <Route path="/comparison" component={() => <ProtectedRoute component={Comparison} />} />
             <Route path="/insights" component={() => <ProtectedRoute component={Insights} />} />
             <Route path="/reports" component={() => <ProtectedRoute component={Reports} />} />
+            <Route path="/metrics" component={() => <ProtectedRoute component={Metrics} />} />
             <Route path="/settings" component={() => <ProtectedRoute component={Settings} />} />
             <Route path="/profile" component={() => <ProtectedRoute component={Profile} />} />
             <Route path="/404" component={NotFound} />
