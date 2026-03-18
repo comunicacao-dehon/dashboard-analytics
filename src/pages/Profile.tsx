@@ -9,8 +9,6 @@ import {
   Mail, 
   Phone, 
   Calendar, 
-  Trash2, 
-  LogOut, 
   Camera, 
   ShieldCheck, 
   Loader2,
@@ -22,17 +20,23 @@ import {
   Edit3,
   X,
   CheckCircle2,
-  ArrowRight
+  ArrowRight,
+  Sun,
+  Moon,
+  Palette,
+  Trash2
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { slideUp, fadeIn } from "@/lib/animations";
 import { AnimatedCard } from "@/components/AnimatedCard";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTheme, type ColorPalette } from "@/contexts/ThemeContext";
 import { cn } from "@/lib/utils";
 
 export default function Profile() {
   const { user: authUser, signOut } = useAuth();
+  const { theme, palette, toggleTheme, setPalette } = useTheme();
   const [, setLocation] = useLocation();
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
@@ -257,24 +261,6 @@ export default function Profile() {
                   <span className="text-[11px] font-black text-white tracking-widest">{new Date(user?.created_at).toLocaleDateString()}</span>
                 </div>
               </div>
-            </AnimatedCard>
-
-            <AnimatedCard className="p-8 border-red-500/10 bg-red-500/[0.02] shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)]">
-               <div className="flex items-center gap-3 mb-6 text-red-500/70">
-                  <AlertCircle className="w-4 h-4" />
-                  <h3 className="font-bold text-[10px] uppercase tracking-[0.2em]">Zona de Perigo</h3>
-               </div>
-               <p className="text-[11px] text-white/50 mb-8 leading-relaxed font-bold">
-                  A exclusão da conta é irreversível. Todos os seus dados serão deletados permanentemente.
-               </p>
-               <Button 
-                variant="ghost" 
-                className="w-full rounded-xl text-red-400 hover:bg-red-500 hover:text-white transition-all font-bold text-[10px] uppercase tracking-widest h-12 border border-red-500/20 bg-red-500/5"
-                onClick={handleDeleteAccount}
-              >
-                  Excluir Conta
-               </Button>
-            </AnimatedCard>
           </div>
 
           {/* Main Content Area */}
@@ -533,6 +519,132 @@ export default function Profile() {
                         </Button>
                     </AnimatedCard>
                   </div>
+
+                  {/* ── Aparência ───────────────────────────── */}
+                  <AnimatedCard className="p-10 border-white/[0.08] bg-white/[0.02] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)]">
+                    <div className="flex items-center gap-4 mb-10">
+                      <div className="w-12 h-12 rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center shadow-[0_0_15px_rgba(139,92,246,0.15)]">
+                        <Palette className="w-6 h-6 text-violet-400" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold tracking-tight text-white mb-1">Aparência</h3>
+                        <p className="text-[10px] text-white/40 font-black uppercase tracking-[0.2em]">Tema e Paleta de Cores</p>
+                      </div>
+                    </div>
+
+                    {/* Tema claro / escuro */}
+                    <div className="mb-10">
+                      <p className="text-[10px] font-black text-white/50 uppercase tracking-widest mb-4">Modo de Exibição</p>
+                      <div className="grid grid-cols-2 gap-4">
+                        <button
+                          onClick={() => theme !== "light" && toggleTheme()}
+                          className={cn(
+                            "flex flex-col items-center gap-3 p-6 rounded-2xl border transition-all duration-300",
+                            theme === "light"
+                              ? "border-amber-500/60 bg-amber-500/10 shadow-[0_0_20px_rgba(245,158,11,0.2)]"
+                              : "border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]"
+                          )}
+                        >
+                          <Sun className={cn("w-7 h-7", theme === "light" ? "text-amber-400" : "text-white/30")} />
+                          <span className={cn("text-[10px] font-black uppercase tracking-widest", theme === "light" ? "text-amber-400" : "text-white/40")}>
+                            Claro
+                          </span>
+                          {theme === "light" && (
+                            <span className="text-[9px] font-black px-2 py-0.5 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-md uppercase tracking-widest">Ativo</span>
+                          )}
+                        </button>
+                        <button
+                          onClick={() => theme !== "dark" && toggleTheme()}
+                          className={cn(
+                            "flex flex-col items-center gap-3 p-6 rounded-2xl border transition-all duration-300",
+                            theme === "dark"
+                              ? "border-violet-500/60 bg-violet-500/10 shadow-[0_0_20px_rgba(139,92,246,0.2)]"
+                              : "border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]"
+                          )}
+                        >
+                          <Moon className={cn("w-7 h-7", theme === "dark" ? "text-violet-400" : "text-white/30")} />
+                          <span className={cn("text-[10px] font-black uppercase tracking-widest", theme === "dark" ? "text-violet-400" : "text-white/40")}>
+                            Escuro
+                          </span>
+                          {theme === "dark" && (
+                            <span className="text-[9px] font-black px-2 py-0.5 bg-violet-500/20 text-violet-400 border border-violet-500/30 rounded-md uppercase tracking-widest">Ativo</span>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Paleta de cor */}
+                    <div>
+                      <p className="text-[10px] font-black text-white/50 uppercase tracking-widest mb-6">Paleta de Cor Principal</p>
+                      <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                        {(
+                          [
+                            { id: "amber",   label: "Âmbar",    color: "#f59e0b", shadow: "rgba(245,158,11,0.35)"    },
+                            { id: "blue",    label: "Azul",     color: "#3b82f6", shadow: "rgba(59,130,246,0.35)"    },
+                            { id: "violet",  label: "Violeta",  color: "#8b5cf6", shadow: "rgba(139,92,246,0.35)"    },
+                            { id: "emerald", label: "Esmeralda",color: "#10b981", shadow: "rgba(16,185,129,0.35)"    },
+                            { id: "rose",    label: "Rosa",     color: "#f43f5e", shadow: "rgba(244,63,94,0.35)"     },
+                            { id: "cyan",    label: "Ciano",    color: "#06b6d4", shadow: "rgba(6,182,212,0.35)"     },
+                          ] as const
+                        ).map(p => (
+                          <button
+                            key={p.id}
+                            onClick={() => setPalette(p.id as ColorPalette)}
+                            title={p.label}
+                            className={cn(
+                              "flex flex-col items-center gap-2.5 p-4 rounded-2xl border transition-all duration-300 group",
+                              palette === p.id
+                                ? "border-white/30 bg-white/[0.06]"
+                                : "border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]"
+                            )}
+                          >
+                            <div
+                              className={cn(
+                                "w-8 h-8 rounded-xl transition-all duration-300",
+                                palette === p.id && "scale-110"
+                              )}
+                              style={{
+                                backgroundColor: p.color,
+                                boxShadow: palette === p.id ? `0 0 16px 4px ${p.shadow}` : "none",
+                              }}
+                            />
+                            <span
+                              className="text-[9px] font-black uppercase tracking-wider leading-none"
+                              style={{ color: palette === p.id ? p.color : "rgba(255,255,255,0.35)" }}
+                            >
+                              {p.label}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </AnimatedCard>
+
+                  {/* ── Zona de Perigo ──────────────────────── */}
+                  <AnimatedCard className="p-10 border-red-500/15 bg-red-500/[0.02] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)]">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-8">
+                      <div className="flex items-center gap-4 flex-1">
+                        <div className="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shadow-[0_0_15px_rgba(239,68,68,0.15)] flex-shrink-0">
+                          <AlertCircle className="w-6 h-6 text-red-400" />
+                        </div>
+                        <div>
+                          <h3 className="text-base font-bold text-red-400 tracking-tight mb-1">Zona de Perigo</h3>
+                          <p className="text-[11px] text-white/40 font-bold leading-relaxed max-w-xs">
+                            A exclusão da conta é irreversível. Todos os dados serão deletados permanentemente.
+                          </p>
+                        </div>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        className="shrink-0 rounded-xl text-red-400 hover:bg-red-500 hover:text-white transition-all font-bold text-[10px] uppercase tracking-widest h-12 px-8 border border-red-500/20 bg-red-500/5"
+                        onClick={handleDeleteAccount}
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Excluir Conta
+                      </Button>
+                    </div>
+                  </AnimatedCard>
+
                 </motion.div>
               )}
             </AnimatePresence>
