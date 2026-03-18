@@ -47,9 +47,9 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-background selection:bg-primary/20">
+    <div className="min-h-screen bg-transparent selection:bg-amber-500/20 font-['Outfit']">
       {/* Decorative Background Blob */}
-      <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-50 pointer-events-none -z-10" />
+      <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-br from-amber-500/10 via-transparent to-transparent opacity-50 pointer-events-none -z-10 blur-3xl" />
 
       {/* Profile Card */}
       <section className="container pt-8 pb-6">
@@ -57,16 +57,17 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative w-full rounded-3xl overflow-hidden glass border border-background/20 shadow-2xl flex flex-col bg-card"
+          className="relative w-full rounded-[2.5rem] overflow-hidden bg-white/[0.04] backdrop-blur-[40px] border border-white/[0.08] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] flex flex-col"
         >
           <div className="relative px-6 md:px-10 py-6 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex flex-col sm:flex-row items-center gap-5">
-              <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 rounded-full border-4 border-primary/20 bg-white shadow-xl flex items-center justify-center overflow-hidden hover:-translate-y-1 hover:shadow-2xl transition-all duration-500 cursor-pointer group/avatar">
+              <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 rounded-[1.5rem] border border-white/10 bg-white/5 backdrop-blur-md shadow-xl flex items-center justify-center overflow-hidden hover:-translate-y-1 hover:shadow-2xl transition-all duration-500 cursor-pointer group/avatar relative">
+                <div className="absolute inset-0 bg-amber-500/20 opacity-0 group-hover/avatar:opacity-100 transition-opacity blur-xl z-0" />
                 <img
                   src="/logo.png"
                   alt="Logotipo"
                   loading="lazy"
-                  className="w-full h-full object-contain p-2 group-hover/avatar:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-contain p-2 group-hover/avatar:scale-110 transition-transform duration-500 relative z-10 brightness-110"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                     e.currentTarget.parentElement!.innerHTML = '<span class="text-4xl text-primary font-bold">C</span>';
@@ -97,13 +98,13 @@ export default function Home() {
               </div>
               <div className="flex gap-3">
                 <Link href="/reports">
-                  <Button className="rounded-full px-6 shadow-md">
+                  <Button className="rounded-xl px-6 bg-amber-500 hover:bg-amber-600 text-[#050505] font-black h-12 shadow-[0_0_20px_rgba(245,158,11,0.2)]">
                     <BarChart3 className="w-4 h-4 mr-2" />
                     Ver Dados
                   </Button>
                 </Link>
                 <Link href="/comparison">
-                  <Button variant="outline" className="rounded-full px-5">
+                  <Button variant="outline" className="rounded-xl px-5 h-12 border-white/20 text-white hover:bg-white/10 font-bold bg-white/5">
                     Comparar
                   </Button>
                 </Link>
@@ -122,7 +123,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
-                className="group relative overflow-hidden rounded-2xl border border-border/40 bg-card/50 backdrop-blur-sm p-5 flex items-center justify-between shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 cursor-pointer transition-all duration-300"
+                className="group relative overflow-hidden rounded-[2rem] border border-white/[0.08] bg-white/[0.04] backdrop-blur-[30px] p-5 flex items-center justify-between shadow-xl hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] hover:bg-white/[0.06] hover:-translate-y-1 cursor-pointer transition-all duration-300"
               >
                 {/* Subtle background glow */}
                 <div className={cn(
@@ -132,7 +133,7 @@ export default function Home() {
 
                 <div className="flex items-center gap-4 relative z-10">
                   <div className={cn(
-                    "w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm",
+                    "w-12 h-12 rounded-[1rem] flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm border border-white/10 relative z-10",
                     p.label === "Instagram" ? "bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white" :
                     p.label === "Facebook" ? "bg-gradient-to-br from-[#1877f2] to-[#0a52b3] text-white" :
                     "bg-gradient-to-br from-[#ff0000] to-[#b30000] text-white"
@@ -140,11 +141,11 @@ export default function Home() {
                     <p.icon className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="font-extrabold text-xl tracking-tight mb-0.5">{p.value}</p>
-                    <p className="text-xs font-medium text-muted-foreground uppercase tracking-widest opacity-80">{p.label}</p>
+                    <p className="font-extrabold text-xl tracking-tight mb-0.5 text-white">{p.value}</p>
+                    <p className="text-[10px] font-black text-white/40 uppercase tracking-widest">{p.label}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-1 text-xs font-bold text-green-600 bg-green-500/10 border border-green-500/20 px-3 py-1.5 rounded-full relative z-10">
+                <div className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full relative z-10">
                   <ArrowUpRight className="w-3.5 h-3.5" />
                   {p.trend}
                 </div>
@@ -162,29 +163,29 @@ export default function Home() {
           animate="visible"
           className="flex flex-col items-center text-center max-w-4xl mx-auto"
         >
-          <motion.div variants={slideUp} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8">
+          <motion.div variants={slideUp} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-xs font-black uppercase tracking-widest mb-8 shadow-[0_0_15px_rgba(245,158,11,0.1)]">
             <SparklesIcon className="w-4 h-4" />
-            <span>Novo Relatório Disponível - Março 2026</span>
+            <span>Novo Relatório Disponível</span>
           </motion.div>
 
-          <motion.h2 variants={slideUp} className="text-4xl md:text-6xl font-bold tracking-tight mb-8">
-            Análise de <span className="text-gradient-primary">Crescimento</span> <br className="hidden md:block" />para Social Media
+          <motion.h2 variants={slideUp} className="text-4xl md:text-6xl font-black tracking-tighter mb-8 text-white">
+            Evolução de <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">Performance</span> <br className="hidden md:block" />Digital Integrada
           </motion.h2>
 
-          <motion.p variants={slideUp} className="text-lg text-muted-foreground mb-8 max-w-2xl leading-relaxed">
-            Acompanhe <strong className="text-foreground">Instagram, Facebook e YouTube</strong> em um único painel analítico premium. Insights automáticos e relatórios profissionais.
+          <motion.p variants={slideUp} className="text-lg text-white/50 mb-8 max-w-2xl leading-relaxed font-medium">
+            Sincronize <strong className="text-white">Instagram, Facebook e YouTube</strong> com Inteligência Artificial, detectando padrões virais e anomalias 24/7.
           </motion.p>
 
           <motion.div variants={slideUp} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
             <Link href="/comparison">
-              <Button size="lg" className="rounded-full px-8 h-12 text-base shadow-lg shadow-primary/20">
-                Ver Comparação
+              <Button size="lg" className="rounded-xl px-8 h-12 text-base shadow-[0_0_20px_rgba(245,158,11,0.2)] bg-amber-500 hover:bg-amber-600 text-[#050505] font-black uppercase tracking-widest">
+                Analytics Global
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
             <Link href="/insights">
-              <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base bg-white/50 hover:bg-white/80">
-                Explorar Insights
+              <Button size="lg" variant="outline" className="rounded-xl px-8 h-12 text-base border-white/20 text-white font-bold bg-white/[0.04] hover:bg-white/[0.08] uppercase tracking-widest">
+                Dehon IA
               </Button>
             </Link>
           </motion.div>
@@ -194,10 +195,10 @@ export default function Home() {
       {/* Instagram Metrics Bento Grid */}
       <section className="container py-10">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-8 h-8 rounded-xl bg-pink-50 flex items-center justify-center">
-            <Instagram className="w-4 h-4 text-pink-500" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] flex items-center justify-center shadow-[0_0_15px_rgba(225,48,108,0.3)]">
+            <Instagram className="w-5 h-5 text-white" />
           </div>
-          <h2 className="text-xl font-bold">Métricas do Instagram</h2>
+          <h2 className="text-xl font-bold text-white tracking-tight">Métricas do Instagram</h2>
         </div>
         <motion.div
           variants={staggerContainer}
@@ -209,19 +210,19 @@ export default function Home() {
           {instagramMetrics.map((metric, idx) => {
             const Icon = metric.icon;
             const cardContent = (
-              <AnimatedCard delay={idx * 0.1} className={`p-6 ${metric.href ? "hover:border-primary/50 cursor-pointer" : ""}`}>
-                <div className="flex justify-between items-start mb-4">
-                  <div className="p-2.5 bg-primary/10 rounded-xl">
-                    <Icon className="w-5 h-5 text-primary" />
+              <AnimatedCard delay={idx * 0.1} className={`p-6 ${metric.href ? "hover:border-amber-500/50 cursor-pointer" : ""}`}>
+                <div className="flex justify-between items-start mb-6">
+                  <div className="p-3 bg-white/5 rounded-xl border border-white/10">
+                    <Icon className="w-5 h-5 text-white/70" />
                   </div>
-                  <span className="flex items-center text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                  <span className="flex items-center text-[10px] font-black tracking-wider uppercase text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
                     <ArrowUpRight className="w-3 h-3 mr-1" />
                     {metric.trend}
                   </span>
                 </div>
                 <div>
-                  <h3 className="text-3xl font-bold tracking-tight mb-1">{metric.value}</h3>
-                  <p className="text-sm font-medium text-muted-foreground">{metric.label}</p>
+                  <h3 className="text-3xl font-black tracking-tighter text-white mb-1 drop-shadow-md">{metric.value}</h3>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/40">{metric.label}</p>
                 </div>
               </AnimatedCard>
             );
@@ -252,24 +253,24 @@ export default function Home() {
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="relative"
         >
-          <div className="absolute inset-0 bg-primary/5 blur-[100px] rounded-[3rem] -z-10" />
-          <div className="rounded-2xl border border-white/20 shadow-2xl bg-white/50 backdrop-blur-xl overflow-hidden glass">
-            <div className="h-12 border-b border-border/50 bg-white/40 flex items-center px-4 gap-2">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-red-400" />
-                <div className="w-3 h-3 rounded-full bg-amber-400" />
-                <div className="w-3 h-3 rounded-full bg-green-400" />
+          <div className="absolute inset-0 bg-amber-500/5 blur-[100px] rounded-[3rem] -z-10" />
+          <div className="rounded-[2.5rem] border border-white/[0.08] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] bg-white/[0.04] backdrop-blur-[30px] overflow-hidden">
+            <div className="h-12 border-b border-white/[0.08] bg-white/[0.02] flex items-center px-4 gap-2">
+              <div className="flex gap-1.5 ml-2">
+                <div className="w-3 h-3 rounded-full bg-red-500 shadow-inner" />
+                <div className="w-3 h-3 rounded-full bg-amber-500 shadow-inner" />
+                <div className="w-3 h-3 rounded-full bg-emerald-500 shadow-inner" />
               </div>
-              <div className="mx-auto flex items-center text-xs font-medium text-muted-foreground bg-white/50 px-3 py-1 rounded-md">
-                <BarChart className="w-3 h-3 mr-1.5" />
-                Visão Geral de Desempenho
+              <div className="mx-auto flex items-center text-[10px] uppercase tracking-widest font-black text-white/40 bg-white/5 border border-white/10 px-3 py-1 rounded-full">
+                <BarChart className="w-3 h-3 mr-1.5 text-amber-500" />
+                Performance Engine
               </div>
             </div>
-            <div className="p-2 md:p-8 bg-[#FAFAFA]">
+            <div className="p-2 md:p-8 bg-transparent">
               <img
                 src="https://d2xsxph8kpxj0f.cloudfront.net/310519663439065181/9gdiPYzXKpmkHD9boSKSRi/chart1_performance_cc4535d6.png"
                 alt="Análise de Desempenho"
-                className="w-full h-auto rounded-lg shadow-sm border border-border/50"
+                className="w-full h-auto rounded-xl filter invert hue-rotate-180 opacity-80 mix-blend-screen"
               />
             </div>
           </div>
@@ -336,12 +337,12 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border/40 bg-background py-10">
-        <div className="container text-center text-muted-foreground text-sm flex flex-col items-center gap-4">
-          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-            <Activity className="w-4 h-4 text-primary" />
+      <footer className="border-t border-white/[0.08] bg-transparent py-10 mt-10">
+        <div className="container text-center text-white/40 text-[10px] uppercase tracking-widest font-black flex flex-col items-center gap-4">
+          <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+            <Activity className="w-4 h-4 text-amber-500" />
           </div>
-          <p>© 2026 Painel Analítico · Conventinho. Todos os direitos reservados.</p>
+          <p>© 2026 Dehon Analytics · Conventinho SCJ. Todos os direitos reservados.</p>
         </div>
       </footer>
     </div>

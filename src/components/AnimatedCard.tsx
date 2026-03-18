@@ -20,8 +20,8 @@ export function AnimatedCard({ className, children, delay = 0, ...props }: Anima
       }}
       whileHover={{ y: -4, transition: { duration: 0.2, ease: "easeOut" } }}
       className={cn(
-        "rounded-2xl border bg-card text-card-foreground shadow-sm bg-white/50 backdrop-blur-sm",
-        "hover:shadow-lg transition-all duration-300",
+        "rounded-[2rem] bg-white/[0.04] backdrop-blur-[30px] border border-white/[0.08] text-white shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)]",
+        "hover:shadow-[0_20px_40px_-5px_rgba(0,0,0,0.6)] hover:bg-white/[0.06] transition-all duration-300",
         className
       )}
       {...props}

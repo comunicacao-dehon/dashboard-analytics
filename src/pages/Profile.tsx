@@ -159,10 +159,10 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="min-h-screen flex items-center justify-center bg-transparent">
         <div className="text-center space-y-4">
-          <Loader2 className="w-10 h-10 text-primary animate-spin mx-auto" />
-          <p className="text-muted-foreground font-medium animate-pulse">Carregando seu universo...</p>
+          <Loader2 className="w-10 h-10 text-amber-500 animate-spin mx-auto" />
+          <p className="text-white/50 font-black tracking-widest uppercase text-[10px] animate-pulse">Carregando perfil...</p>
         </div>
       </div>
     );
@@ -172,19 +172,19 @@ export default function Profile() {
     <div className="container py-10 max-w-6xl">
       <motion.div initial="hidden" animate="visible" variants={slideUp}>
         {/* Header Dashboard Style */}
-        <div className="flex flex-col md:flex-row shadow-sm bg-card/40 backdrop-blur-md border border-border/50 rounded-[2rem] p-6 mb-10 items-center justify-between gap-6 overflow-hidden relative">
+        <div className="flex flex-col md:flex-row shadow-[0_4px_20px_-10px_rgba(0,0,0,0.5)] bg-white/[0.04] backdrop-blur-[40px] border border-white/[0.08] rounded-[2rem] p-6 mb-10 items-center justify-between gap-6 overflow-hidden relative">
           <div className="flex items-center gap-5 relative z-10">
-            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-              <User className="w-6 h-6 text-primary" />
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+              <User className="w-6 h-6 text-amber-500" />
             </div>
             <div>
-              <h1 className="text-2xl font-black tracking-tight">{isEditing ? "Editar Perfil" : "Seu Perfil"}</h1>
-              <p className="text-sm text-muted-foreground font-medium opacity-80">Personalize sua experiência no dashboard.</p>
+              <h1 className="text-2xl font-black tracking-tight text-white mb-1">{isEditing ? "Editar Perfil" : "Seu Perfil"}</h1>
+              <p className="text-[10px] uppercase font-black tracking-widest text-white/40">Personalize sua experiência</p>
             </div>
           </div>
           <Button 
             variant="outline" 
-            className="rounded-xl h-12 px-6 border-border/80 hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-all font-bold group" 
+            className="rounded-xl h-12 px-6 border-white/20 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/30 text-white transition-all font-bold group shadow-lg bg-white/[0.04]" 
             onClick={async () => {
               await signOut();
               setLocation("/login");
@@ -198,22 +198,22 @@ export default function Profile() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Sidebar Area */}
           <div className="lg:col-span-4 space-y-8">
-            <AnimatedCard className="p-10 text-center flex flex-col items-center border-primary/10 relative overflow-hidden group/card shadow-xl shadow-primary/5">
-              <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-transparent via-primary to-transparent" />
+            <AnimatedCard className="p-10 text-center flex flex-col items-center border-white/[0.08] bg-white/[0.02] relative overflow-hidden group/card shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)]">
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-transparent via-amber-500 to-transparent" />
               
-              <div className="relative mb-8">
+              <div className="relative mb-8 pt-4">
                 <div className={cn(
-                  "w-36 h-36 rounded-full overflow-hidden border-4 border-background bg-secondary flex items-center justify-center relative z-10 shadow-2xl transition-all duration-500 group-hover/card:scale-[1.03]",
+                  "w-36 h-36 rounded-full overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md flex items-center justify-center relative z-10 shadow-2xl transition-all duration-500 group-hover/card:scale-[1.03]",
                   uploading && "opacity-50"
                 )}>
                   {avatarUrl ? (
                     <img src={avatarUrl} alt="Profile" className="w-full h-full object-cover" />
                   ) : (
-                    <span className="text-5xl font-black text-primary/20">{fullName?.charAt(0) || email?.charAt(0).toUpperCase()}</span>
+                    <span className="text-5xl font-black text-amber-500/40 uppercase">{fullName?.charAt(0) || email?.charAt(0).toUpperCase()}</span>
                   )}
                   {uploading && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-sm">
-                      <Loader2 className="w-8 h-8 text-primary animate-spin" />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                      <Loader2 className="w-8 h-8 text-amber-500 animate-spin" />
                     </div>
                   )}
                 </div>
@@ -221,7 +221,7 @@ export default function Profile() {
                 <button 
                   onClick={triggerFileInput}
                   disabled={uploading}
-                  className="absolute bottom-1 right-1 p-3 bg-background border border-border shadow-lg text-primary rounded-full hover:bg-primary hover:text-white active:scale-90 transition-all z-20 hover:rotate-12"
+                  className="absolute bottom-1 right-1 p-3 bg-amber-500/10 border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.2)] text-amber-500 rounded-full hover:bg-amber-500 hover:text-[#050505] active:scale-90 transition-all z-20 hover:rotate-12"
                   title="Alterar foto"
                 >
                   <Camera className="w-5 h-5" />
@@ -235,41 +235,41 @@ export default function Profile() {
                 />
               </div>
 
-              <div className="space-y-1 mb-8">
-                <h2 className="text-2xl font-black tracking-tight">{fullName || "Usuário"}</h2>
-                <p className="text-xs font-black text-primary/60 uppercase tracking-[0.2em]">{role || "Membro Dehoniano"}</p>
-                <p className="text-muted-foreground text-sm font-medium">{email}</p>
+              <div className="space-y-2 mb-8">
+                <h2 className="text-2xl font-black tracking-tight text-white mb-1">{fullName || "Usuário"}</h2>
+                <p className="text-[10px] font-black text-amber-500/80 uppercase tracking-[0.2em] drop-shadow-[0_0_5px_rgba(245,158,11,0.3)]">{role || "Membro Dehoniano"}</p>
+                <p className="text-white/40 text-sm font-medium">{email}</p>
               </div>
               
-              <div className="w-full space-y-3 pt-8 border-t border-border/40">
-                <div className="flex items-center justify-between p-4 rounded-2xl bg-muted/20 border border-border/10">
-                  <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-green-500" />
+              <div className="w-full space-y-3 pt-8 border-t border-white/[0.08]">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/10">
+                  <span className="text-[10px] font-black text-white/50 uppercase tracking-widest flex items-center gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                     Status
                   </span>
-                  <span className="text-[10px] font-black px-3 py-1 bg-green-500/10 text-green-600 rounded-lg uppercase">Ativa</span>
+                  <span className="text-[10px] font-black px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)] rounded-lg uppercase">Ativa</span>
                 </div>
-                <div className="flex items-center justify-between p-4 rounded-2xl bg-muted/20 border border-border/10">
-                  <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-2">
-                    <Calendar className="w-3.5 h-3.5 text-primary/50" />
+                <div className="flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/10">
+                  <span className="text-[10px] font-black text-white/50 uppercase tracking-widest flex items-center gap-2">
+                    <Calendar className="w-3.5 h-3.5 text-amber-500/50" />
                     Membro desde
                   </span>
-                  <span className="text-[11px] font-black text-foreground">{new Date(user?.created_at).toLocaleDateString()}</span>
+                  <span className="text-[11px] font-black text-white tracking-widest">{new Date(user?.created_at).toLocaleDateString()}</span>
                 </div>
               </div>
             </AnimatedCard>
 
-            <AnimatedCard className="p-6 border-red-500/10 bg-red-500/[0.02]">
-               <div className="flex items-center gap-3 mb-4 text-red-500/70">
+            <AnimatedCard className="p-8 border-red-500/10 bg-red-500/[0.02] shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)]">
+               <div className="flex items-center gap-3 mb-6 text-red-500/70">
                   <AlertCircle className="w-4 h-4" />
                   <h3 className="font-bold text-[10px] uppercase tracking-[0.2em]">Zona de Perigo</h3>
                </div>
-               <p className="text-[11px] text-muted-foreground mb-6 leading-relaxed">
+               <p className="text-[11px] text-white/50 mb-8 leading-relaxed font-bold">
                   A exclusão da conta é irreversível. Todos os seus dados serão deletados permanentemente.
                </p>
                <Button 
                 variant="ghost" 
-                className="w-full rounded-xl text-red-500/60 hover:bg-red-500 hover:text-white transition-all font-bold text-xs border border-red-500/10"
+                className="w-full rounded-xl text-red-400 hover:bg-red-500 hover:text-white transition-all font-bold text-[10px] uppercase tracking-widest h-12 border border-red-500/20 bg-red-500/5"
                 onClick={handleDeleteAccount}
               >
                   Excluir Conta
@@ -290,61 +290,61 @@ export default function Profile() {
                 >
                   <form onSubmit={handleUpdate} className="space-y-8">
                     {/* Dados Pessoais Form */}
-                    <AnimatedCard className="p-10 border-primary/5 shadow-xl shadow-primary/5">
+                    <AnimatedCard className="p-10 border-white/[0.08] bg-white/[0.02] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)]">
                       <div className="flex items-center justify-between mb-10">
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center">
-                            <User className="w-6 h-6 text-primary" />
+                          <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                            <User className="w-6 h-6 text-amber-500" />
                           </div>
                           <div>
-                            <h3 className="text-xl font-bold tracking-tight">Dados Pessoais</h3>
-                            <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em]">Identificação Fundamental</p>
+                            <h3 className="text-xl font-bold tracking-tight text-white mb-1">Dados Pessoais</h3>
+                            <p className="text-[10px] text-white/40 font-black uppercase tracking-[0.2em]">Identificação Fundamental</p>
                           </div>
                         </div>
                         <Button 
                           type="button" 
                           variant="ghost" 
-                          className="rounded-full w-10 h-10 p-0" 
+                          className="rounded-full w-10 h-10 p-0 shadow-inner bg-white/5 border border-white/10" 
                           onClick={() => setIsEditing(false)}
                         >
-                          <X className="w-5 h-5 text-muted-foreground" />
+                          <X className="w-5 h-5 text-white/50 hover:text-white" />
                         </Button>
                       </div>
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                          <div className="space-y-3 md:col-span-2">
-                            <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Nome Completo</Label>
+                            <Label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Nome Completo</Label>
                             <div className="relative group">
-                               <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/30 group-focus-within:text-primary transition-colors" />
+                               <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-amber-500 transition-colors" />
                                <Input 
                                 value={fullName}
                                 onChange={(e) => setFullName(e.target.value)}
-                                className="h-14 pl-12 rounded-2xl bg-muted/20 border-border/40 focus:bg-background focus:ring-4 focus:ring-primary/5 transition-all font-medium"
+                                className="h-14 pl-12 rounded-xl bg-white/[0.04] border-white/10 text-white placeholder:text-white/30 focus:border-amber-500 focus:ring-amber-500/20 font-bold tracking-tight"
                                 placeholder="Seu nome aqui..."
                                />
                             </div>
                          </div>
 
                          <div className="space-y-3">
-                            <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Email Principal</Label>
+                            <Label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Email Principal</Label>
                             <div className="relative">
-                               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/20" />
+                               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
                                <Input 
                                 value={email}
                                 disabled
-                                className="h-14 pl-12 rounded-2xl bg-muted/40 border-border/20 opacity-60 cursor-not-allowed font-medium text-muted-foreground"
+                                className="h-14 pl-12 rounded-xl bg-white/[0.02] border-white/[0.04] opacity-50 cursor-not-allowed font-bold text-white/50"
                                />
                             </div>
                          </div>
 
                          <div className="space-y-3">
-                            <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Telefone / WhatsApp</Label>
+                            <Label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Telefone / WhatsApp</Label>
                             <div className="relative group">
-                               <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/30 group-focus-within:text-primary transition-colors" />
+                               <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-amber-500 transition-colors" />
                                <Input 
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
-                                className="h-14 pl-12 rounded-2xl bg-muted/20 border-border/40 focus:bg-background focus:ring-4 focus:ring-primary/5 transition-all font-medium"
+                                className="h-14 pl-12 rounded-xl bg-white/[0.04] border-white/10 text-white placeholder:text-white/30 focus:border-amber-500 focus:ring-amber-500/20 font-bold tracking-tight"
                                 placeholder="+55 (00) 00000-0000"
                                />
                             </div>
@@ -353,53 +353,53 @@ export default function Profile() {
                     </AnimatedCard>
 
                     {/* Informações Profissionais Form */}
-                    <AnimatedCard className="p-10 border-primary/5 shadow-xl shadow-primary/5">
+                    <AnimatedCard className="p-10 border-white/[0.08] bg-white/[0.02] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)]">
                       <div className="flex items-center gap-4 mb-10">
-                        <div className="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center">
-                          <Briefcase className="w-6 h-6 text-primary" />
+                        <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                          <Briefcase className="w-6 h-6 text-amber-500" />
                         </div>
                         <div>
-                          <h3 className="text-xl font-bold tracking-tight">Informações Profissionais</h3>
-                          <p className="text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em]">Cargo e Localização</p>
+                          <h3 className="text-xl font-bold tracking-tight text-white mb-1">Informações Profissionais</h3>
+                          <p className="text-[10px] text-white/40 font-black uppercase tracking-[0.2em]">Cargo e Localização</p>
                         </div>
                       </div>
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                          <div className="space-y-3">
-                            <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Cargo / Função</Label>
+                            <Label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Cargo / Função</Label>
                             <div className="relative group">
-                               <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/30 group-focus-within:text-primary transition-colors" />
+                               <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-amber-500 transition-colors" />
                                <Input 
                                 value={role}
                                 onChange={(e) => setRole(e.target.value)}
-                                className="h-14 pl-12 rounded-2xl bg-muted/20 border-border/40 focus:bg-background focus:ring-4 focus:ring-primary/5 transition-all font-medium"
+                                className="h-14 pl-12 rounded-xl bg-white/[0.04] border-white/10 text-white placeholder:text-white/30 focus:border-amber-500 focus:ring-amber-500/20 font-bold tracking-tight"
                                 placeholder="Ex: Gestor de Redes"
                                />
                             </div>
                          </div>
 
                          <div className="space-y-3">
-                            <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Localização</Label>
+                            <Label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Localização</Label>
                             <div className="relative group">
-                               <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/30 group-focus-within:text-primary transition-colors" />
+                               <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-amber-500 transition-colors" />
                                <Input 
                                 value={locationName}
                                 onChange={(e) => setLocationName(e.target.value)}
-                                className="h-14 pl-12 rounded-2xl bg-muted/20 border-border/40 focus:bg-background focus:ring-4 focus:ring-primary/5 transition-all font-medium"
+                                className="h-14 pl-12 rounded-xl bg-white/[0.04] border-white/10 text-white placeholder:text-white/30 focus:border-amber-500 focus:ring-amber-500/20 font-bold tracking-tight"
                                 placeholder="Cidade, Estado"
                                />
                             </div>
                          </div>
 
                          <div className="space-y-3 md:col-span-2">
-                            <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Bio / Descrição Curta</Label>
+                            <Label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Bio / Descrição Curta</Label>
                             <div className="relative group">
-                               <Info className="absolute left-4 top-5 w-4 h-4 text-muted-foreground/30 group-focus-within:text-primary transition-colors" />
+                               <Info className="absolute left-4 top-5 w-4 h-4 text-white/20 group-focus-within:text-amber-500 transition-colors" />
                                <textarea 
                                 value={bio}
                                 onChange={(e) => setBio(e.target.value)}
                                 rows={3}
-                                className="w-full pl-12 pr-4 py-4 rounded-2xl bg-muted/20 border border-border/40 focus:bg-background focus:ring-4 focus:ring-primary/5 transition-all font-medium outline-none resize-none"
+                                className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder:text-white/30 focus:border-amber-500 focus:ring-amber-500/20 font-bold tracking-tight resize-none outline-none"
                                 placeholder="Conte um pouco sobre sua atuação..."
                                />
                             </div>
@@ -411,7 +411,7 @@ export default function Profile() {
                       <Button 
                           type="submit" 
                           disabled={updating}
-                          className="flex-1 h-15 rounded-2xl font-black text-lg shadow-xl shadow-primary/20 hover:-translate-y-1 active:scale-95 transition-all"
+                          className="flex-1 h-14 rounded-xl font-black text-xs uppercase tracking-widest shadow-[0_0_20px_rgba(245,158,11,0.2)] bg-amber-500 hover:bg-amber-600 text-[#050505] transition-all"
                       >
                          {updating ? <Loader2 className="h-5 w-5 animate-spin" /> : "Salvar Alterações"}
                       </Button>
@@ -419,7 +419,7 @@ export default function Profile() {
                           type="button" 
                           variant="outline"
                           onClick={() => setIsEditing(false)}
-                          className="px-10 h-15 rounded-2xl font-bold border-border/60 hover:bg-muted"
+                          className="px-10 h-14 rounded-xl font-bold uppercase tracking-widest text-xs border-white/20 hover:bg-white/[0.08] bg-white/[0.04] text-white shadow-inner"
                       >
                          Cancelar
                       </Button>
@@ -437,98 +437,97 @@ export default function Profile() {
                 >
                   {/* Visual Display Card */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <AnimatedCard className="p-10 md:col-span-2 border-primary/5 shadow-2xl shadow-primary/5 group relative">
-                      <div className="flex items-center justify-between mb-12">
+                    <AnimatedCard className="p-10 md:col-span-2 border-white/[0.08] bg-white/[0.02] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] group relative">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-12 gap-6">
                          <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-                              <User className="w-6 h-6 text-primary" />
+                            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                              <User className="w-6 h-6 text-amber-500" />
                             </div>
                             <div>
-                               <h3 className="text-2xl font-black tracking-tight text-foreground">Sua Identidade</h3>
-                               <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mt-1">Dados Públicos do Dashboard</p>
+                               <h3 className="text-2xl font-black tracking-tight text-white mb-1">Sua Identidade</h3>
+                               <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em]">Dados Públicos do Dashboard</p>
                             </div>
                          </div>
                          <Button 
                           onClick={() => setIsEditing(true)} 
-                          className="rounded-2xl h-12 px-6 font-bold shadow-lg shadow-primary/10 hover:-translate-y-1 transition-all"
+                          className="rounded-xl h-12 px-6 font-bold shadow-lg shadow-black/20 hover:-translate-y-1 transition-all bg-white/[0.04] border border-white/20 text-white hover:bg-white/[0.08]"
                          >
-                            <Edit3 className="w-4 h-4 mr-2" />
-                            Editar Perfil
+                                                        Editar Perfil
                          </Button>
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
                          <div className="space-y-2">
-                            <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] flex items-center gap-2">
-                               <User className="w-3 h-3" />
+                            <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] flex items-center gap-2">
+                               <User className="w-3 h-3 text-amber-500" />
                                Nome Completo
                             </span>
-                            <p className="text-xl font-bold text-foreground">{fullName || "—"}</p>
+                            <p className="text-xl font-bold text-white">{fullName || "—"}</p>
                          </div>
                          <div className="space-y-2">
-                            <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] flex items-center gap-2">
-                               <Mail className="w-3 h-3" />
+                            <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] flex items-center gap-2">
+                               <Mail className="w-3 h-3 text-amber-500" />
                                Email Principal
                             </span>
-                            <p className="text-xl font-bold text-foreground">{email || "—"}</p>
+                            <p className="text-xl font-bold text-white">{email || "—"}</p>
                          </div>
                          <div className="space-y-2">
-                            <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] flex items-center gap-2">
-                               <Phone className="w-3 h-3" />
+                            <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] flex items-center gap-2">
+                               <Phone className="w-3 h-3 text-amber-500" />
                                Telefone
                             </span>
-                            <p className="text-xl font-bold text-foreground">{phone || "—"}</p>
+                            <p className="text-xl font-bold text-white">{phone || "—"}</p>
                          </div>
                          <div className="space-y-2">
-                            <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] flex items-center gap-2">
-                               <Briefcase className="w-3 h-3" />
+                            <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] flex items-center gap-2">
+                               <Briefcase className="w-3 h-3 text-amber-500" />
                                Cargo / Função
                             </span>
-                            <p className="text-xl font-bold text-foreground">{role || "Membro"}</p>
+                            <p className="text-xl font-bold text-white">{role || "Membro"}</p>
                          </div>
                          <div className="space-y-2">
-                            <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] flex items-center gap-2">
-                               <MapPin className="w-3 h-3" />
+                            <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] flex items-center gap-2">
+                               <MapPin className="w-3 h-3 text-amber-500" />
                                Localização
                             </span>
-                            <p className="text-xl font-bold text-foreground">{locationName || "—"}</p>
+                            <p className="text-xl font-bold text-white">{locationName || "—"}</p>
                          </div>
-                         <div className="space-y-2 sm:col-span-2">
-                            <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] flex items-center gap-2">
-                               <Info className="w-3 h-3" />
+                         <div className="space-y-2 sm:col-span-2 pt-4 border-t border-white/[0.04]">
+                            <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] flex items-center gap-2 mb-4">
+                               <Info className="w-3 h-3 text-amber-500" />
                                Biografia
                             </span>
-                            <p className="text-lg font-medium text-muted-foreground leading-relaxed italic">
-                              "{bio || "Nenhuma descrição informada."}"
+                            <p className="text-lg font-medium text-white/70 leading-relaxed italic bg-white/[0.02] p-6 rounded-2xl border border-white/[0.04] shadow-inner">
+                               "{bio || "Nenhuma descrição informada."}"
                             </p>
                          </div>
                       </div>
                     </AnimatedCard>
 
                     {/* Secondary Access Card */}
-                    <AnimatedCard className="p-8 border-amber-500/10 bg-amber-500/[0.02] flex flex-col justify-between group">
+                    <AnimatedCard className="p-8 border-white/[0.08] bg-white/[0.02] flex flex-col justify-between group shadow-lg">
                         <div className="flex items-center gap-4 mb-6">
-                          <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
-                            <Lock className="w-5 h-5 text-amber-600" />
+                          <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20 shadow-[0_0_10px_rgba(245,158,11,0.1)]">
+                            <Lock className="w-5 h-5 text-amber-500" />
                           </div>
-                          <h4 className="font-black text-sm uppercase tracking-widest text-amber-700">Acesso e Segurança</h4>
+                          <h4 className="font-black text-sm uppercase tracking-widest text-amber-500">Acesso e Segurança</h4>
                         </div>
-                        <p className="text-xs text-muted-foreground font-medium mb-8">Gerencie suas senhas e autenticação de dois fatores.</p>
-                        <Button variant="outline" className="w-full rounded-xl font-bold border-amber-500/20 text-amber-700 hover:bg-amber-100/50">
+                        <p className="text-xs text-white/40 font-bold mb-8">Gerencie suas senhas e autenticação de dois fatores.</p>
+                        <Button variant="outline" className="w-full rounded-xl font-bold uppercase tracking-widest text-[10px] border-amber-500/20 text-amber-500 hover:bg-amber-500/10 bg-transparent">
                           Alterar Senha
                           <ArrowRight className="w-4 h-4 ml-2" />
                         </Button>
                     </AnimatedCard>
 
-                    <AnimatedCard className="p-8 border-primary/10 bg-primary/[0.02] flex flex-col justify-between">
+                    <AnimatedCard className="p-8 border-white/[0.08] bg-white/[0.02] flex flex-col justify-between shadow-lg">
                         <div className="flex items-center gap-4 mb-6">
-                          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                            <ShieldCheck className="w-5 h-5 text-primary" />
+                          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]">
+                            <ShieldCheck className="w-5 h-5 text-emerald-400" />
                           </div>
-                          <h4 className="font-black text-sm uppercase tracking-widest text-primary">Privacidade de Dados</h4>
+                          <h4 className="font-black text-sm uppercase tracking-widest text-emerald-400">Privacidade de Dados</h4>
                         </div>
-                        <p className="text-xs text-muted-foreground font-medium mb-8">Veja como seus dados de redes sociais são processados.</p>
-                        <Button variant="outline" className="w-full rounded-xl font-bold border-primary/20 text-primary hover:bg-primary/5">
+                        <p className="text-xs text-white/40 font-bold mb-8">Veja como seus dados de redes sociais são processados.</p>
+                        <Button variant="outline" className="w-full rounded-xl font-bold uppercase tracking-widest text-[10px] border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/10 bg-transparent">
                           Visualizar Termos
                           <ArrowRight className="w-4 h-4 ml-2" />
                         </Button>

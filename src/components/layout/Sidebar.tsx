@@ -63,13 +63,13 @@ export function Sidebar() {
       initial={false}
       animate={{ width: collapsed ? 72 : 240 }}
       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className="relative hidden md:flex flex-col h-screen sticky top-0 glass border-r border-border/40 shrink-0 z-40 overflow-hidden"
+      className="relative hidden md:flex flex-col h-screen sticky top-0 bg-white/[0.04] backdrop-blur-[30px] border-r border-white/[0.08] shadow-[20px_0_40px_-20px_rgba(0,0,0,0.5)] shrink-0 z-40 overflow-hidden"
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 px-4 h-16 border-b border-border/40 shrink-0">
+      <div className="flex items-center gap-3 px-4 h-16 border-b border-white/[0.08] shrink-0">
         <motion.div
           animate={{ rotate: collapsed ? 0 : 0 }}
-          className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center overflow-hidden shrink-0"
+          className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center overflow-hidden shrink-0 shadow-[0_0_15px_rgba(245,158,11,0.2)]"
         >
           <img
             src="/logo.png"
@@ -108,10 +108,10 @@ export function Sidebar() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group relative",
+                  "flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300 group relative",
                   isActive
-                    ? "bg-primary text-primary-foreground shadow-md"
-                    : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                    ? "bg-amber-500/10 text-amber-500 shadow-[0_4px_20px_-5px_rgba(245,158,11,0.3)] ring-1 ring-amber-500/20"
+                    : "hover:bg-white/[0.06] text-white/50 hover:text-white"
                 )}
               >
                 {(() => {
@@ -130,8 +130,8 @@ export function Sidebar() {
                   return (
                     <item.icon
                       className={cn(
-                        "w-5 h-5 shrink-0 transition-colors",
-                        isActive ? "text-primary-foreground" : "group-hover:text-foreground"
+                        "w-5 h-5 shrink-0 transition-colors drop-shadow-sm",
+                        isActive ? "text-amber-500" : "group-hover:text-amber-500/70"
                       )}
                     />
                   );
@@ -151,8 +151,8 @@ export function Sidebar() {
                 </AnimatePresence>
                 {/* Tooltip when collapsed */}
                 {collapsed && (
-                  <div className="absolute left-full ml-2 pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
-                    <div className="bg-popover border border-border text-sm text-foreground px-3 py-1.5 rounded-lg shadow-lg whitespace-nowrap">
+                  <div className="absolute left-full ml-2 pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50">
+                    <div className="bg-[#050505] border border-white/10 text-sm text-white px-3 py-1.5 rounded-xl shadow-2xl shadow-black whitespace-nowrap">
                       {item.label}
                     </div>
                   </div>
@@ -171,15 +171,15 @@ export function Sidebar() {
             setLocation("/login");
           }}
           className={cn(
-            "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-200 group text-muted-foreground hover:bg-red-50 hover:text-red-500",
+            "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300 group text-white/40 hover:bg-red-500/10 hover:text-red-400 active:scale-95",
             collapsed && "justify-center"
           )}
         >
           <LogOut className="w-5 h-5 shrink-0" />
           {!collapsed && <span className="text-sm font-medium">Sair</span>}
           {collapsed && (
-            <div className="absolute left-full ml-2 pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
-              <div className="bg-red-500 text-white text-sm px-3 py-1.5 rounded-lg shadow-lg">
+            <div className="absolute left-full ml-2 pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50">
+              <div className="bg-red-500 text-white text-sm px-3 py-1.5 rounded-xl shadow-2xl shadow-red-500/20">
                 Sair
               </div>
             </div>
@@ -190,7 +190,7 @@ export function Sidebar() {
       {/* Collapse Toggle */}
       <button
         onClick={() => setCollapsed((c) => !c)}
-        className="flex items-center justify-center m-3 p-2 rounded-xl hover:bg-muted transition-colors text-muted-foreground hover:text-foreground border-t border-border/40"
+        className="flex items-center justify-center m-3 p-2 rounded-xl hover:bg-white/[0.06] transition-colors text-white/40 hover:text-white border-t border-white/[0.08]"
       >
         {collapsed ? (
           <ChevronRight className="w-4 h-4" />

@@ -36,29 +36,29 @@ const platformConfig = {
   instagram: {
     icon: Instagram,
     label: "Instagram",
-    color: "#E1306C",
-    textClass: "text-pink-600",
-    activeClass: "bg-pink-500/10 text-pink-600 ring-1 ring-pink-500/30",
-    hoverClass: "hover:bg-pink-500/5 hover:text-pink-600",
-    borderClass: "border-pink-500/10"
+    color: "#f59e0b", // Amber theme override
+    textClass: "text-amber-500",
+    activeClass: "bg-amber-500/10 text-amber-500 ring-1 ring-amber-500/30",
+    hoverClass: "hover:bg-white/[0.06] hover:text-white/80",
+    borderClass: "border-amber-500/10"
   },
   facebook: {
     icon: Facebook,
     label: "Facebook",
-    color: "#1877F2",
-    textClass: "text-blue-600",
-    activeClass: "bg-blue-500/10 text-blue-600 ring-1 ring-blue-500/30",
-    hoverClass: "hover:bg-blue-500/5 hover:text-blue-600",
-    borderClass: "border-blue-500/10"
+    color: "#f59e0b",
+    textClass: "text-amber-500",
+    activeClass: "bg-amber-500/10 text-amber-500 ring-1 ring-amber-500/30",
+    hoverClass: "hover:bg-white/[0.06] hover:text-white/80",
+    borderClass: "border-amber-500/10"
   },
   youtube: {
     icon: Youtube,
     label: "YouTube",
-    color: "#FF0000",
-    textClass: "text-red-600",
-    activeClass: "bg-red-500/10 text-red-600 ring-1 ring-red-500/30",
-    hoverClass: "hover:bg-red-500/5 hover:text-red-600",
-    borderClass: "border-red-500/10"
+    color: "#f59e0b",
+    textClass: "text-amber-500",
+    activeClass: "bg-amber-500/10 text-amber-500 ring-1 ring-amber-500/30",
+    hoverClass: "hover:bg-white/[0.06] hover:text-white/80",
+    borderClass: "border-amber-500/10"
   }
 };
 
@@ -156,20 +156,20 @@ export default function Metrics() {
       <motion.div initial="hidden" animate="visible" variants={slideUp} className="space-y-6">
         
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row shadow-sm bg-card/40 backdrop-blur-md border border-border/50 rounded-2xl p-5 items-center justify-between gap-4">
+        <div className="flex flex-col md:flex-row shadow-[0_4px_20px_-10px_rgba(0,0,0,0.5)] bg-white/[0.04] backdrop-blur-[40px] border border-white/[0.08] rounded-[2rem] p-6 items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+            <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
               <Activity className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight">Métricas Globais</h1>
-              <p className="text-sm text-muted-foreground">Análise profissional de redes sociais.</p>
+              <h1 className="text-xl font-bold tracking-tight text-white mb-1">Métricas Globais</h1>
+              <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Análise profissional de redes sociais</p>
             </div>
           </div>
           <Button 
             variant="outline" 
             size="sm"
-            className="h-10 px-4 rounded-xl border-border/80 font-medium hover:bg-muted"
+            className="h-12 px-6 rounded-xl border-white/20 bg-white/[0.04] text-white hover:bg-white/[0.08] font-bold shadow-lg shadow-black/20"
             onClick={fetchData}
             disabled={loading}
           >
@@ -180,7 +180,7 @@ export default function Metrics() {
 
         {/* Controls (Platform & Period) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="flex bg-muted/30 p-1.5 rounded-xl border border-border/50 gap-1 overflow-x-auto">
+          <div className="flex bg-white/[0.02] p-1.5 rounded-[1.5rem] border border-white/[0.08] gap-1 overflow-x-auto shadow-inner">
             {(Object.keys(platformConfig) as Platform[]).map((platform) => {
               const config = platformConfig[platform];
               const isActive = selectedPlatform === platform;
@@ -190,10 +190,10 @@ export default function Metrics() {
                   key={platform}
                   onClick={() => setSelectedPlatform(platform)}
                   className={cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap flex-1 justify-center",
+                    "flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all whitespace-nowrap flex-1 justify-center",
                     isActive 
                       ? config.activeClass 
-                      : `text-muted-foreground ${config.hoverClass}`
+                      : `text-white/40 ${config.hoverClass}`
                   )}
                 >
                   <Icon className="w-4 h-4" />
@@ -203,7 +203,7 @@ export default function Metrics() {
             })}
           </div>
 
-          <div className="flex bg-muted/30 p-1.5 rounded-xl border border-border/50 gap-1">
+          <div className="flex bg-white/[0.02] p-1.5 rounded-[1.5rem] border border-white/[0.08] gap-1 shadow-inner">
             {periods.map((period) => {
               const isActive = selectedPeriod === period.days;
               return (
@@ -211,10 +211,10 @@ export default function Metrics() {
                   key={period.days}
                   onClick={() => setSelectedPeriod(period.days)}
                   className={cn(
-                    "flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all flex-1",
+                    "flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex-1",
                     isActive 
-                      ? "bg-background text-foreground shadow-sm ring-1 ring-border" 
-                      : "text-muted-foreground hover:bg-background/50 hover:text-foreground"
+                      ? "bg-amber-500/10 text-amber-500 ring-1 ring-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.1)]" 
+                      : "text-white/40 hover:bg-white/[0.06] hover:text-white"
                   )}
                 >
                   <Calendar className="w-3.5 h-3.5" />
@@ -257,11 +257,13 @@ export default function Metrics() {
                   return (
                     <AnimatedCard 
                       key={i} 
-                      className="p-4 border-border/50 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden bg-card/60"
+                      className="p-5 border-white/[0.08] relative overflow-hidden flex flex-col justify-between"
                     >
-                      <div className="flex items-center justify-between text-muted-foreground mb-3">
-                         <span className="text-xs font-bold uppercase tracking-wide">{card.label}</span>
-                         <card.icon className="w-4 h-4 opacity-50" />
+                      <div className="flex items-center justify-between text-white/40 mb-3">
+                         <span className="text-[10px] font-black uppercase tracking-widest">{card.label}</span>
+                         <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
+                            <card.icon className="w-4 h-4 text-white/50" />
+                         </div>
                       </div>
                       <div className="space-y-1">
                          <p className="text-2xl font-bold tracking-tight text-foreground">{card.value.toLocaleString()}</p>
@@ -285,11 +287,11 @@ export default function Metrics() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 
                 {/* Evolution Chart */}
-                <AnimatedCard className="p-5 border-border/50 shadow-sm col-span-1 lg:col-span-2 bg-card/60">
-                  <div className="flex items-center justify-between mb-6">
+                <AnimatedCard className="p-6 border-white/[0.08] col-span-1 lg:col-span-2">
+                  <div className="flex items-center justify-between mb-8">
                     <div>
-                      <h3 className="text-base font-bold text-foreground">Evolução de Alcance e Impressões</h3>
-                      <p className="text-xs text-muted-foreground mt-0.5">Comparativo de performance diária</p>
+                      <h3 className="text-xl font-bold text-white tracking-tight">Evolução de Alcance e Impressões</h3>
+                      <p className="text-[10px] uppercase font-black tracking-widest text-white/40 mt-1">Comparativo de performance diária</p>
                     </div>
                   </div>
                   <div className="h-[300px] w-full">
@@ -318,16 +320,19 @@ export default function Metrics() {
                         />
                         <RechartsTooltip 
                           contentStyle={{ 
-                            backgroundColor: 'hsl(var(--background))',
-                            borderColor: 'hsl(var(--border))',
-                            borderRadius: '0.75rem',
-                            fontSize: '12px',
-                            fontWeight: '600',
-                            boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)'
+                            backgroundColor: '#050505',
+                            borderColor: 'rgba(255,255,255,0.1)',
+                            borderRadius: '1rem',
+                            color: '#fff',
+                            fontSize: '10px',
+                            fontWeight: '900',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.1em',
+                            boxShadow: '0 20px 40px -10px rgba(0,0,0,0.8)'
                           }}
                           labelFormatter={(l) => new Date(l).toLocaleDateString()}
                         />
-                        <Legend wrapperStyle={{ paddingTop: '15px', fontSize: '12px', fontWeight: '500' }} iconType="circle" />
+                        <Legend wrapperStyle={{ paddingTop: '20px', fontSize: '10px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(255,255,255,0.5)' }} iconType="circle" />
                         <Line 
                           type="monotone" 
                           dataKey="reach" 
@@ -353,10 +358,10 @@ export default function Metrics() {
                 </AnimatedCard>
 
                 {/* Engagement Bar Chart */}
-                <AnimatedCard className="p-5 border-border/50 shadow-sm bg-card/60">
-                  <div className="mb-6">
-                    <h3 className="text-base font-bold text-foreground">Engajamento Diário</h3>
-                    <p className="text-xs text-muted-foreground mt-0.5">Volume de interações</p>
+                <AnimatedCard className="p-6 border-white/[0.08]">
+                  <div className="mb-8">
+                    <h3 className="text-xl font-bold text-white tracking-tight">Engajamento Diário</h3>
+                    <p className="text-[10px] uppercase font-black tracking-widest text-white/40 mt-1">Volume de interações</p>
                   </div>
                   <div className="h-[220px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
@@ -371,14 +376,17 @@ export default function Metrics() {
                           tickFormatter={(val) => val >= 1000 ? `${(val/1000).toFixed(1)}k` : val}
                         />
                         <RechartsTooltip 
-                          cursor={{fill: 'currentColor', opacity: 0.03}}
+                          cursor={{fill: 'rgba(255,255,255,0.05)'}}
                           contentStyle={{ 
-                            backgroundColor: 'hsl(var(--background))',
-                            borderColor: 'hsl(var(--border))',
-                            borderRadius: '0.75rem',
-                            fontSize: '12px',
-                            fontWeight: '600',
-                            boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)'
+                            backgroundColor: '#050505',
+                            borderColor: 'rgba(255,255,255,0.1)',
+                            borderRadius: '1rem',
+                            color: '#fff',
+                            fontSize: '10px',
+                            fontWeight: '900',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.1em',
+                            boxShadow: '0 20px 40px -10px rgba(0,0,0,0.8)'
                           }}
                         />
                         <Bar dataKey="engagement" name="Engajamento" fill={activeColor} fillOpacity={0.8} radius={[3,3,0,0]} />
@@ -388,37 +396,37 @@ export default function Metrics() {
                 </AnimatedCard>
 
                 {/* Growth Funnel Setup */}
-                <AnimatedCard className="p-5 border-border/50 shadow-sm flex flex-col justify-center bg-card/60">
-                   <div className="mb-6">
-                    <h3 className="text-base font-bold text-foreground">Desempenho Base</h3>
-                    <p className="text-xs text-muted-foreground mt-0.5">Métricas de conversão</p>
+                <AnimatedCard className="p-6 border-white/[0.08] flex flex-col justify-center">
+                   <div className="mb-8">
+                    <h3 className="text-xl font-bold text-white tracking-tight">Desempenho Base</h3>
+                    <p className="text-[10px] uppercase font-black tracking-widest text-white/40 mt-1">Métricas de conversão</p>
                   </div>
                   <div className="space-y-5">
                      <div>
-                        <div className="flex justify-between text-xs font-semibold mb-1.5 text-foreground">
+                        <div className="flex justify-between text-[10px] font-black tracking-widest uppercase mb-2 text-white/70">
                            <span>Visualizações Totais</span>
-                           <span>100%</span>
+                           <span className="text-white">100%</span>
                         </div>
-                        <div className="h-2.5 rounded-full bg-muted overflow-hidden">
-                           <div className="h-full bg-blue-500 rounded-full" style={{ width: '100%' }} />
+                        <div className="h-2 rounded-full bg-white/10 overflow-hidden shadow-inner flex">
+                           <div className="h-full bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" style={{ width: '100%' }} />
                         </div>
                      </div>
                      <div>
-                        <div className="flex justify-between text-xs font-semibold mb-1.5 text-foreground">
+                        <div className="flex justify-between text-[10px] font-black tracking-widest uppercase mb-2 text-white/70">
                            <span>Visitas ao Perfil</span>
-                           <span>{((currentMetrics?.engagement || 0) / (currentMetrics?.views || 1) * 100).toFixed(1)}%</span>
+                           <span className="text-white">{((currentMetrics?.engagement || 0) / (currentMetrics?.views || 1) * 100).toFixed(1)}%</span>
                         </div>
-                        <div className="h-2.5 rounded-full bg-muted overflow-hidden">
-                           <div className="h-full bg-amber-500 rounded-full transition-all" style={{ width: `${((currentMetrics?.engagement || 0) / (currentMetrics?.views || 1) * 100)}%`}} />
+                        <div className="h-2 rounded-full bg-white/10 overflow-hidden shadow-inner flex">
+                           <div className="h-full bg-amber-500 rounded-full shadow-[0_0_10px_rgba(245,158,11,0.5)] transition-all" style={{ width: `${((currentMetrics?.engagement || 0) / (currentMetrics?.views || 1) * 100)}%`}} />
                         </div>
                      </div>
                      <div>
-                        <div className="flex justify-between text-xs font-semibold mb-1.5 text-foreground">
-                           <span>Ações (Cliques)</span>
-                           <span>{((currentMetrics?.clicks || 0) / (currentMetrics?.views || 1) * 100).toFixed(1)}%</span>
+                        <div className="flex justify-between text-[10px] font-black tracking-widest uppercase mb-2 text-white/70">
+                           <span>Ações Estratégicas (Cliques)</span>
+                           <span className="text-white">{((currentMetrics?.clicks || 0) / (currentMetrics?.views || 1) * 100).toFixed(1)}%</span>
                         </div>
-                        <div className="h-2.5 rounded-full bg-muted overflow-hidden">
-                           <div className="h-full bg-emerald-500 rounded-full transition-all" style={{ width: `${((currentMetrics?.clicks || 0) / (currentMetrics?.views || 1) * 100)}%`}} />
+                        <div className="h-2 rounded-full bg-white/10 overflow-hidden shadow-inner flex">
+                           <div className="h-full bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)] transition-all" style={{ width: `${((currentMetrics?.clicks || 0) / (currentMetrics?.views || 1) * 100)}%`}} />
                         </div>
                      </div>
                   </div>
