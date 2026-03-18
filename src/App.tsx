@@ -18,6 +18,8 @@ import VerifyOTP from "./pages/VerifyOTP";
 import Profile from "./pages/Profile";
 import Metrics from "./pages/Metrics";
 import Teams from "./pages/Teams";
+import Billing from "./pages/Billing";
+import Onboarding from "./pages/Onboarding";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
@@ -85,6 +87,8 @@ function Router() {
             <Route path="/reports" component={() => <ProtectedRoute component={Reports} />} />
             <Route path="/metrics" component={() => <ProtectedRoute component={Metrics} />} />
             <Route path="/teams" component={() => <ProtectedRoute component={Teams} />} />
+            <Route path="/billing" component={() => <ProtectedRoute component={Billing} />} />
+            <Route path="/onboarding" component={() => <ProtectedRoute component={Onboarding} />} />
             <Route path="/settings" component={() => <ProtectedRoute component={Settings} />} />
             <Route path="/profile" component={() => <ProtectedRoute component={Profile} />} />
             <Route path="/404" component={NotFound} />

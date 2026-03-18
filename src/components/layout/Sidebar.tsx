@@ -15,6 +15,7 @@ import {
   User,
   Users,
   Activity,
+  CreditCard,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -31,6 +32,7 @@ const navItems = [
   { label: "Insights", href: "/insights", icon: Lightbulb },
   { label: "Relatórios", href: "/reports", icon: FileText },
   { label: "Equipe", href: "/teams", icon: Users },
+  { label: "Assinatura", href: "/billing", icon: CreditCard },
 ];
 
 const platformStyle: Record<string, { bg: string; glow: string; text: string }> = {
