@@ -13,6 +13,7 @@ import {
   ChevronRight,
   LogOut,
   User,
+  Users,
   Activity,
 } from "lucide-react";
 import { useState } from "react";
@@ -29,6 +30,7 @@ const navItems = [
   { label: "Comparação", href: "/comparison", icon: BarChart2 },
   { label: "Insights", href: "/insights", icon: Lightbulb },
   { label: "Relatórios", href: "/reports", icon: FileText },
+  { label: "Equipe", href: "/teams", icon: Users },
 ];
 
 const platformStyle: Record<string, { bg: string; glow: string; text: string }> = {
