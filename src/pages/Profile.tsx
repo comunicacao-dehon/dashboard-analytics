@@ -24,7 +24,8 @@ import {
   Sun,
   Moon,
   Palette,
-  Trash2
+  Trash2,
+  LogOut
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
@@ -261,6 +262,7 @@ export default function Profile() {
                   <span className="text-[11px] font-black text-white tracking-widest">{new Date(user?.created_at).toLocaleDateString()}</span>
                 </div>
               </div>
+            </AnimatedCard>
           </div>
 
           {/* Main Content Area */}
@@ -576,15 +578,14 @@ export default function Profile() {
                     {/* Paleta de cor */}
                     <div>
                       <p className="text-[10px] font-black text-white/50 uppercase tracking-widest mb-6">Paleta de Cor Principal</p>
-                      <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                      <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
                         {(
                           [
-                            { id: "amber",   label: "Âmbar",    color: "#f59e0b", shadow: "rgba(245,158,11,0.35)"    },
-                            { id: "blue",    label: "Azul",     color: "#3b82f6", shadow: "rgba(59,130,246,0.35)"    },
-                            { id: "violet",  label: "Violeta",  color: "#8b5cf6", shadow: "rgba(139,92,246,0.35)"    },
-                            { id: "emerald", label: "Esmeralda",color: "#10b981", shadow: "rgba(16,185,129,0.35)"    },
-                            { id: "rose",    label: "Rosa",     color: "#f43f5e", shadow: "rgba(244,63,94,0.35)"     },
-                            { id: "cyan",    label: "Ciano",    color: "#06b6d4", shadow: "rgba(6,182,212,0.35)"     },
+                            { id: "amber",   label: "Âmbar",     color: "#f59e0b", shadow: "rgba(245,158,11,0.35)"  },
+                            { id: "blue",    label: "Azul",      color: "#3b82f6", shadow: "rgba(59,130,246,0.35)"  },
+                            { id: "violet",  label: "Violeta",   color: "#8b5cf6", shadow: "rgba(139,92,246,0.35)"  },
+                            { id: "emerald", label: "Esmeralda", color: "#10b981", shadow: "rgba(16,185,129,0.35)" },
+                            { id: "cyan",    label: "Ciano",     color: "#06b6d4", shadow: "rgba(6,182,212,0.35)"  },
                           ] as const
                         ).map(p => (
                           <button

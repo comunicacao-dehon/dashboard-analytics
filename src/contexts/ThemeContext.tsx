@@ -7,7 +7,6 @@ export type ColorPalette =
   | "blue"
   | "violet"
   | "emerald"
-  | "rose"
   | "cyan";
 
 interface ThemeContextType {
@@ -47,11 +46,6 @@ const paletteVars: Record<ColorPalette, { primary: string; ring: string; sidebar
     ring: "#10b981",
     sidebarPrimary: "#10b981",
   },
-  rose: {
-    primary: "#f43f5e",
-    ring: "#f43f5e",
-    sidebarPrimary: "#f43f5e",
-  },
   cyan: {
     primary: "#06b6d4",
     ring: "#06b6d4",
@@ -59,21 +53,39 @@ const paletteVars: Record<ColorPalette, { primary: string; ring: string; sidebar
   },
 };
 
+function applyPaletteToDOM(palette: ColorPalette) {
+  const root = document.documentElement;
+  const vars = paletteVars[palette];
+  root.style.setProperty("--primary", vars.primary);
+  root.style.setProperty("--ring", vars.ring);
+  root.style.setProperty("--sidebar-primary", vars.sidebarPrimary);
+  // Also update primary-foreground consistently
+  root.style.setProperty("--primary-foreground", "#050505");
+  root.style.setProperty("--sidebar-primary-foreground", "#050505");
+}
+
 export function ThemeProvider({
   children,
   defaultTheme = "dark",
   switchable = true,
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
-    const stored = localStorage.getItem("theme");
-    return (stored as Theme) || defaultTheme;
+    try {
+      const stored = localStorage.getItem("theme");
+      if (stored === "light" || stored === "dark") return stored;
+    } catch {}
+    return defaultTheme;
   });
 
   const [palette, setPaletteState] = useState<ColorPalette>(() => {
-    const stored = localStorage.getItem("color-palette");
-    return (stored as ColorPalette) || "amber";
+    try {
+      const stored = localStorage.getItem("color-palette");
+      if (stored && stored in paletteVars) return stored as ColorPalette;
+    } catch {}
+    return "amber";
   });
 
+  // Apply theme class to <html>
   useEffect(() => {
     const root = document.documentElement;
     if (theme === "dark") {
@@ -81,16 +93,17 @@ export function ThemeProvider({
     } else {
       root.classList.remove("dark");
     }
-    localStorage.setItem("theme", theme);
+    try {
+      localStorage.setItem("theme", theme);
+    } catch {}
   }, [theme]);
 
+  // Apply palette CSS vars to <html>
   useEffect(() => {
-    const root = document.documentElement;
-    const vars = paletteVars[palette];
-    root.style.setProperty("--primary", vars.primary);
-    root.style.setProperty("--ring", vars.ring);
-    root.style.setProperty("--sidebar-primary", vars.sidebarPrimary);
-    localStorage.setItem("color-palette", palette);
+    applyPaletteToDOM(palette);
+    try {
+      localStorage.setItem("color-palette", palette);
+    } catch {}
   }, [palette]);
 
   const toggleTheme = () => {
