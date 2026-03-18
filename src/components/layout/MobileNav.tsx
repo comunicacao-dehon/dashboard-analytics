@@ -1,15 +1,15 @@
 import { Link, useLocation } from "wouter";
-import { LayoutDashboard, Instagram, Facebook, Youtube, BarChart2, FileText, LogOut, User } from "lucide-react";
+import { LayoutDashboard, Instagram, Facebook, Youtube, BarChart2, FileText, LogOut, User, Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
 const mobileItems = [
   { label: "Geral", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Métricas", href: "/metrics", icon: Activity },
   { label: "Instagram", href: "/instagram", icon: Instagram },
   { label: "Facebook", href: "/facebook", icon: Facebook },
   { label: "YouTube", href: "/youtube", icon: Youtube },
-  { label: "Perfil", href: "/profile", icon: User },
   { label: "Sair", href: "#logout", icon: LogOut },
 ];
 

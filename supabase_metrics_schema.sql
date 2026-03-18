@@ -17,10 +17,12 @@ create table if not exists public.profiles (
 alter table public.profiles enable row level security;
 
 -- Política de RLS para profiles: Usuário só vê e edita o seu
+drop policy if exists "Users can view own profile" on public.profiles;
 create policy "Users can view own profile" 
 on public.profiles for select 
 using ( auth.uid() = id );
 
+drop policy if exists "Users can update own profile" on public.profiles;
 create policy "Users can update own profile" 
 on public.profiles for update 
 using ( auth.uid() = id );
@@ -37,6 +39,7 @@ create table if not exists public.social_accounts (
 
 alter table public.social_accounts enable row level security;
 
+drop policy if exists "Users can modify their own social accounts" on public.social_accounts;
 create policy "Users can modify their own social accounts" 
 on public.social_accounts for all 
 using ( auth.uid() = user_id );
@@ -58,6 +61,7 @@ create table if not exists public.metrics (
 
 alter table public.metrics enable row level security;
 
+drop policy if exists "Users can modify metrics for their own accounts" on public.metrics;
 create policy "Users can modify metrics for their own accounts" 
 on public.metrics for all 
 using ( 
@@ -80,6 +84,7 @@ create table if not exists public.audience_demographics (
 
 alter table public.audience_demographics enable row level security;
 
+drop policy if exists "Users can modify demographics for their own accounts" on public.audience_demographics;
 create policy "Users can modify demographics for their own accounts" 
 on public.audience_demographics for all 
 using ( 
