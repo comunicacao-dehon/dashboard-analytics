@@ -16,7 +16,7 @@ import {
   Users,
   Activity,
   Link2,
-  HelpCircle,
+  Globe
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -30,6 +30,7 @@ const analyticsItems = [
   { label: "Instagram", href: "/instagram", icon: Instagram },
   { label: "Facebook", href: "/facebook", icon: Facebook },
   { label: "YouTube", href: "/youtube", icon: Youtube },
+  { label: "Site", href: "/website", icon: Globe },
   { label: "Comparação", href: "/comparison", icon: BarChart2 },
   { label: "Insights", href: "/insights", icon: Lightbulb },
   { label: "Relatórios", href: "/reports", icon: FileText },
@@ -57,6 +58,11 @@ const platformStyle: Record<string, { bg: string; glow: string; text: string }> 
   "/youtube": {
     bg: "bg-gradient-to-br from-[#ff0000] to-[#b30000]",
     glow: "shadow-[0_0_12px_rgba(255,0,0,0.3)]",
+    text: "text-white",
+  },
+  "/website": {
+    bg: "bg-gradient-to-br from-[#059669] to-[#047857]",
+    glow: "shadow-[0_0_12px_rgba(16,185,129,0.3)]",
     text: "text-white",
   },
 };

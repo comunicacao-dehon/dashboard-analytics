@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { Instagram, Facebook, Youtube, Activity, Link as LinkIcon } from "lucide-react";
+import { Instagram, Facebook, Youtube, Activity, Link as LinkIcon, Globe } from "lucide-react";
 import { motion } from "framer-motion";
 import { startOAuth } from "@/lib/oauth";
 import { toast } from "sonner";
+import { Link } from "wouter";
 
 export function EmptyDashboard() {
   const handleConnect = (platform: "instagram" | "facebook" | "youtube") => {
@@ -60,7 +61,7 @@ export function EmptyDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-4xl"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl"
         >
           {/* Instagram Connect */}
           <div className="glass-dark border border-white/10 p-8 rounded-3xl flex flex-col items-center text-center hover:border-pink-500/50 hover:shadow-[0_0_30px_rgba(236,72,153,0.15)] transition-all group">
@@ -108,6 +109,21 @@ export function EmptyDashboard() {
               <LinkIcon className="w-4 h-4 mr-2" />
               Vincular Conta
             </Button>
+          </div>
+
+          {/* Website Connect */}
+          <div className="glass-dark border border-white/10 p-8 rounded-3xl flex flex-col items-center text-center hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] transition-all group">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#059669] to-[#047857] flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform">
+              <Globe className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">Site</h3>
+            <p className="text-sm text-white/40 mb-8">Vincule seu site para analisar visitantes, tráfego e taxa de rejeição.</p>
+            <Link href="/website" className="w-full block">
+              <Button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl h-12">
+                <LinkIcon className="w-4 h-4 mr-2" />
+                Vincular Site
+              </Button>
+            </Link>
           </div>
         </motion.div>
 

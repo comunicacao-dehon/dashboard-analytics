@@ -12,6 +12,7 @@ import Reports from "./pages/Reports";
 import Followers from "./pages/Followers";
 import Facebook from "./pages/Facebook";
 import YouTube from "./pages/YouTube";
+import Website from "./pages/Website";
 import Comparison from "./pages/Comparison";
 import Insights from "./pages/Insights";
 import Settings from "./pages/Settings";
@@ -87,6 +88,7 @@ function Router() {
             <Route path="/followers" component={() => <ProtectedRoute component={Followers} />} />
             <Route path="/facebook" component={() => <ProtectedRoute component={Facebook} />} />
             <Route path="/youtube" component={() => <ProtectedRoute component={YouTube} />} />
+            <Route path="/website" component={() => <ProtectedRoute component={Website} />} />
             <Route path="/comparison" component={() => <ProtectedRoute component={Comparison} />} />
             <Route path="/insights" component={() => <ProtectedRoute component={Insights} />} />
             <Route path="/reports" component={() => <ProtectedRoute component={Reports} />} />
