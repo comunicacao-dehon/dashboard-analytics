@@ -14,7 +14,7 @@ export default function Home() {
   const { user } = useAuth();
   
   // Regra de Multi-tenant (Apenas Conventinho vê os dados mockados no momento)
-  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.com';
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
 
   if (!isConventinho) {
     return <EmptyDashboard />;

@@ -136,7 +136,7 @@ export function Sidebar() {
           animate={{ rotate: collapsed ? 0 : 0 }}
           className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center overflow-hidden shrink-0 shadow-[0_0_15px_rgba(245,158,11,0.2)]"
         >
-          {user?.email?.toLowerCase() === 'comunicacao@conventinho.com' ? (
+          {user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br' ? (
             <img src="/logo.png" alt="Logo" loading="lazy" className="w-5 h-5 object-contain" />
           ) : (
             <Activity className="w-4 h-4 text-amber-500" />

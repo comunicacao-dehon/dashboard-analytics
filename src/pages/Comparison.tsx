@@ -43,7 +43,7 @@ import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 
 export default function Comparison() {
   const { user } = useAuth();
-  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.com';
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
 
   if (!isConventinho) {
     return <EmptyPlatformState platform="Comparação de Plataformas" icon={<BarChart2 className="w-8 h-8 text-amber-500" />} description="Vincule pelo menos duas redes sociais para comparar o desempenho entre as plataformas." />;

@@ -71,7 +71,7 @@ import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 
 export default function Metrics() {
   const { user } = useAuth();
-  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.com';
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
 
   if (!isConventinho) {
     return <EmptyPlatformState platform="Métricas Globais" icon={<Activity className="w-8 h-8 text-amber-500" />} description="Vincule suas redes sociais para acessar métricas detalhadas de seguidores, alcance e engajamento." />;

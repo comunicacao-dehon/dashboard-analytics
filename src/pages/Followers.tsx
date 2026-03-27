@@ -17,7 +17,7 @@ import { Instagram } from "lucide-react";
 
 export default function Followers() {
   const { user } = useAuth();
-  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.com';
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
 
   if (!isConventinho) {
     return <EmptyPlatformState platform="Instagram" icon={<Instagram className="w-8 h-8 text-pink-500" />} description="Vincule sua conta do Instagram para ver análises de seguidores, demografia e tendências em tempo real." />;

@@ -122,7 +122,7 @@ import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 // Component
 export default function Facebook() {
   const { user } = useAuth();
-  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.com';
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
 
   if (!isConventinho) {
     return <EmptyPlatformState platform="Facebook" icon={<FacebookIcon className="w-8 h-8 text-blue-500" />} description="Vincule sua página do Facebook para ver métricas de alcance, curtidas e engajamento." />;

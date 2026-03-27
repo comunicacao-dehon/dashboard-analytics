@@ -13,7 +13,7 @@ import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 
 export default function Reports() {
   const { user } = useAuth();
-  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.com';
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
 
   if (!isConventinho) {
     return <EmptyPlatformState platform="Relatórios" icon={<FileText className="w-8 h-8 text-amber-500" />} description="Vincule suas redes sociais para gerar relatórios consolidados com análise de IA." />;

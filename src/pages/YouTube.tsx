@@ -59,7 +59,7 @@ import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 
 export default function YouTube() {
   const { user } = useAuth();
-  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.com';
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
 
   if (!isConventinho) {
     return <EmptyPlatformState platform="YouTube" icon={<YoutubeIcon className="w-8 h-8 text-red-500" />} description="Vincule seu canal do YouTube para ver inscritos, visualizações, retenção e ranking de vídeos." />;
