@@ -116,8 +116,18 @@ const analyticsMetrics = [
   },
 ];
 
-// ─── Component ────────────────────────────────────────────────────────────────
+import { useAuth } from "@/contexts/AuthContext";
+import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
+
+// Component
 export default function Facebook() {
+  const { user } = useAuth();
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.com';
+
+  if (!isConventinho) {
+    return <EmptyPlatformState platform="Facebook" icon={<FacebookIcon className="w-8 h-8 text-blue-500" />} description="Vincule sua página do Facebook para ver métricas de alcance, curtidas e engajamento." />;
+  }
+
   return (
     <div className="min-h-screen bg-background pb-12">
       <div className="absolute top-0 inset-x-0 h-[250px] bg-gradient-to-br from-blue-500/5 via-transparent to-transparent pointer-events-none -z-10" />

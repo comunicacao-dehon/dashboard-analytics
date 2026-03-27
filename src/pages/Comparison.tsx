@@ -38,8 +38,17 @@ const platformStats = [
   { name: "Facebook", icon: Facebook, color: "text-blue-500 bg-blue-50", seguidores: "17 mil", engajamento: "1.079", alcance: "37.074", melhorPost: "Vídeo" },
   { name: "YouTube", icon: Youtube, color: "text-red-500 bg-red-50", seguidores: "1.820", engajamento: "5,10%", alcance: "36.800", melhorPost: "Ao Vivo" },
 ];
+import { useAuth } from "@/contexts/AuthContext";
+import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 
 export default function Comparison() {
+  const { user } = useAuth();
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.com';
+
+  if (!isConventinho) {
+    return <EmptyPlatformState platform="Comparação de Plataformas" icon={<BarChart2 className="w-8 h-8 text-amber-500" />} description="Vincule pelo menos duas redes sociais para comparar o desempenho entre as plataformas." />;
+  }
+
   return (
     <div className="min-h-screen bg-background pb-12">
       <div className="absolute top-0 inset-x-0 h-[250px] bg-gradient-to-br from-primary/5 via-transparent to-transparent pointer-events-none -z-10" />

@@ -54,8 +54,17 @@ const tooltipStyle = {
     fontSize: "12px",
   },
 };
+import { useAuth } from "@/contexts/AuthContext";
+import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 
 export default function YouTube() {
+  const { user } = useAuth();
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.com';
+
+  if (!isConventinho) {
+    return <EmptyPlatformState platform="YouTube" icon={<YoutubeIcon className="w-8 h-8 text-red-500" />} description="Vincule seu canal do YouTube para ver inscritos, visualizações, retenção e ranking de vídeos." />;
+  }
+
   return (
     <div className="min-h-screen bg-background pb-12">
       <div className="absolute top-0 inset-x-0 h-[250px] bg-gradient-to-br from-red-500/5 via-transparent to-transparent pointer-events-none -z-10" />

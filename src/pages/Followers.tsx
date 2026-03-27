@@ -11,8 +11,18 @@ import { LocationsList, type LocationItem } from "@/components/followers/Locatio
 import { FollowersTrendCards } from "@/components/followers/FollowersTrendCards";
 import { FollowersTrendChart } from "@/components/followers/FollowersTrendChart";
 import { FollowersDetailsPanel } from "@/components/followers/FollowersDetailsPanel";
+import { useAuth } from "@/contexts/AuthContext";
+import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
+import { Instagram } from "lucide-react";
 
 export default function Followers() {
+  const { user } = useAuth();
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.com';
+
+  if (!isConventinho) {
+    return <EmptyPlatformState platform="Instagram" icon={<Instagram className="w-8 h-8 text-pink-500" />} description="Vincule sua conta do Instagram para ver análises de seguidores, demografia e tendências em tempo real." />;
+  }
+
   const topCities: LocationItem[] = [
     { id: 1, name: "Taubaté, SP", percentage: 18.5 },
     { id: 2, name: "São Paulo, SP", percentage: 15.2 },
