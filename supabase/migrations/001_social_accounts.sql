@@ -1,6 +1,6 @@
--- ─── Tabela: social_accounts ─────────────────────────────────────────────────
--- Armazena as contas de redes sociais vinculadas por cada usuário.
--- Execute esse SQL no Supabase → SQL Editor
+-- Tabela: social_accounts
+-- Armazena as contas de redes sociais vinculadas por cada usuario.
+-- Execute esse SQL no Supabase > SQL Editor
 
 CREATE TABLE IF NOT EXISTS social_accounts (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -16,12 +16,12 @@ CREATE TABLE IF NOT EXISTS social_accounts (
   connected_at TIMESTAMPTZ DEFAULT NOW(),
   is_active BOOLEAN DEFAULT TRUE,
   
-  -- Cada usuário só pode ter uma conta ativa por plataforma
+  -- Cada usuario so pode ter uma conta ativa por plataforma
   UNIQUE(user_id, platform)
 );
 
--- ─── RLS (Row Level Security) ────────────────────────────────────────────────
--- Cada usuário só pode ver e gerenciar suas próprias contas.
+-- RLS (Row Level Security)
+-- Cada usuario so pode ver e gerenciar suas proprias contas.
 
 ALTER TABLE social_accounts ENABLE ROW LEVEL SECURITY;
 
@@ -41,7 +41,7 @@ CREATE POLICY "Users can delete their own accounts"
   ON social_accounts FOR DELETE
   USING (auth.uid() = user_id);
 
--- ─── Índices ─────────────────────────────────────────────────────────────────
+-- Indices
 
 CREATE INDEX idx_social_accounts_user ON social_accounts(user_id);
 CREATE INDEX idx_social_accounts_platform ON social_accounts(user_id, platform);

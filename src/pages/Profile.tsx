@@ -242,7 +242,7 @@ export default function Profile() {
 
               <div className="space-y-2 mb-8">
                 <h2 className="text-2xl font-black tracking-tight text-white mb-1">{fullName || "Usuário"}</h2>
-                <p className="text-[10px] font-black text-amber-500/80 uppercase tracking-[0.2em] drop-shadow-[0_0_5px_rgba(245,158,11,0.3)]">{role || "Membro Dehoniano"}</p>
+                <p className="text-[10px] font-black text-amber-500/80 uppercase tracking-[0.2em] drop-shadow-[0_0_5px_rgba(245,158,11,0.3)]">{role || "Membro Utxica"}</p>
                 <p className="text-white/40 text-sm font-medium">{email}</p>
               </div>
               
