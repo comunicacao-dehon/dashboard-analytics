@@ -239,19 +239,19 @@ export default function Landing() {
             
             <div className="flex flex-col gap-6">
               {[1, 2].map((i) => (
-                <div key={i} className="glass border border-white/5 p-6 rounded-2xl bg-white/5">
+                <div key={i} className="glass-dark border border-white/10 p-6 rounded-2xl hover:border-primary/30 transition-all hover:shadow-[0_0_20px_rgba(245,158,11,0.05)] group">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-primary to-orange-600 p-0.5">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-primary to-orange-600 p-0.5 group-hover:scale-110 transition-transform">
                       <div className="w-full h-full rounded-full bg-[#050505] flex items-center justify-center">
                         <Users className="w-5 h-5 text-primary" />
                       </div>
                     </div>
                     <div>
-                      <h4 className="font-semibold">{i === 1 ? "João Silva" : "Maria Santos"}</h4>
-                      <p className="text-xs text-muted-foreground">Especialista de Marketing</p>
+                      <h4 className="font-semibold text-foreground">{i === 1 ? "João Silva" : "Maria Santos"}</h4>
+                      <p className="text-xs text-primary/80">Especialista de Marketing</p>
                     </div>
                   </div>
-                  <p className="text-sm text-gray-400 italic">"{i === 1 ? "O Analytics.ai mudou completamente como entregamos resultados. A análise por IA é impressionante e super precisa." : "Excelente plataforma. Centralizou todo nosso trabalho e agora não perdemos horas montando planilhas manuais."}"</p>
+                  <p className="text-sm text-foreground/80 italic font-medium">"{i === 1 ? "O Analytics.ai mudou completamente como entregamos resultados. A análise por IA é impressionante e super precisa." : "Excelente plataforma. Centralizou todo nosso trabalho e agora não perdemos horas montando planilhas manuais."}"</p>
                 </div>
               ))}
             </div>
