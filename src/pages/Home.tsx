@@ -13,14 +13,14 @@ export default function Home() {
   const { user } = useAuth();
   const avatarUrl = user?.user_metadata?.avatar_url;
   const instagramMetrics = [
-    { label: "Seguidores", value: "5.377", icon: Heart, trend: "+12%", href: "/instagram" },
+    { label: "Seguidores", value: "5.395", icon: Heart, trend: "+12%", href: "/instagram" },
     { label: "Taxa de Engajamento", value: "4,19%", icon: TrendingUp, trend: "+0.8%" },
     { label: "Alcance Médio", value: "2.482", icon: BarChart3, trend: "+24%" },
     { label: "Posts Totais", value: "838", icon: Share2, trend: "+5" },
   ];
 
   const platformSummary = [
-    { label: "Instagram", subLabel: "Seguidores", value: "5.377", icon: Instagram, color: "text-pink-500 bg-pink-50", href: "/instagram", trend: "+12%" },
+    { label: "Instagram", subLabel: "Seguidores", value: "5.395", icon: Instagram, color: "text-pink-500 bg-pink-50", href: "/instagram", trend: "+12%" },
     { label: "Facebook", subLabel: "Seguidores", value: "17 mil", icon: Facebook, color: "text-blue-500 bg-blue-50", href: "/facebook", trend: "+4,2%" },
     { label: "YouTube", subLabel: "Inscritos", value: "1.820", icon: Youtube, color: "text-red-500 bg-red-50", href: "/youtube", trend: "+10,3%" },
   ];

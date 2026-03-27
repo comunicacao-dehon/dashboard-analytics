@@ -96,7 +96,7 @@ export default function Followers() {
                   </div>
                   <div>
                     <h3 className="text-base font-semibold text-muted-foreground uppercase tracking-wider">Total de Seguidores</h3>
-                    <div className="text-5xl md:text-6xl font-extrabold tracking-tight text-foreground mt-1">5.377</div>
+                    <div className="text-5xl md:text-6xl font-extrabold tracking-tight text-foreground mt-1">5.395</div>
                   </div>
                 </div>
               </AnimatedCard>

@@ -270,7 +270,7 @@ export function PerformanceAnalysis() {
         {/* Chart 4 — Scatter: Alcance vs Interações */}
         <AnimatedCard className="p-6" delay={0.25}>
           <h3 className="font-semibold mb-1">Alcance vs. Interações</h3>
-          <p className="text-xs text-muted-foreground mb-5">Tamanho do ponto = visualizações · seguidores: 5.377</p>
+          <p className="text-xs text-muted-foreground mb-5">Tamanho do ponto = visualizações · seguidores: 5.395</p>
           <div className="h-[220px]">
             <ResponsiveContainer width="100%" height="100%">
               <ScatterChart margin={{ top: 10, right: 20, left: -10, bottom: 0 }}>

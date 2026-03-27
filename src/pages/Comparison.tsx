@@ -34,7 +34,7 @@ const tooltipStyle = {
 };
 
 const platformStats = [
-  { name: "Instagram", icon: Instagram, color: "text-pink-500 bg-pink-50", seguidores: "5.377", engajamento: "4,19%", alcance: "24.679", melhorPost: "Reels" },
+  { name: "Instagram", icon: Instagram, color: "text-pink-500 bg-pink-50", seguidores: "5.395", engajamento: "4,19%", alcance: "24.679", melhorPost: "Reels" },
   { name: "Facebook", icon: Facebook, color: "text-blue-500 bg-blue-50", seguidores: "17 mil", engajamento: "1.079", alcance: "37.074", melhorPost: "Vídeo" },
   { name: "YouTube", icon: Youtube, color: "text-red-500 bg-red-50", seguidores: "1.820", engajamento: "5,10%", alcance: "36.800", melhorPost: "Ao Vivo" },
 ];

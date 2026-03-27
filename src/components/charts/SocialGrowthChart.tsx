@@ -15,7 +15,7 @@ const data = [
   { month: "Nov", instagram: 5100, facebook: 13500, youtube: 1250 },
   { month: "Dez", instagram: 5200, facebook: 14800, youtube: 1320 },
   { month: "Jan", instagram: 5280, facebook: 15600, youtube: 1480 },
-  { month: "Fev", instagram: 5377, facebook: 16400, youtube: 1650 },
+  { month: "Fev", instagram: 5395, facebook: 16400, youtube: 1650 },
   { month: "Mar", instagram: 5500, facebook: 17000, youtube: 1820 },
 ];
 

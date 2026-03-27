@@ -11,7 +11,7 @@ import {
 import { AnimatedCard } from "@/components/AnimatedCard";
 
 const data = [
-  { metric: "Seguidores", instagram: 5377, facebook: 17000, youtube: 1650 },
+  { metric: "Seguidores", instagram: 5395, facebook: 17000, youtube: 1650 },
   { metric: "Engajamento", instagram: 419, facebook: 1079, youtube: 190 },
   { metric: "Alcance (k)", instagram: 245, facebook: 37, youtube: 95 },
   { metric: "Posts", instagram: 18, facebook: 12, youtube: 8 },
