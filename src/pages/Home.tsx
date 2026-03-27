@@ -8,9 +8,18 @@ import { SocialGrowthChart } from "@/components/charts/SocialGrowthChart";
 import { InsightsPanel } from "@/components/social/InsightsPanel";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
+import { EmptyDashboard } from "@/components/layout/EmptyDashboard";
 
 export default function Home() {
   const { user } = useAuth();
+  
+  // Regra de Multi-tenant (Apenas Conventinho vê os dados mockados no momento)
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.com';
+
+  if (!isConventinho) {
+    return <EmptyDashboard />;
+  }
+
   const avatarUrl = user?.user_metadata?.avatar_url;
   const instagramMetrics = [
     { label: "Seguidores", value: "5.395", icon: Heart, trend: "+12%", href: "/instagram" },
