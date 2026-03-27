@@ -6,6 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { Layout } from "./components/layout/Layout";
 import Login from "./pages/Login";
+import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import Reports from "./pages/Reports";
 import Followers from "./pages/Followers";
@@ -69,7 +70,7 @@ function PublicRoute({ component: Component, ...rest }: any) {
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={() => <PublicRoute component={Login} />} />
+      <Route path="/" component={Landing} />
       <Route path="/login" component={() => <PublicRoute component={Login} />} />
       <Route path="/verify-otp" component={VerifyOTP} />
       
