@@ -30,16 +30,37 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useTheme, type ColorPalette } from "@/contexts/ThemeContext";
 import { cn } from "@/lib/utils";
 
-type Tab = 'minha-conta' | 'senha' | 'empresa' | 'preferencias';
+import { startOAuth } from "@/lib/oauth";
+import { Link as LinkIcon, Instagram, Facebook, Youtube, Globe } from "lucide-react";
+
+type Tab = 'minha-conta' | 'senha' | 'empresa' | 'preferencias' | 'conexoes';
 
 export default function Profile() {
   const { user: authUser, signOut } = useAuth();
   const { theme, palette, toggleTheme, setPalette } = useTheme();
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [activeTab, setActiveTab] = useState<Tab>('minha-conta');
+  
+  const [activeTab, setActiveTab] = useState<Tab>(() => {
+    if (location === '/connections') return 'conexoes';
+    if (location === '/settings') return 'preferencias';
+    return 'minha-conta';
+  });
+
+  useEffect(() => {
+    if (location === '/connections') setActiveTab('conexoes');
+    else if (location === '/settings') setActiveTab('preferencias');
+    else if (location === '/profile') setActiveTab('minha-conta');
+  }, [location]);
+
+  const handleTabChange = (tab: Tab) => {
+    setActiveTab(tab);
+    if (tab === 'conexoes') setLocation('/connections', { replace: true });
+    else if (tab === 'preferencias' || tab === 'empresa') setLocation('/settings', { replace: true });
+    else setLocation('/profile', { replace: true });
+  };
   
   // Profile fields
   const [user, setUser] = useState<any>(null);
@@ -172,14 +193,24 @@ export default function Profile() {
            {/* Internal Sidebar */}
            <aside className="w-full md:w-64 shrink-0 space-y-8 sticky top-24">
                
+               {/* Integrações */}
+               <div>
+                   <h4 className="text-[10px] uppercase font-black text-white/40 tracking-widest mb-3 pl-2">Integrações</h4>
+                   <nav className="space-y-1">
+                       <button onClick={() => handleTabChange('conexoes')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'conexoes' ? "bg-amber-500/10 text-amber-500 font-bold ring-1 ring-amber-500/20" : "text-white/50 hover:bg-white/5 font-medium")}>
+                           <LinkIcon className="w-4 h-4" /> Conexões
+                       </button>
+                   </nav>
+               </div>
+               
                {/* Configurações da Conta */}
                <div>
                    <h4 className="text-[10px] uppercase font-black text-white/40 tracking-widest mb-3 pl-2">Configurações da conta</h4>
                    <nav className="space-y-1">
-                       <button onClick={() => setActiveTab('minha-conta')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'minha-conta' ? "bg-amber-500/10 text-amber-500 font-bold ring-1 ring-amber-500/20" : "text-white/50 hover:bg-white/5 font-medium")}>
+                       <button onClick={() => handleTabChange('minha-conta')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'minha-conta' ? "bg-amber-500/10 text-amber-500 font-bold ring-1 ring-amber-500/20" : "text-white/50 hover:bg-white/5 font-medium")}>
                            <User className="w-4 h-4" /> Minha Conta
                        </button>
-                       <button onClick={() => setActiveTab('senha')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'senha' ? "bg-amber-500/10 text-amber-500 font-bold ring-1 ring-amber-500/20" : "text-white/50 hover:bg-white/5 font-medium")}>
+                       <button onClick={() => handleTabChange('senha')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'senha' ? "bg-amber-500/10 text-amber-500 font-bold ring-1 ring-amber-500/20" : "text-white/50 hover:bg-white/5 font-medium")}>
                            <Lock className="w-4 h-4" /> Alterar Senha
                        </button>
                    </nav>
@@ -189,10 +220,10 @@ export default function Profile() {
                <div>
                    <h4 className="text-[10px] uppercase font-black text-white/40 tracking-widest mb-3 pl-2">Configurações da Empresa</h4>
                    <nav className="space-y-1">
-                       <button onClick={() => setActiveTab('empresa')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'empresa' ? "bg-amber-500/10 text-amber-500 font-bold ring-1 ring-amber-500/20" : "text-white/50 hover:bg-white/5 font-medium")}>
+                       <button onClick={() => handleTabChange('empresa')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'empresa' ? "bg-amber-500/10 text-amber-500 font-bold ring-1 ring-amber-500/20" : "text-white/50 hover:bg-white/5 font-medium")}>
                            <Briefcase className="w-4 h-4" /> Perfil da Empresa
                        </button>
-                       <button onClick={() => setActiveTab('preferencias')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'preferencias' ? "bg-amber-500/10 text-amber-500 font-bold ring-1 ring-amber-500/20" : "text-white/50 hover:bg-white/5 font-medium")}>
+                       <button onClick={() => handleTabChange('preferencias')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'preferencias' ? "bg-amber-500/10 text-amber-500 font-bold ring-1 ring-amber-500/20" : "text-white/50 hover:bg-white/5 font-medium")}>
                            <Palette className="w-4 h-4" /> Preferências
                        </button>
                    </nav>
@@ -423,6 +454,93 @@ export default function Profile() {
                           </div>
                         </div>
 
+                      </div>
+                    </AnimatedCard>
+                 )}
+
+                 {/* Conexoes Tab */}
+                 {activeTab === 'conexoes' && (
+                    <AnimatedCard className="border-white/[0.08] bg-white/[0.02] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden">
+                      <div className="p-8 md:p-10 border-b border-white/[0.08]">
+                        <h2 className="text-2xl font-black tracking-tight text-white mb-1">Conexões de Dados</h2>
+                        <p className="text-xs text-white/40 font-medium">Vincule suas contas de redes sociais e sites para coletar métricas automaticamente</p>
+                      </div>
+
+                      <div className="p-8 md:p-10">
+                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full">
+                          {/* Instagram Connect */}
+                          <div className="glass-dark border border-white/10 p-6 rounded-3xl flex flex-col items-center text-center hover:border-pink-500/50 hover:shadow-[0_0_30px_rgba(236,72,153,0.15)] transition-all group">
+                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform shrink-0">
+                              <Instagram className="w-7 h-7 text-white" />
+                            </div>
+                            <h3 className="text-lg font-bold text-white mb-1 tracking-tight">Instagram</h3>
+                            <p className="text-[11px] text-white/40 mb-6 px-4 leading-relaxed line-clamp-2 h-8">Conecte seu perfil comercial para analisar Reels e Stories.</p>
+                            <Button 
+                              onClick={() => {
+                                const META_APP_ID = import.meta.env.VITE_META_APP_ID;
+                                if (!META_APP_ID) return toast.error("Meta App ID não configurado");
+                                startOAuth("instagram");
+                              }}
+                              className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]"
+                            >
+                              <LinkIcon className="w-3.5 h-3.5 mr-2" />
+                              Vincular Conta
+                            </Button>
+                          </div>
+
+                          {/* Facebook Connect */}
+                          <div className="glass-dark border border-white/10 p-6 rounded-3xl flex flex-col items-center text-center hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all group">
+                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#1877f2] to-[#0a52b3] flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform shrink-0">
+                              <Facebook className="w-7 h-7 text-white" />
+                            </div>
+                            <h3 className="text-lg font-bold text-white mb-1 tracking-tight">Facebook</h3>
+                            <p className="text-[11px] text-white/40 mb-6 px-4 leading-relaxed line-clamp-2 h-8">Gerencie o alcance da sua página e interações do público.</p>
+                            <Button 
+                              onClick={() => {
+                                const META_APP_ID = import.meta.env.VITE_META_APP_ID;
+                                if (!META_APP_ID) return toast.error("Meta App ID não configurado");
+                                startOAuth("facebook");
+                              }}
+                              className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]"
+                            >
+                              <LinkIcon className="w-3.5 h-3.5 mr-2" />
+                              Vincular Conta
+                            </Button>
+                          </div>
+
+                          {/* YouTube Connect */}
+                          <div className="glass-dark border border-white/10 p-6 rounded-3xl flex flex-col items-center text-center hover:border-red-500/50 hover:shadow-[0_0_30px_rgba(239,68,68,0.15)] transition-all group">
+                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#ff0000] to-[#b30000] flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform shrink-0">
+                              <Youtube className="w-7 h-7 text-white" />
+                            </div>
+                            <h3 className="text-lg font-bold text-white mb-1 tracking-tight">YouTube</h3>
+                            <p className="text-[11px] text-white/40 mb-6 px-4 leading-relaxed line-clamp-2 h-8">Analise o desempenho dos seus vídeos longos e Shorts.</p>
+                            <Button 
+                              onClick={() => {
+                                const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+                                if (!GOOGLE_CLIENT_ID) return toast.error("Google Client ID não configurado");
+                                startOAuth("youtube");
+                              }}
+                              className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]"
+                            >
+                              <LinkIcon className="w-3.5 h-3.5 mr-2" />
+                              Vincular Conta
+                            </Button>
+                          </div>
+
+                          {/* Website Connect */}
+                          <div className="glass-dark border border-white/10 p-6 rounded-3xl flex flex-col items-center text-center hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] transition-all group">
+                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#059669] to-[#047857] flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform shrink-0">
+                              <Globe className="w-7 h-7 text-white" />
+                            </div>
+                            <h3 className="text-lg font-bold text-white mb-1 tracking-tight">Site</h3>
+                            <p className="text-[11px] text-white/40 mb-6 px-4 leading-relaxed line-clamp-2 h-8">Vincule seu domínio para acessar tráfego e visualizações.</p>
+                            <Button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]" onClick={() => setLocation("/website")}>
+                              <LinkIcon className="w-3.5 h-3.5 mr-2" />
+                              Vincular Site
+                            </Button>
+                          </div>
+                        </div>
                       </div>
                     </AnimatedCard>
                  )}
