@@ -46,8 +46,9 @@ export default function Login() {
         
         if (error) throw error;
 
-        toast.success("Verifique seu e-mail para o código de 6 dígitos!");
-        setLocation(`/verify-otp?email=${encodeURIComponent(email)}`);
+        toast.success("Conta criada! Enviamos um link de acesso seguro para o seu e-mail.");
+        setIsSignUp(false);
+        setPassword("");
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -254,10 +255,10 @@ export default function Login() {
         >
           <div className="flex items-center gap-2 text-amber-500 mb-2 justify-center">
             <AlertTriangle className="w-4 h-4" />
-            <span className="text-[10px] font-black uppercase tracking-widest">Confirmação Ativa</span>
+            <span className="text-[10px] font-black uppercase tracking-widest">Acesso Seguro</span>
           </div>
           <p className="text-[10px] text-white/50 leading-relaxed uppercase tracking-tighter">
-            Verifique sempre a sua caixa de entrada ou spam pelo código de segurança de 6 dígitos.
+            Verifique sempre a sua caixa de entrada ou spam pelo link mágico de acesso para entrar.
           </p>
         </motion.div>
       )}
