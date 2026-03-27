@@ -1,12 +1,10 @@
 // ─── Serviço de Integração Social ───────────────────────────────────────────
 // Camada central que gerencia as contas vinculadas e busca métricas de cada rede.
-// Quando as APIs reais forem conectadas, basta substituir os métodos abaixo.
 
 import { supabase } from "@/lib/supabase";
 import type {
   SocialPlatform,
   SocialAccount,
-  SocialMetrics,
   InstagramMetrics,
   FacebookMetrics,
   YouTubeMetrics,
@@ -71,43 +69,298 @@ export async function disconnectAccount(userId: string, platform: SocialPlatform
   return { success: true, timestamp: new Date().toISOString() };
 }
 
-// ─── Buscar Métricas (Placeholder para APIs Reais) ──────────────────────────
-// TODO: Substituir por chamadas reais às APIs do Instagram Graph, Facebook Graph e YouTube Data API.
+// ─── Instagram Graph API ────────────────────────────────────────────────────
+// Docs: https://developers.facebook.com/docs/instagram-api
 
-export async function fetchInstagramMetrics(_account: SocialAccount): Promise<ApiResponse<InstagramMetrics>> {
-  // Placeholder — será substituído pela chamada real à Instagram Graph API
-  return {
-    success: false,
-    error: "Instagram API ainda não configurada. Configure o token de acesso nas configurações.",
-    timestamp: new Date().toISOString(),
-  };
+export async function fetchInstagramMetrics(account: SocialAccount): Promise<ApiResponse<InstagramMetrics>> {
+  try {
+    // 1. Buscar dados básicos do perfil
+    const profileRes = await fetch(
+      `https://graph.facebook.com/v19.0/${account.platformUserId}?fields=followers_count,media_count,username,name,profile_picture_url&access_token=${account.accessToken}`
+    );
+
+    if (!profileRes.ok) {
+      const err = await profileRes.json();
+      return { success: false, error: err.error?.message || "Erro ao buscar perfil Instagram", timestamp: new Date().toISOString() };
+    }
+
+    const profile = await profileRes.json();
+
+    // 2. Buscar insights (últimos 30 dias)
+    const insightsRes = await fetch(
+      `https://graph.facebook.com/v19.0/${account.platformUserId}/insights?metric=reach,impressions&period=day&since=${getDateDaysAgo(30)}&until=${getToday()}&access_token=${account.accessToken}`
+    );
+
+    let totalReach = 0;
+    let totalImpressions = 0;
+
+    if (insightsRes.ok) {
+      const insights = await insightsRes.json();
+      for (const metric of insights.data || []) {
+        const values = metric.values || [];
+        const sum = values.reduce((acc: number, v: any) => acc + (v.value || 0), 0);
+        if (metric.name === "reach") totalReach = sum;
+        if (metric.name === "impressions") totalImpressions = sum;
+      }
+    }
+
+    return {
+      success: true,
+      data: {
+        followers: profile.followers_count || 0,
+        followersGrowth: 0, // Calculado via histórico no banco
+        engagementRate: 0,  // Calculado a partir dos posts
+        totalPosts: profile.media_count || 0,
+        totalReach,
+        totalImpressions,
+        reelsPlays: 0,
+        storiesViews: 0,
+        saves: 0,
+        shares: 0,
+        updatedAt: new Date().toISOString(),
+      },
+      timestamp: new Date().toISOString(),
+    };
+  } catch (err: any) {
+    return { success: false, error: err.message || "Erro desconhecido", timestamp: new Date().toISOString() };
+  }
 }
 
-export async function fetchFacebookMetrics(_account: SocialAccount): Promise<ApiResponse<FacebookMetrics>> {
-  // Placeholder — será substituído pela chamada real à Facebook Graph API
-  return {
-    success: false,
-    error: "Facebook API ainda não configurada. Configure o token de acesso nas configurações.",
-    timestamp: new Date().toISOString(),
-  };
+// ─── Facebook Graph API ─────────────────────────────────────────────────────
+// Docs: https://developers.facebook.com/docs/graph-api/reference/page
+
+export async function fetchFacebookMetrics(account: SocialAccount): Promise<ApiResponse<FacebookMetrics>> {
+  try {
+    // 1. Buscar dados da página
+    const pageRes = await fetch(
+      `https://graph.facebook.com/v19.0/${account.platformUserId}?fields=fan_count,name,picture&access_token=${account.accessToken}`
+    );
+
+    if (!pageRes.ok) {
+      const err = await pageRes.json();
+      return { success: false, error: err.error?.message || "Erro ao buscar página Facebook", timestamp: new Date().toISOString() };
+    }
+
+    const page = await pageRes.json();
+
+    // 2. Buscar insights da página (últimos 28 dias)
+    const insightsRes = await fetch(
+      `https://graph.facebook.com/v19.0/${account.platformUserId}/insights?metric=page_views_total,page_post_engagements,page_impressions&period=days_28&access_token=${account.accessToken}`
+    );
+
+    let pageViews = 0;
+    let engagements = 0;
+    let impressions = 0;
+
+    if (insightsRes.ok) {
+      const insights = await insightsRes.json();
+      for (const metric of insights.data || []) {
+        const lastValue = metric.values?.[metric.values.length - 1]?.value || 0;
+        if (metric.name === "page_views_total") pageViews = lastValue;
+        if (metric.name === "page_post_engagements") engagements = lastValue;
+        if (metric.name === "page_impressions") impressions = lastValue;
+      }
+    }
+
+    return {
+      success: true,
+      data: {
+        followers: page.fan_count || 0,
+        followersGrowth: 0,
+        engagementRate: 0,
+        totalPosts: 0,
+        totalReach: impressions,
+        totalImpressions: impressions,
+        pageViews,
+        pageLikes: page.fan_count || 0,
+        videoViews: 0,
+        reactions: engagements,
+        updatedAt: new Date().toISOString(),
+      },
+      timestamp: new Date().toISOString(),
+    };
+  } catch (err: any) {
+    return { success: false, error: err.message || "Erro desconhecido", timestamp: new Date().toISOString() };
+  }
 }
 
-export async function fetchYouTubeMetrics(_account: SocialAccount): Promise<ApiResponse<YouTubeMetrics>> {
-  // Placeholder — será substituído pela chamada real à YouTube Data API v3
-  return {
-    success: false,
-    error: "YouTube API ainda não configurada. Configure o token de acesso nas configurações.",
-    timestamp: new Date().toISOString(),
-  };
+// ─── YouTube Data API v3 ────────────────────────────────────────────────────
+// Docs: https://developers.google.com/youtube/v3
+
+export async function fetchYouTubeMetrics(account: SocialAccount): Promise<ApiResponse<YouTubeMetrics>> {
+  try {
+    // 1. Buscar dados do canal
+    const channelRes = await fetch(
+      `https://www.googleapis.com/youtube/v3/channels?part=statistics,snippet&id=${account.platformUserId}&access_token=${account.accessToken}`
+    );
+
+    if (!channelRes.ok) {
+      const err = await channelRes.json();
+      return { success: false, error: err.error?.message || "Erro ao buscar canal YouTube", timestamp: new Date().toISOString() };
+    }
+
+    const channelData = await channelRes.json();
+    const channel = channelData.items?.[0];
+
+    if (!channel) {
+      return { success: false, error: "Canal não encontrado", timestamp: new Date().toISOString() };
+    }
+
+    const stats = channel.statistics;
+
+    return {
+      success: true,
+      data: {
+        followers: parseInt(stats.subscriberCount || "0"),
+        followersGrowth: 0,
+        engagementRate: 0,
+        totalPosts: parseInt(stats.videoCount || "0"),
+        totalReach: parseInt(stats.viewCount || "0"),
+        totalImpressions: 0,
+        subscribers: parseInt(stats.subscriberCount || "0"),
+        totalViews: parseInt(stats.viewCount || "0"),
+        watchTimeHours: 0,       // Requer YouTube Analytics API
+        averageViewDuration: 0,  // Requer YouTube Analytics API
+        shortsViews: 0,          // Calculado via listagem de vídeos
+        updatedAt: new Date().toISOString(),
+      },
+      timestamp: new Date().toISOString(),
+    };
+  } catch (err: any) {
+    return { success: false, error: err.message || "Erro desconhecido", timestamp: new Date().toISOString() };
+  }
 }
 
-export async function fetchRecentPosts(_account: SocialAccount, _limit: number = 10): Promise<ApiResponse<SocialPost[]>> {
-  // Placeholder — será substituído pela chamada real
-  return {
-    success: false,
-    error: "API de posts ainda não configurada.",
-    timestamp: new Date().toISOString(),
-  };
+// ─── Buscar Posts Recentes (genérico) ───────────────────────────────────────
+
+export async function fetchRecentPosts(account: SocialAccount, limit: number = 10): Promise<ApiResponse<SocialPost[]>> {
+  switch (account.platform) {
+    case "instagram":
+      return fetchInstagramPosts(account, limit);
+    case "facebook":
+      return fetchFacebookPosts(account, limit);
+    case "youtube":
+      return fetchYouTubePosts(account, limit);
+    default:
+      return { success: false, error: "Plataforma não suportada", timestamp: new Date().toISOString() };
+  }
+}
+
+async function fetchInstagramPosts(account: SocialAccount, limit: number): Promise<ApiResponse<SocialPost[]>> {
+  try {
+    const res = await fetch(
+      `https://graph.facebook.com/v19.0/${account.platformUserId}/media?fields=id,caption,media_type,media_url,thumbnail_url,timestamp,like_count,comments_count&limit=${limit}&access_token=${account.accessToken}`
+    );
+
+    if (!res.ok) {
+      const err = await res.json();
+      return { success: false, error: err.error?.message || "Erro ao buscar posts", timestamp: new Date().toISOString() };
+    }
+
+    const data = await res.json();
+    const posts: SocialPost[] = (data.data || []).map((post: any) => ({
+      id: post.id,
+      platform: "instagram" as const,
+      type: mapInstagramMediaType(post.media_type),
+      caption: post.caption || "",
+      mediaUrl: post.media_url || "",
+      thumbnailUrl: post.thumbnail_url || "",
+      publishedAt: post.timestamp,
+      likes: post.like_count || 0,
+      comments: post.comments_count || 0,
+      shares: 0,
+      reach: 0,
+      impressions: 0,
+      engagementRate: 0,
+    }));
+
+    return { success: true, data: posts, timestamp: new Date().toISOString() };
+  } catch (err: any) {
+    return { success: false, error: err.message, timestamp: new Date().toISOString() };
+  }
+}
+
+async function fetchFacebookPosts(account: SocialAccount, limit: number): Promise<ApiResponse<SocialPost[]>> {
+  try {
+    const res = await fetch(
+      `https://graph.facebook.com/v19.0/${account.platformUserId}/posts?fields=id,message,created_time,full_picture,shares,reactions.summary(true),comments.summary(true)&limit=${limit}&access_token=${account.accessToken}`
+    );
+
+    if (!res.ok) {
+      const err = await res.json();
+      return { success: false, error: err.error?.message || "Erro ao buscar posts", timestamp: new Date().toISOString() };
+    }
+
+    const data = await res.json();
+    const posts: SocialPost[] = (data.data || []).map((post: any) => ({
+      id: post.id,
+      platform: "facebook" as const,
+      type: "text" as const,
+      caption: post.message || "",
+      mediaUrl: post.full_picture || "",
+      thumbnailUrl: post.full_picture || "",
+      publishedAt: post.created_time,
+      likes: post.reactions?.summary?.total_count || 0,
+      comments: post.comments?.summary?.total_count || 0,
+      shares: post.shares?.count || 0,
+      reach: 0,
+      impressions: 0,
+      engagementRate: 0,
+    }));
+
+    return { success: true, data: posts, timestamp: new Date().toISOString() };
+  } catch (err: any) {
+    return { success: false, error: err.message, timestamp: new Date().toISOString() };
+  }
+}
+
+async function fetchYouTubePosts(account: SocialAccount, limit: number): Promise<ApiResponse<SocialPost[]>> {
+  try {
+    // Buscar uploads playlist
+    const channelRes = await fetch(
+      `https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${account.platformUserId}&access_token=${account.accessToken}`
+    );
+    const channelData = await channelRes.json();
+    const uploadsPlaylistId = channelData.items?.[0]?.contentDetails?.relatedPlaylists?.uploads;
+
+    if (!uploadsPlaylistId) {
+      return { success: false, error: "Playlist de uploads não encontrada", timestamp: new Date().toISOString() };
+    }
+
+    // Buscar vídeos recentes
+    const videosRes = await fetch(
+      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=${limit}&access_token=${account.accessToken}`
+    );
+    const videosData = await videosRes.json();
+
+    const videoIds = (videosData.items || []).map((v: any) => v.snippet.resourceId.videoId).join(",");
+
+    // Buscar estatísticas dos vídeos
+    const statsRes = await fetch(
+      `https://www.googleapis.com/youtube/v3/videos?part=statistics,snippet&id=${videoIds}&access_token=${account.accessToken}`
+    );
+    const statsData = await statsRes.json();
+
+    const posts: SocialPost[] = (statsData.items || []).map((video: any) => ({
+      id: video.id,
+      platform: "youtube" as const,
+      type: "video" as const,
+      caption: video.snippet.title || "",
+      mediaUrl: `https://www.youtube.com/watch?v=${video.id}`,
+      thumbnailUrl: video.snippet.thumbnails?.high?.url || "",
+      publishedAt: video.snippet.publishedAt,
+      likes: parseInt(video.statistics.likeCount || "0"),
+      comments: parseInt(video.statistics.commentCount || "0"),
+      shares: 0,
+      reach: parseInt(video.statistics.viewCount || "0"),
+      impressions: parseInt(video.statistics.viewCount || "0"),
+      engagementRate: 0,
+    }));
+
+    return { success: true, data: posts, timestamp: new Date().toISOString() };
+  } catch (err: any) {
+    return { success: false, error: err.message, timestamp: new Date().toISOString() };
+  }
 }
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -127,4 +380,23 @@ function mapDbToSocialAccount(row: any): SocialAccount {
     connectedAt: row.connected_at,
     isActive: row.is_active,
   };
+}
+
+function mapInstagramMediaType(mediaType: string): SocialPost["type"] {
+  switch (mediaType) {
+    case "IMAGE": return "image";
+    case "VIDEO": return "reel";
+    case "CAROUSEL_ALBUM": return "carousel";
+    default: return "image";
+  }
+}
+
+function getDateDaysAgo(days: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() - days);
+  return d.toISOString().split("T")[0];
+}
+
+function getToday(): string {
+  return new Date().toISOString().split("T")[0];
 }

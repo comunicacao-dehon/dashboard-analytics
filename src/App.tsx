@@ -22,6 +22,8 @@ import Teams from "./pages/Teams";
 import Billing from "./pages/Billing";
 import Onboarding from "./pages/Onboarding";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import MetaCallback from "./pages/auth/MetaCallback";
+import GoogleCallback from "./pages/auth/GoogleCallback";
 import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
 
@@ -73,6 +75,8 @@ function Router() {
       <Route path="/" component={Landing} />
       <Route path="/login" component={() => <PublicRoute component={Login} />} />
       <Route path="/verify-otp" component={VerifyOTP} />
+      <Route path="/auth/callback/meta" component={() => <ProtectedRoute component={MetaCallback} />} />
+      <Route path="/auth/callback/google" component={() => <ProtectedRoute component={GoogleCallback} />} />
       
       {/* Protected Routes inside Layout */}
       <Route>

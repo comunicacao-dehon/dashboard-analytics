@@ -1,9 +1,26 @@
 import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
-import { Instagram, Facebook, Youtube, PlusCircle, Activity, Link as LinkIcon } from "lucide-react";
+import { Instagram, Facebook, Youtube, Activity, Link as LinkIcon } from "lucide-react";
 import { motion } from "framer-motion";
+import { startOAuth } from "@/lib/oauth";
+import { toast } from "sonner";
 
 export function EmptyDashboard() {
+  const handleConnect = (platform: "instagram" | "facebook" | "youtube") => {
+    const META_APP_ID = import.meta.env.VITE_META_APP_ID;
+    const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+    if ((platform === "instagram" || platform === "facebook") && !META_APP_ID) {
+      toast.error("Meta App ID não configurado. Adicione VITE_META_APP_ID no arquivo .env");
+      return;
+    }
+    if (platform === "youtube" && !GOOGLE_CLIENT_ID) {
+      toast.error("Google Client ID não configurado. Adicione VITE_GOOGLE_CLIENT_ID no arquivo .env");
+      return;
+    }
+
+    startOAuth(platform);
+  };
+
   return (
     <div className="min-h-screen bg-transparent selection:bg-amber-500/20 font-['Outfit'] pb-20">
       {/* Background Glow */}
@@ -52,7 +69,10 @@ export function EmptyDashboard() {
             </div>
             <h3 className="text-xl font-bold text-white mb-2">Instagram</h3>
             <p className="text-sm text-white/40 mb-8">Conecte seu perfil comercial para analisar Reels, Stories e posts.</p>
-            <Button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl h-12">
+            <Button 
+              onClick={() => handleConnect("instagram")}
+              className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl h-12"
+            >
               <LinkIcon className="w-4 h-4 mr-2" />
               Vincular Conta
             </Button>
@@ -65,7 +85,10 @@ export function EmptyDashboard() {
             </div>
             <h3 className="text-xl font-bold text-white mb-2">Facebook</h3>
             <p className="text-sm text-white/40 mb-8">Gerencie o alcance da sua página e interações do público.</p>
-            <Button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl h-12">
+            <Button 
+              onClick={() => handleConnect("facebook")}
+              className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl h-12"
+            >
               <LinkIcon className="w-4 h-4 mr-2" />
               Vincular Conta
             </Button>
@@ -78,7 +101,10 @@ export function EmptyDashboard() {
             </div>
             <h3 className="text-xl font-bold text-white mb-2">YouTube</h3>
             <p className="text-sm text-white/40 mb-8">Analise o desempenho dos seus vídeos longos e Shorts.</p>
-            <Button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl h-12">
+            <Button 
+              onClick={() => handleConnect("youtube")}
+              className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl h-12"
+            >
               <LinkIcon className="w-4 h-4 mr-2" />
               Vincular Conta
             </Button>
