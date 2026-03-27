@@ -109,7 +109,7 @@ export default function Login() {
               </div>
               
               <h1 className="text-white text-2xl md:text-3xl font-bold tracking-tight mb-3">
-                Painel Analytics Dehon
+                Painel Utxica
               </h1>
               
               <p className="text-amber-200/60 text-base italic font-['Crimson_Text'] tracking-wide">
@@ -263,7 +263,7 @@ export default function Login() {
       )}
 
       <div className="mb-8 mt-10 opacity-40 text-center">
-        <p className="text-[10px] uppercase tracking-[0.4em] text-white">Painel Analítico · Conventinho SCJ</p>
+        <p className="text-[10px] uppercase tracking-[0.4em] text-white">Painel Utxica · Conventinho SCJ</p>
       </div>
     </div>
   );

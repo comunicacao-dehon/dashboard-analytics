@@ -41,7 +41,7 @@ export default function Landing() {
             <div className="w-8 h-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center border border-primary/30 shadow-[0_0_15px_rgba(245,158,11,0.3)]">
               <Activity size={18} className="text-primary" />
             </div>
-            <span className="font-bold text-xl tracking-tight">Analytics<span className="text-primary">.ai</span></span>
+            <span className="font-bold text-xl tracking-tight">Utxica</span>
           </div>
           
           <div className="hidden md:flex items-center gap-6">
@@ -251,7 +251,7 @@ export default function Landing() {
                       <p className="text-xs text-primary/80">Especialista de Marketing</p>
                     </div>
                   </div>
-                  <p className="text-sm text-foreground/80 italic font-medium">"{i === 1 ? "O Analytics.ai mudou completamente como entregamos resultados. A análise por IA é impressionante e super precisa." : "Excelente plataforma. Centralizou todo nosso trabalho e agora não perdemos horas montando planilhas manuais."}"</p>
+                  <p className="text-sm text-foreground/80 italic font-medium">"{i === 1 ? "A Utxica mudou completamente como entregamos resultados. A análise por IA é impressionante e super precisa." : "Excelente plataforma. Centralizou todo nosso trabalho e agora não perdemos horas montando planilhas manuais."}"</p>
                 </div>
               ))}
             </div>
@@ -264,14 +264,14 @@ export default function Landing() {
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
             <Activity className="text-primary w-6 h-6" />
-            <span className="font-bold text-lg">Analytics<span className="text-primary">.ai</span></span>
+            <span className="font-bold text-lg">Utxica</span>
           </div>
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
             <a href="#" className="hover:text-primary transition-colors">Termos</a>
             <a href="#" className="hover:text-primary transition-colors">Privacidade</a>
             <a href="#" className="hover:text-primary transition-colors">Contato</a>
           </div>
-          <p className="text-sm text-muted-foreground">© 2026 Analytics.ai. Todos os direitos reservados.</p>
+          <p className="text-sm text-muted-foreground">© 2026 Utxica. Todos os direitos reservados.</p>
         </div>
       </footer>
     </div>

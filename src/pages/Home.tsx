@@ -179,13 +179,13 @@ export default function Home() {
           <motion.div variants={slideUp} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
             <Link href="/comparison">
               <Button size="lg" className="rounded-xl px-8 h-12 text-base shadow-[0_0_20px_rgba(245,158,11,0.2)] bg-amber-500 hover:bg-amber-600 text-[#050505] font-black uppercase tracking-widest">
-                Analytics Global
+                Visão Global
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
             <Link href="/insights">
               <Button size="lg" variant="outline" className="rounded-xl px-8 h-12 text-base border-white/20 text-white font-bold bg-white/[0.04] hover:bg-white/[0.08] uppercase tracking-widest">
-                Dehon IA
+                Utxica IA
               </Button>
             </Link>
           </motion.div>
@@ -342,7 +342,7 @@ export default function Home() {
           <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
             <Activity className="w-4 h-4 text-amber-500" />
           </div>
-          <p>© 2026 Dehon Analytics · Conventinho SCJ. Todos os direitos reservados.</p>
+          <p>© 2026 Utxica · Conventinho SCJ. Todos os direitos reservados.</p>
         </div>
       </footer>
     </div>
