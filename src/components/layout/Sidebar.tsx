@@ -15,13 +15,16 @@ import {
   User,
   Users,
   Activity,
+  Link2,
+  HelpCircle,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
-const navItems = [
+// ── Analytics section
+const analyticsItems = [
   { label: "Visão Geral", href: "/dashboard", icon: LayoutDashboard },
   { label: "Métricas", href: "/metrics", icon: Activity },
   { label: "Instagram", href: "/instagram", icon: Instagram },
@@ -31,6 +34,13 @@ const navItems = [
   { label: "Insights", href: "/insights", icon: Lightbulb },
   { label: "Relatórios", href: "/reports", icon: FileText },
   { label: "Equipe", href: "/teams", icon: Users },
+];
+
+// ── Account section (available for ALL users)
+const accountItems = [
+  { label: "Perfil", href: "/profile", icon: User },
+  { label: "Conexões", href: "/connections", icon: Link2 },
+  { label: "Configurações", href: "/settings", icon: Settings },
 ];
 
 const platformStyle: Record<string, { bg: string; glow: string; text: string }> = {
@@ -51,6 +61,63 @@ const platformStyle: Record<string, { bg: string; glow: string; text: string }> 
   },
 };
 
+function NavItem({ item, location, collapsed }: { item: typeof analyticsItems[0]; location: string; collapsed: boolean }) {
+  const isActive = item.href === "/" ? location === "/" : location.startsWith(item.href);
+  const style = platformStyle[item.href];
+
+  return (
+    <Link key={item.href} href={item.href}>
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className={cn(
+          "flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300 group relative",
+          isActive
+            ? "bg-amber-500/10 text-amber-500 shadow-[0_4px_20px_-5px_rgba(245,158,11,0.3)] ring-1 ring-amber-500/20"
+            : "hover:bg-white/[0.06] text-white/50 hover:text-white"
+        )}
+      >
+        {style && !isActive ? (
+          <div className={cn(
+            "w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300",
+            style.bg, style.text,
+            "group-hover:ring-2 group-hover:ring-white/20 group-hover:scale-110"
+          )}>
+            <item.icon className="w-3.5 h-3.5" />
+          </div>
+        ) : (
+          <item.icon
+            className={cn(
+              "w-5 h-5 shrink-0 transition-colors drop-shadow-sm",
+              isActive ? "text-amber-500" : "group-hover:text-amber-500/70"
+            )}
+          />
+        )}
+        <AnimatePresence>
+          {!collapsed && (
+            <motion.span
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -8 }}
+              transition={{ duration: 0.15 }}
+              className="text-sm font-medium whitespace-nowrap overflow-hidden"
+            >
+              {item.label}
+            </motion.span>
+          )}
+        </AnimatePresence>
+        {collapsed && (
+          <div className="absolute left-full ml-2 pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50">
+            <div className="bg-[#050505] border border-white/10 text-sm text-white px-3 py-1.5 rounded-xl shadow-2xl shadow-black whitespace-nowrap">
+              {item.label}
+            </div>
+          </div>
+        )}
+      </motion.div>
+    </Link>
+  );
+}
+
 export function Sidebar() {
   const [location, setLocation] = useLocation();
   const [collapsed, setCollapsed] = useState(false);
@@ -70,12 +137,7 @@ export function Sidebar() {
           className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center overflow-hidden shrink-0 shadow-[0_0_15px_rgba(245,158,11,0.2)]"
         >
           {user?.email?.toLowerCase() === 'comunicacao@conventinho.com' ? (
-            <img
-              src="/logo.png"
-              alt="Logo"
-              loading="lazy"
-              className="w-5 h-5 object-contain"
-            />
+            <img src="/logo.png" alt="Logo" loading="lazy" className="w-5 h-5 object-contain" />
           ) : (
             <Activity className="w-4 h-4 text-amber-500" />
           )}
@@ -95,76 +157,36 @@ export function Sidebar() {
         </AnimatePresence>
       </div>
 
-      {/* Nav Items */}
+      {/* Analytics Nav */}
       <nav className="flex-1 py-4 px-2 flex flex-col gap-1 overflow-y-auto">
-        {navItems.map((item) => {
-          const isActive =
-            item.href === "/"
-              ? location === "/"
-              : location.startsWith(item.href);
-          const isSocial = !!platformStyle[item.href];
+        {analyticsItems.map((item) => (
+          <NavItem key={item.href} item={item} location={location} collapsed={collapsed} />
+        ))}
 
-          return (
-            <Link key={item.href} href={item.href}>
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300 group relative",
-                  isActive
-                    ? "bg-amber-500/10 text-amber-500 shadow-[0_4px_20px_-5px_rgba(245,158,11,0.3)] ring-1 ring-amber-500/20"
-                    : "hover:bg-white/[0.06] text-white/50 hover:text-white"
-                )}
-              >
-                {(() => {
-                  const style = platformStyle[item.href];
-                  if (style && !isActive) {
-                    return (
-                      <div className={cn(
-                        "w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300",
-                        style.bg, style.text,
-                        "group-hover:ring-2 group-hover:ring-white/20 group-hover:scale-110"
-                      )}>
-                        <item.icon className="w-3.5 h-3.5" />
-                      </div>
-                    );
-                  }
-                  return (
-                    <item.icon
-                      className={cn(
-                        "w-5 h-5 shrink-0 transition-colors drop-shadow-sm",
-                        isActive ? "text-amber-500" : "group-hover:text-amber-500/70"
-                      )}
-                    />
-                  );
-                })()}
-                <AnimatePresence>
-                  {!collapsed && (
-                    <motion.span
-                      initial={{ opacity: 0, x: -8 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -8 }}
-                      transition={{ duration: 0.15 }}
-                      className="text-sm font-medium whitespace-nowrap overflow-hidden"
-                    >
-                      {item.label}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-                {/* Tooltip when collapsed */}
-                {collapsed && (
-                  <div className="absolute left-full ml-2 pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50">
-                    <div className="bg-[#050505] border border-white/10 text-sm text-white px-3 py-1.5 rounded-xl shadow-2xl shadow-black whitespace-nowrap">
-                      {item.label}
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            </Link>
-          );
-        })}
+        {/* Separator */}
+        <div className="my-3 mx-3 border-t border-white/[0.06]" />
+
+        {/* Section header */}
+        <AnimatePresence>
+          {!collapsed && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="text-[9px] font-black text-white/30 uppercase tracking-[0.2em] px-3 mb-1"
+            >
+              Conta
+            </motion.p>
+          )}
+        </AnimatePresence>
+
+        {/* Account Nav */}
+        {accountItems.map((item) => (
+          <NavItem key={item.href} item={item} location={location} collapsed={collapsed} />
+        ))}
       </nav>
 
+      {/* Logout */}
       <div className="px-2 pb-4">
         <button
           onClick={async () => {
@@ -194,11 +216,7 @@ export function Sidebar() {
         onClick={() => setCollapsed((c) => !c)}
         className="flex items-center justify-center m-3 p-2 rounded-xl hover:bg-white/[0.06] transition-colors text-white/40 hover:text-white border-t border-white/[0.08]"
       >
-        {collapsed ? (
-          <ChevronRight className="w-4 h-4" />
-        ) : (
-          <ChevronLeft className="w-4 h-4" />
-        )}
+        {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
       </button>
     </motion.aside>
   );

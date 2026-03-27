@@ -94,7 +94,8 @@ function Router() {
             <Route path="/teams" component={() => <ProtectedRoute component={Teams} />} />
             <Route path="/billing" component={() => <ProtectedRoute component={Billing} />} />
             <Route path="/onboarding" component={() => <ProtectedRoute component={Onboarding} />} />
-            <Route path="/settings" component={() => <ProtectedRoute component={Settings} />} />
+            <Route path="/settings" component={() => <ProtectedRoute component={Profile} />} />
+            <Route path="/connections" component={() => <ProtectedRoute component={Profile} />} />
             <Route path="/profile" component={() => <ProtectedRoute component={Profile} />} />
             <Route path="/404" component={NotFound} />
             <Route component={NotFound} />
