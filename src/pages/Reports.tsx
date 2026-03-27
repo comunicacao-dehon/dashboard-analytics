@@ -8,8 +8,17 @@ import { ReportMetricCard } from "@/components/reports/ReportMetricCard";
 import { PostCard } from "@/components/reports/PostCard";
 import { EngagementChart } from "@/components/reports/EngagementChart";
 import { PerformanceAnalysis } from "@/components/reports/PerformanceAnalysis";
+import { useAuth } from "@/contexts/AuthContext";
+import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 
 export default function Reports() {
+  const { user } = useAuth();
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.com';
+
+  if (!isConventinho) {
+    return <EmptyPlatformState platform="Relatórios" icon={<FileText className="w-8 h-8 text-amber-500" />} description="Vincule suas redes sociais para gerar relatórios consolidados com análise de IA." />;
+  }
+
   const topPosts = [
     { previewText: "Votos Perpétuos - Um chamado para a eternidade", reach: "9,974", interactions: "996", followersGained: "2", rank: 1 },
     { previewText: "Testemunho: Como descobri minha vocação", reach: "3,210", interactions: "412", followersGained: "1", rank: 2 },

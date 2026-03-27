@@ -67,9 +67,16 @@ const periods = [
   { label: "30 Dias", days: 30 },
   { label: "Este Ano", days: 365 }
 ];
+import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 
 export default function Metrics() {
   const { user } = useAuth();
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.com';
+
+  if (!isConventinho) {
+    return <EmptyPlatformState platform="Métricas Globais" icon={<Activity className="w-8 h-8 text-amber-500" />} description="Vincule suas redes sociais para acessar métricas detalhadas de seguidores, alcance e engajamento." />;
+  }
+
   const [selectedPlatform, setSelectedPlatform] = useState<Platform>("instagram");
   const [selectedPeriod, setSelectedPeriod] = useState<number>(30);
   const [loading, setLoading] = useState(true);
