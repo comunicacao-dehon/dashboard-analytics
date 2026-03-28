@@ -11,32 +11,10 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from "recharts";
 
-// ─── Dados gerais ─────────────────────────────────────────────────────────────
-const followersData = [
-  { month: "Out", value: 3100 },
-  { month: "Nov", value: 3250 },
-  { month: "Dez", value: 3350 },
-  { month: "Jan", value: 3450 },
-  { month: "Fev", value: 3590 },
-  { month: "Mar", value: 3720 },
-];
-
-const reachData = [
-  { week: "Sem 1", value: 8400 },
-  { week: "Sem 2", value: 11200 },
-  { week: "Sem 3", value: 9800 },
-  { week: "Sem 4", value: 14500 },
-  { week: "Sem 5", value: 13100 },
-  { week: "Sem 6", value: 16800 },
-];
-
-const topPosts = [
-  { title: "Reflexão do Domingo", reach: 4200, engagement: 380 },
-  { title: "Votos Perpétuos 2026", reach: 3800, engagement: 312 },
-  { title: "Novena de São Francisco", reach: 2900, engagement: 267 },
-  { title: "Encontro de Jovens", reach: 2100, engagement: 198 },
-  { title: "Missa das Famílias", reach: 1850, engagement: 143 },
-];
+// ─── Dados gerais limpos (Aguradando motor de sincronização) ────────────────────
+const followersData: any[] = [];
+const reachData: any[] = [];
+const topPosts: any[] = [];
 
 const tooltipStyle = {
   contentStyle: {
@@ -47,31 +25,12 @@ const tooltipStyle = {
   },
 };
 
-// ─── Mock Data — Facebook Analytics (16 fev – 13 mar) ────────────────────────
-// Datas de exibição no eixo X (a cada 4 dias aprox.)
-const dates: string[] = [
-  "16/02","19/02","22/02","25/02","28/02",
-  "03/03","06/03","09/03","13/03",
-];
-
-function makeData(values: number[]): FacebookAnalyticsDataPoint[] {
-  return dates.map((date, i) => ({ date, value: values[i] ?? 0 }));
-}
-
-// 1. Seguidores da página  — valor final: 5 · ↓ 61,5%
-const fbFollowersData = makeData([14, 12, 11, 9, 8, 7, 6, 6, 5]);
-
-// 2. Visitas à página  — valor final: 486 · ↑ 91,3%
-const fbVisitsData = makeData([254, 298, 320, 360, 390, 420, 445, 468, 486]);
-
-// 3. Cliques no link  — valor final: 2 · ↑ 100%
-const fbClicksData = makeData([0, 0, 1, 0, 1, 0, 1, 2, 2]);
-
-// 4. Interações  — valor final: 1.4 k · ↑ 103,7%
-const fbInteractionsData = makeData([690, 780, 850, 950, 1050, 1120, 1220, 1340, 1400]);
-
-// 5. Visualizações  — valor final: 37.1 k · ↑ 52,3%
-const fbViewsData = makeData([24380, 26100, 27900, 29800, 31200, 33000, 34500, 36100, 37100]);
+// ─── Arrays Limpos (Substituídos por dados reais da API ou Arrays Vazios) ─────────────────
+const fbFollowersData: FacebookAnalyticsDataPoint[] = [];
+const fbVisitsData: FacebookAnalyticsDataPoint[] = [];
+const fbClicksData: FacebookAnalyticsDataPoint[] = [];
+const fbInteractionsData: FacebookAnalyticsDataPoint[] = [];
+const fbViewsData: FacebookAnalyticsDataPoint[] = [];
 
 const analyticsMetrics = [
   {
@@ -241,7 +200,7 @@ export default function Facebook() {
           <TabsContent value="analytics">
             <div className="mb-4">
               <p className="text-sm text-muted-foreground">
-                Período: <span className="font-medium text-foreground">16 de fevereiro a 13 de março</span> · Dados mockados, preparados para integração com a API da Meta.
+                <span className="font-medium text-foreground">Sincronização Ativa</span> · O histórico do motor de telemetria é populado diaramente.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">

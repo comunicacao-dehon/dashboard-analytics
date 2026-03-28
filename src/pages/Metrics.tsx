@@ -124,43 +124,16 @@ export default function Metrics() {
       const data = await metricsService.getMetricsByPlatform(selectedPlatform, user!.id, startDateStr, endDateStr);
       
       if (!data || data.length === 0) {
-        generateMockData();
+        setMetrics([]);
       } else {
         setMetrics(data);
       }
     } catch (error) {
       console.error("Erro ao carregar métricas:", error);
-      generateMockData(); 
+      setMetrics([]); 
     } finally {
       setLoading(false);
     }
-  };
-
-  const generateMockData = () => {
-    const mockData: Metric[] = [];
-    const now = new Date();
-    for (let i = selectedPeriod; i >= 0; i--) {
-      const d = new Date(now);
-      d.setDate(now.getDate() - i);
-      
-      let baseVal = selectedPlatform === "instagram" ? 5000 : selectedPlatform === "facebook" ? 3000 : 1000;
-      let multiplier = 1 + (Math.random() * 0.2); 
-
-      mockData.push({
-        id: `mock-${i}`,
-        account_id: "mock-account",
-        platform: selectedPlatform,
-        date: d.toISOString().split('T')[0],
-        followers: Math.floor(baseVal * (1 + (selectedPeriod - i) * 0.01)),
-        reach: Math.floor(baseVal * 0.8 * multiplier),
-        impressions: Math.floor(baseVal * 1.5 * multiplier),
-        engagement: Math.floor(baseVal * 0.1 * multiplier),
-        clicks: Math.floor(baseVal * 0.05 * multiplier),
-        views: Math.floor(baseVal * 2 * multiplier),
-        created_at: new Date().toISOString()
-      });
-    }
-    setMetrics(mockData);
   };
 
   const currentMetrics = metrics.length > 0 ? metrics[metrics.length - 1] : null;

@@ -2,15 +2,8 @@ import { AnimatedCard } from "@/components/AnimatedCard";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { TrendingUp } from "lucide-react";
 
-// Mock data representing follower evolution over a period
-const data = [
-  { date: "15 Fev", followers: 17200 },
-  { date: "20 Fev", followers: 17350 },
-  { date: "25 Fev", followers: 17310 },
-  { date: "02 Mar", followers: 17480 },
-  { date: "07 Mar", followers: 17590 },
-  { date: "12 Mar", followers: 17656 },
-];
+// Variável limpa (Aguardando motor de sincronização)
+const data: any[] = [];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
