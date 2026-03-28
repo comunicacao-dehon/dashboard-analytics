@@ -32,6 +32,8 @@ import { cn } from "@/lib/utils";
 
 import { startOAuth } from "@/lib/oauth";
 import { Link as LinkIcon, Instagram, Facebook, Youtube, Globe } from "lucide-react";
+import { getConnectedAccounts } from "@/services/socialService";
+import type { SocialAccount } from "@/types/social";
 
 type Tab = 'minha-conta' | 'senha' | 'empresa' | 'preferencias' | 'conexoes';
 
@@ -64,6 +66,7 @@ export default function Profile() {
   
   // Profile fields
   const [user, setUser] = useState<any>(null);
+  const [accounts, setAccounts] = useState<SocialAccount[]>([]);
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -86,12 +89,17 @@ export default function Profile() {
       if (user) {
         setUser(user);
         setEmail(user.email || "");
-        setFullName(user.user_metadata?.full_name || "");
+        
+        const userAccounts = await getConnectedAccounts(user.id);
+        setAccounts(userAccounts);
+        const primaryAccount = userAccounts[0];
+
+        setFullName(user.user_metadata?.full_name || primaryAccount?.displayName || "");
         setPhone(user.user_metadata?.phone || "");
         setRole(user.user_metadata?.role || "");
         setLocationName(user.user_metadata?.location || "");
         setBio(user.user_metadata?.bio || "");
-        setAvatarUrl(user.user_metadata?.avatar_url || "");
+        setAvatarUrl(user.user_metadata?.avatar_url || primaryAccount?.profilePictureUrl || "");
       }
     } catch (error: any) {
       toast.error("Erro ao carregar perfil");

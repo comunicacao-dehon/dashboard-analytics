@@ -4,6 +4,10 @@ import { staggerContainer, slideUp } from "@/lib/animations";
 import { AnimatedCard } from "@/components/AnimatedCard";
 import { EngagementComparisonChart } from "@/components/charts/EngagementComparisonChart";
 import { SocialGrowthChart } from "@/components/charts/SocialGrowthChart";
+import { useState, useEffect } from "react";
+import { getConnectedAccounts } from "@/services/socialService";
+import type { SocialAccount } from "@/types/social";
+import { Activity } from "lucide-react";
 import {
   RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip, Legend,
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
@@ -43,9 +47,34 @@ import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 
 export default function Comparison() {
   const { user } = useAuth();
-  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
+  const [accounts, setAccounts] = useState<SocialAccount[]>([]);
+  const [loadingAccounts, setLoadingAccounts] = useState(true);
 
-  if (!isConventinho) {
+  useEffect(() => {
+    async function load() {
+      if (!user) {
+        setLoadingAccounts(false);
+        return;
+      }
+      const result = await getConnectedAccounts(user.id);
+      setAccounts(result);
+      setLoadingAccounts(false);
+    }
+    load();
+  }, [user]);
+
+  if (loadingAccounts) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Activity className="w-8 h-8 text-amber-500 animate-pulse" />
+      </div>
+    );
+  }
+
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
+  const hasMultipleAccounts = accounts.length >= 2;
+
+  if (!isConventinho && !hasMultipleAccounts) {
     return <EmptyPlatformState platform="Comparação de Plataformas" icon={<BarChart2 className="w-8 h-8 text-amber-500" />} description="Vincule pelo menos duas redes sociais para comparar o desempenho entre as plataformas." />;
   }
 

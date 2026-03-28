@@ -8,14 +8,42 @@ import { ReportMetricCard } from "@/components/reports/ReportMetricCard";
 import { PostCard } from "@/components/reports/PostCard";
 import { EngagementChart } from "@/components/reports/EngagementChart";
 import { PerformanceAnalysis } from "@/components/reports/PerformanceAnalysis";
+import { useState, useEffect } from "react";
+import { getConnectedAccounts } from "@/services/socialService";
+import type { SocialAccount } from "@/types/social";
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 
 export default function Reports() {
   const { user } = useAuth();
-  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
+  const [accounts, setAccounts] = useState<SocialAccount[]>([]);
+  const [loadingAccounts, setLoadingAccounts] = useState(true);
 
-  if (!isConventinho) {
+  useEffect(() => {
+    async function load() {
+      if (!user) {
+        setLoadingAccounts(false);
+        return;
+      }
+      const result = await getConnectedAccounts(user.id);
+      setAccounts(result);
+      setLoadingAccounts(false);
+    }
+    load();
+  }, [user]);
+
+  if (loadingAccounts) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Activity className="w-8 h-8 text-amber-500 animate-pulse" />
+      </div>
+    );
+  }
+
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
+  const hasAccounts = accounts.length > 0;
+
+  if (!isConventinho && !hasAccounts) {
     return <EmptyPlatformState platform="Relatórios" icon={<FileText className="w-8 h-8 text-amber-500" />} description="Vincule suas redes sociais para gerar relatórios consolidados com análise de IA." />;
   }
 

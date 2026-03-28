@@ -53,122 +53,13 @@ export default function Home() {
     return <EmptyDashboard />;
   }
 
-  // ─── Dashboard for users with real connected accounts ───────────────────────
-  // PRIORIDADE: Se tiver contas reais, mostra o dashboard real (mesmo para o Conventinho)
-  if (hasAccounts) {
-    return (
-      <div className="min-h-screen bg-transparent selection:bg-amber-500/20 font-['Outfit'] pb-20">
-        <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-br from-amber-500/5 via-transparent to-transparent opacity-50 pointer-events-none -z-10 blur-3xl" />
-
-        <div className="container pt-10">
-          <motion.h1
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-3xl font-black text-white mb-2"
-          >
-            Seu Painel
-          </motion.h1>
-          <p className="text-white/40 mb-8 text-sm">
-            {accounts.length} conta{accounts.length > 1 ? "s" : ""} conectada{accounts.length > 1 ? "s" : ""}
-          </p>
-
-          {/* Connected Accounts Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-            {accounts.map((acc) => (
-              <motion.div
-                key={acc.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={cn(
-                  "glass-dark border rounded-2xl p-6 flex items-center gap-4",
-                  acc.platform === "instagram" && "border-pink-500/30 hover:border-pink-500/60",
-                  acc.platform === "facebook" && "border-blue-500/30 hover:border-blue-500/60",
-                  acc.platform === "youtube" && "border-red-500/30 hover:border-red-500/60",
-                  "transition-all"
-                )}
-              >
-                {acc.profilePictureUrl ? (
-                  <img
-                    src={acc.profilePictureUrl}
-                    alt={acc.displayName}
-                    className={cn(
-                      "w-14 h-14 rounded-full object-cover border-2",
-                      acc.platform === "instagram" && "border-pink-500/40",
-                      acc.platform === "facebook" && "border-blue-500/40",
-                    )}
-                  />
-                ) : (
-                  <div className={cn(
-                    "w-14 h-14 rounded-full flex items-center justify-center",
-                    acc.platform === "instagram" && "bg-gradient-to-br from-pink-500 to-purple-600",
-                    acc.platform === "facebook" && "bg-blue-600",
-                    acc.platform === "youtube" && "bg-red-600",
-                  )}>
-                    {acc.platform === "instagram" && <Instagram className="w-7 h-7 text-white" />}
-                    {acc.platform === "facebook" && <Facebook className="w-7 h-7 text-white" />}
-                    {acc.platform === "youtube" && <Youtube className="w-7 h-7 text-white" />}
-                  </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    {acc.platform === "instagram" && <Instagram className="w-3.5 h-3.5 text-pink-400" />}
-                    {acc.platform === "facebook" && <Facebook className="w-3.5 h-3.5 text-blue-400" />}
-                    {acc.platform === "youtube" && <Youtube className="w-3.5 h-3.5 text-red-400" />}
-                    <span className={cn(
-                      "text-xs font-bold uppercase tracking-wide",
-                      acc.platform === "instagram" && "text-pink-400",
-                      acc.platform === "facebook" && "text-blue-400",
-                      acc.platform === "youtube" && "text-red-400",
-                    )}>
-                      {acc.platform}
-                    </span>
-                  </div>
-                  <p className="text-white font-bold truncate">{acc.displayName}</p>
-                  <p className="text-white/40 text-xs truncate">@{acc.username}</p>
-                </div>
-                <div className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0" title="Conectado" />
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Metrics coming soon notice */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="glass-dark border border-amber-500/20 rounded-2xl p-8 text-center"
-          >
-            <Activity className="w-10 h-10 text-amber-500 mx-auto mb-4 animate-pulse" />
-            <h2 className="text-xl font-bold text-white mb-2">Métricas sendo carregadas</h2>
-            <p className="text-sm text-white/40 max-w-md mx-auto mb-4">
-              Suas contas estão conectadas! As métricas detalhadas estão sendo sincronizadas.
-              Acesse a aba de cada plataforma no menu lateral para ver os dados.
-            </p>
-            <div className="flex flex-wrap gap-3 justify-center">
-              {igAccount && (
-                <Link href="/instagram">
-                  <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-pink-500/10 border border-pink-500/20 text-pink-400 text-sm hover:bg-pink-500/20 transition-all">
-                    <Instagram className="w-4 h-4" />
-                    Ver Instagram
-                  </button>
-                </Link>
-              )}
-              {fbAccount && (
-                <Link href="/facebook">
-                  <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm hover:bg-blue-500/20 transition-all">
-                    <Facebook className="w-4 h-4" />
-                    Ver Facebook
-                  </button>
-                </Link>
-              )}
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    );
-  }
+  // ─── Dashboard ──────────────────────────────────────────────────────────────
 
   const avatarUrl = user?.user_metadata?.avatar_url;
+  const primaryAccount = accounts[0];
+  const displayAvatar = primaryAccount?.profilePictureUrl || avatarUrl || "/logo.png";
+  const displayName = primaryAccount?.displayName || user?.user_metadata?.full_name || "Seu Projeto";
+  const displayUsername = primaryAccount?.username ? `@${primaryAccount.username}` : (user?.email || "");
 
   const instagramMetrics = [
     { label: "Seguidores", value: "5.395", icon: Heart, trend: "+12%", href: "/instagram" },
@@ -222,10 +113,10 @@ export default function Home() {
               <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 rounded-[1.5rem] border border-white/10 bg-white/5 backdrop-blur-md shadow-xl flex items-center justify-center overflow-hidden hover:-translate-y-1 hover:shadow-2xl transition-all duration-500 cursor-pointer group/avatar relative">
                 <div className="absolute inset-0 bg-amber-500/20 opacity-0 group-hover/avatar:opacity-100 transition-opacity blur-xl z-0" />
                 <img
-                  src="/logo.png"
-                  alt="Logotipo"
+                  src={displayAvatar}
+                  alt={displayName}
                   loading="lazy"
-                  className="w-full h-full object-contain p-2 group-hover/avatar:scale-110 transition-transform duration-500 relative z-10 brightness-110"
+                  className={cn("w-full h-full transition-transform duration-500 relative z-10 brightness-110", displayAvatar === "/logo.png" ? "object-contain p-2 group-hover/avatar:scale-110" : "object-cover")}
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                     e.currentTarget.parentElement!.innerHTML = '<span class="text-4xl text-primary font-bold">C</span>';
@@ -233,8 +124,8 @@ export default function Home() {
                 />
               </div>
               <div className="text-center sm:text-left">
-                <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">Conventinho</h1>
-                <p className="text-base font-medium text-muted-foreground mt-0.5">@amigosdocoracao_conventinho</p>
+                <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">{displayName}</h1>
+                <p className="text-base font-medium text-muted-foreground mt-0.5">{displayUsername}</p>
               </div>
             </div>
             <div className="flex flex-col items-end gap-3 shrink-0">
@@ -271,6 +162,72 @@ export default function Home() {
           </div>
         </motion.div>
       </section>
+
+      {/* Connected Accounts Cards */}
+      {hasAccounts && (
+        <section className="container pb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {accounts.map((acc, i) => (
+              <motion.div
+                key={acc.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+                onClick={() => window.location.href = `/${acc.platform === 'youtube' ? 'youtube' : acc.platform === 'facebook' ? 'facebook' : 'instagram'}`}
+                className={cn(
+                  "cursor-pointer glass-dark border rounded-2xl p-6 flex items-center gap-4 group",
+                  acc.platform === "instagram" && "border-pink-500/30 hover:border-pink-500/60 shadow-[0_0_15px_transparent] hover:shadow-[0_0_15px_rgba(236,72,153,0.15)]",
+                  acc.platform === "facebook" && "border-blue-500/30 hover:border-blue-500/60 shadow-[0_0_15px_transparent] hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]",
+                  acc.platform === "youtube" && "border-red-500/30 hover:border-red-500/60 shadow-[0_0_15px_transparent] hover:shadow-[0_0_15px_rgba(239,68,68,0.15)]",
+                  "transition-all duration-300"
+                )}
+              >
+                {acc.profilePictureUrl ? (
+                  <img
+                    src={acc.profilePictureUrl}
+                    alt={acc.displayName}
+                    className={cn(
+                      "w-14 h-14 rounded-full object-cover border-2 group-hover:scale-105 transition-transform",
+                      acc.platform === "instagram" && "border-pink-500/40",
+                      acc.platform === "facebook" && "border-blue-500/40",
+                      acc.platform === "youtube" && "border-red-500/40",
+                    )}
+                  />
+                ) : (
+                  <div className={cn(
+                    "w-14 h-14 rounded-full flex items-center justify-center group-hover:scale-105 transition-transform",
+                    acc.platform === "instagram" && "bg-gradient-to-br from-pink-500 to-purple-600",
+                    acc.platform === "facebook" && "bg-blue-600",
+                    acc.platform === "youtube" && "bg-red-600",
+                  )}>
+                    {acc.platform === "instagram" && <Instagram className="w-7 h-7 text-white" />}
+                    {acc.platform === "facebook" && <Facebook className="w-7 h-7 text-white" />}
+                    {acc.platform === "youtube" && <Youtube className="w-7 h-7 text-white" />}
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    {acc.platform === "instagram" && <Instagram className="w-3.5 h-3.5 text-pink-400" />}
+                    {acc.platform === "facebook" && <Facebook className="w-3.5 h-3.5 text-blue-400" />}
+                    {acc.platform === "youtube" && <Youtube className="w-3.5 h-3.5 text-red-400" />}
+                    <span className={cn(
+                      "text-xs font-bold uppercase tracking-wide",
+                      acc.platform === "instagram" && "text-pink-400",
+                      acc.platform === "facebook" && "text-blue-400",
+                      acc.platform === "youtube" && "text-red-400",
+                    )}>
+                      {acc.platform}
+                    </span>
+                  </div>
+                  <p className="text-white font-bold truncate">{acc.displayName}</p>
+                  <p className="text-white/40 text-xs truncate">@{acc.username}</p>
+                </div>
+                <div className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0" title="Conectado" />
+              </motion.div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Platform Quick Links */}
       <section className="container pb-6">
