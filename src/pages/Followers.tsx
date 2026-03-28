@@ -15,13 +15,19 @@ import { FollowersDetailsPanel } from "@/components/followers/FollowersDetailsPa
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 import { Instagram } from "lucide-react";
-import { getConnectedAccounts } from "@/services/socialService";
-import type { SocialAccount } from "@/types/social";
+import { getConnectedAccounts, fetchInstagramMetrics } from "@/services/socialService";
+import type { SocialAccount, InstagramMetrics } from "@/types/social";
+
+// Helper function to format big numbers
+const formatCompactValue = (num: number) => 
+  new Intl.NumberFormat('pt-BR', { notation: "compact", maximumFractionDigits: 1 }).format(num);
 
 export default function Followers() {
   const { user } = useAuth();
   const [accounts, setAccounts] = useState<SocialAccount[]>([]);
   const [loading, setLoading] = useState(true);
+  const [metrics, setMetrics] = useState<InstagramMetrics | null>(null);
+  const [isFetchingMetrics, setIsFetchingMetrics] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -29,6 +35,16 @@ export default function Followers() {
       const result = await getConnectedAccounts(user.id);
       setAccounts(result);
       setLoading(false);
+
+      const igAccount = result.find(a => a.platform === "instagram");
+      if (igAccount) {
+        setIsFetchingMetrics(true);
+        const igData = await fetchInstagramMetrics(igAccount);
+        if (igData.success && igData.data) {
+          setMetrics(igData.data);
+        }
+        setIsFetchingMetrics(false);
+      }
     }
     load();
   }, [user]);
@@ -126,7 +142,9 @@ export default function Followers() {
                   </div>
                   <div>
                     <h3 className="text-base font-semibold text-muted-foreground uppercase tracking-wider">Total de Seguidores</h3>
-                    <div className="text-5xl md:text-6xl font-extrabold tracking-tight text-foreground mt-1">5.395</div>
+                    <div className="text-5xl md:text-6xl font-extrabold tracking-tight text-foreground mt-1">
+                      {metrics ? formatCompactValue(metrics.followers) : "..."}
+                    </div>
                   </div>
                 </div>
               </AnimatedCard>

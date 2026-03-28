@@ -119,14 +119,22 @@ const analyticsMetrics = [
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 import { useEffect, useState } from "react";
-import { getConnectedAccounts } from "@/services/socialService";
-import type { SocialAccount } from "@/types/social";
+import { getConnectedAccounts, fetchFacebookMetrics, fetchRecentPosts } from "@/services/socialService";
+import type { SocialAccount, FacebookMetrics, SocialPost } from "@/types/social";
+import { Activity } from "lucide-react";
+
+// Helper function to format big numbers
+const formatCompactValue = (num: number) => 
+  new Intl.NumberFormat('pt-BR', { notation: "compact", maximumFractionDigits: 1 }).format(num);
 
 // Component
 export default function Facebook() {
   const { user } = useAuth();
   const [accounts, setAccounts] = useState<SocialAccount[]>([]);
   const [loading, setLoading] = useState(true);
+  const [metrics, setMetrics] = useState<FacebookMetrics | null>(null);
+  const [posts, setPosts] = useState<SocialPost[]>([]);
+  const [isFetchingMetrics, setIsFetchingMetrics] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -134,6 +142,23 @@ export default function Facebook() {
       const result = await getConnectedAccounts(user.id);
       setAccounts(result);
       setLoading(false);
+
+      // Fetch live Facebook metrics
+      const fbAccount = result.find(a => a.platform === "facebook");
+      if (fbAccount) {
+        setIsFetchingMetrics(true);
+        const fbData = await fetchFacebookMetrics(fbAccount);
+        if (fbData.success && fbData.data) {
+          setMetrics(fbData.data);
+        }
+        
+        const fbPosts = await fetchRecentPosts(fbAccount, 5);
+        if (fbPosts.success && fbPosts.data) {
+          setPosts(fbPosts.data);
+        }
+        
+        setIsFetchingMetrics(false);
+      }
     }
     load();
   }, [user]);
@@ -147,6 +172,11 @@ export default function Facebook() {
     return <EmptyPlatformState platform="Facebook" icon={<FacebookIcon className="w-8 h-8 text-blue-500" />} description="Vincule sua página do Facebook para ver métricas de alcance, curtidas e engajamento." />;
   }
 
+  const chartPosts = posts.length > 0 ? posts.map(p => ({
+    title: p.caption ? p.caption.substring(0, 15) + (p.caption.length > 15 ? '...' : '') : 'Post Media',
+    reach: p.reach || (p.likes + p.comments) * 3, // Fallback estimator
+    engagement: p.likes + p.comments + p.shares
+  })) : topPosts;
 
   return (
     <div className="min-h-screen bg-background pb-12">
@@ -171,10 +201,30 @@ export default function Facebook() {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-          <PlatformCard label="Seguidores da Página" value="17 mil" icon={Users} trend="+4,2%" trendUp accentColor="bg-blue-50 text-blue-500" delay={0.1} />
-          <PlatformCard label="Curtidas Totais" value="9,1 mil" icon={Heart} trend="+5,8%" trendUp accentColor="bg-blue-50 text-blue-500" delay={0.2} />
-          <PlatformCard label="Visualizações" value="37.074" icon={Eye} trend="+52%" trendUp accentColor="bg-blue-50 text-blue-500" delay={0.3} />
-          <PlatformCard label="Engajamento" value="1.079" icon={TrendingUp} trend="+7%" trendUp accentColor="bg-blue-50 text-blue-500" delay={0.4} />
+          <PlatformCard 
+            label="Seguidores da Página" 
+            value={metrics ? formatCompactValue(metrics.followers) : "..."} 
+            icon={Users} 
+            trend="+4,2%" trendUp accentColor="bg-blue-50 text-blue-500" delay={0.1} 
+          />
+          <PlatformCard 
+            label="Curtidas Totais" 
+            value={metrics ? formatCompactValue(metrics.pageLikes) : "..."} 
+            icon={Heart} 
+            trend="+5,8%" trendUp accentColor="bg-blue-50 text-blue-500" delay={0.2} 
+          />
+          <PlatformCard 
+            label="Visualizações" 
+            value={metrics ? formatCompactValue(metrics.pageViews) : "..."} 
+            icon={Eye} 
+            trend="+52%" trendUp accentColor="bg-blue-50 text-blue-500" delay={0.3} 
+          />
+          <PlatformCard 
+            label="Engajamento" 
+            value={metrics ? formatCompactValue(metrics.reactions) : "..."} 
+            icon={TrendingUp} 
+            trend="+7%" trendUp accentColor="bg-blue-50 text-blue-500" delay={0.4} 
+          />
         </div>
 
         {/* Tabs */}
@@ -195,18 +245,12 @@ export default function Facebook() {
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
-              {analyticsMetrics.map((metric, i) => (
-                <FacebookAnalyticsCard
-                  key={metric.title}
-                  title={metric.title}
-                  value={metric.value}
-                  trend={metric.trend}
-                  positive={metric.positive}
-                  chartLabel={metric.chartLabel}
-                  data={metric.data}
-                  delay={i * 0.07}
-                />
-              ))}
+              {/* Injecting dynamic summary directly using the real metrics to replace hardcoded strings */}
+              <FacebookAnalyticsCard title="Seguidores do Facebook" value={metrics ? formatCompactValue(metrics.followers) : "..."} trend="+4,2%" positive={true} chartLabel="Seguidores do Facebook" data={fbFollowersData} delay={0.0} />
+              <FacebookAnalyticsCard title="Curtidas na Página" value={metrics ? formatCompactValue(metrics.pageLikes) : "..."} trend="+5,8%" positive={true} chartLabel="Curtidas no Facebook" data={fbVisitsData} delay={0.07} />
+              <FacebookAnalyticsCard title="Cliques no link" value="2" trend="100%" positive={true} chartLabel="Cliques no link do Facebook" data={fbClicksData} delay={0.14} />
+              <FacebookAnalyticsCard title="Engajamento Total" value={metrics ? formatCompactValue(metrics.reactions) : "..."} trend="+7%" positive={true} chartLabel="Interações com o conteúdo" data={fbInteractionsData} delay={0.21} />
+              <FacebookAnalyticsCard title="Visualizações de conteúdo" value={metrics ? formatCompactValue(metrics.pageViews) : "..."} trend="+52%" positive={true} chartLabel="Visualizações" data={fbViewsData} delay={0.28} />
             </div>
           </TabsContent>
 
@@ -286,7 +330,7 @@ export default function Facebook() {
               </div>
               <div className="h-[280px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={topPosts} layout="vertical" margin={{ top: 0, right: 10, left: 10, bottom: 0 }}>
+                  <BarChart data={chartPosts} layout="vertical" margin={{ top: 0, right: 10, left: 10, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--color-border)" opacity={0.5} />
                     <XAxis type="number" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }} />
                     <YAxis type="category" dataKey="title" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }} width={150} />
@@ -304,7 +348,7 @@ export default function Facebook() {
               <h3 className="font-semibold mb-5">Engajamento por Post</h3>
               <div className="h-[280px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={topPosts} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+                  <BarChart data={chartPosts} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" opacity={0.5} />
                     <XAxis dataKey="title" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: "var(--color-muted-foreground)" }} interval={0} />
                     <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }} />
