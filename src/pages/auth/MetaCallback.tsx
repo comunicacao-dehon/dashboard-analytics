@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation, useSearch } from "wouter";
 import { Loader2, CheckCircle2, XCircle, Instagram, Facebook } from "lucide-react";
 import { motion } from "framer-motion";
@@ -26,6 +26,8 @@ interface FacebookProfile {
 
 // ─── Meta OAuth Callback ─────────────────────────────────────────────────────
 
+const usedCodes = new Set<string>();
+
 export default function MetaCallback() {
   const { user } = useAuth();
   const [, setLocation] = useLocation();
@@ -41,6 +43,9 @@ export default function MetaCallback() {
       const code = params.get("code");
       const state = params.get("state");
       const error = params.get("error");
+
+      if (code && usedCodes.has(code)) return;
+      if (code) usedCodes.add(code);
 
       if (error) {
         setStatus("error");
