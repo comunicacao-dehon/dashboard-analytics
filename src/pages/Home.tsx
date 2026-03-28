@@ -37,20 +37,19 @@ export default function Home() {
     );
   }
 
-  // If no accounts connected yet, show empty state
+  // If no accounts connected yet AND not the demo user, show empty state
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
   const hasAccounts = accounts.length > 0;
   const igAccount = accounts.find(a => a.platform === "instagram");
   const fbAccount = accounts.find(a => a.platform === "facebook");
-
-  // Also allow Conventinho's hardcoded demo data
-  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
 
   if (!hasAccounts && !isConventinho) {
     return <EmptyDashboard />;
   }
 
   // ─── Dashboard for users with real connected accounts ───────────────────────
-  if (hasAccounts && !isConventinho) {
+  // PRIORIDADE: Se tiver contas reais, mostra o dashboard real (mesmo para o Conventinho)
+  if (hasAccounts) {
     return (
       <div className="min-h-screen bg-transparent selection:bg-amber-500/20 font-['Outfit'] pb-20">
         <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-br from-amber-500/5 via-transparent to-transparent opacity-50 pointer-events-none -z-10 blur-3xl" />
