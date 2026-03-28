@@ -56,13 +56,32 @@ const tooltipStyle = {
 };
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
+import { useEffect, useState } from "react";
+import { getConnectedAccounts } from "@/services/socialService";
+import type { SocialAccount } from "@/types/social";
 
 export default function YouTube() {
   const { user } = useAuth();
-  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
+  const [accounts, setAccounts] = useState<SocialAccount[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  if (!isConventinho) {
-    return <EmptyPlatformState platform="YouTube" icon={<YoutubeIcon className="w-8 h-8 text-red-500" />} description="Vincule seu canal do YouTube para ver inscritos, visualizações, retenção e ranking de vídeos." />;
+  useEffect(() => {
+    async function load() {
+      if (!user) return;
+      const result = await getConnectedAccounts(user.id);
+      setAccounts(result);
+      setLoading(false);
+    }
+    load();
+  }, [user]);
+
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
+  const hasYouTube = accounts.some(a => a.platform === "youtube");
+
+  if (loading) return null;
+
+  if (!hasYouTube && !isConventinho) {
+    return <EmptyPlatformState platform="YouTube" icon={<YoutubeIcon className="w-8 h-8 text-red-500" />} description="Vincule seu canal do YouTube para ver métricas de vídeos, inscritos e engajamento." />;
   }
 
   return (

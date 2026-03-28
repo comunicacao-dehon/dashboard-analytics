@@ -96,7 +96,9 @@ export default function MetaCallback() {
         toast.success("Conta vinculada com sucesso! 🎉");
 
         // Redirecionar após 4 segundos
-        setTimeout(() => setLocation("/dashboard"), 4000);
+        setTimeout(() => {
+          setLocation("/dashboard");
+        }, 4000);
 
       } catch (err: any) {
         console.error("Meta callback error:", err);

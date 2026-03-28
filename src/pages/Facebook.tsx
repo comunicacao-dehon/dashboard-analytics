@@ -118,15 +118,35 @@ const analyticsMetrics = [
 
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
+import { useEffect, useState } from "react";
+import { getConnectedAccounts } from "@/services/socialService";
+import type { SocialAccount } from "@/types/social";
 
 // Component
 export default function Facebook() {
   const { user } = useAuth();
-  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
+  const [accounts, setAccounts] = useState<SocialAccount[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  if (!isConventinho) {
+  useEffect(() => {
+    async function load() {
+      if (!user) return;
+      const result = await getConnectedAccounts(user.id);
+      setAccounts(result);
+      setLoading(false);
+    }
+    load();
+  }, [user]);
+
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
+  const hasFacebook = accounts.some(a => a.platform === "facebook");
+
+  if (loading) return null;
+
+  if (!hasFacebook && !isConventinho) {
     return <EmptyPlatformState platform="Facebook" icon={<FacebookIcon className="w-8 h-8 text-blue-500" />} description="Vincule sua página do Facebook para ver métricas de alcance, curtidas e engajamento." />;
   }
+
 
   return (
     <div className="min-h-screen bg-background pb-12">

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Activity, Download, UsersRound } from "lucide-react";
@@ -14,14 +15,33 @@ import { FollowersDetailsPanel } from "@/components/followers/FollowersDetailsPa
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 import { Instagram } from "lucide-react";
+import { getConnectedAccounts } from "@/services/socialService";
+import type { SocialAccount } from "@/types/social";
 
 export default function Followers() {
   const { user } = useAuth();
-  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
+  const [accounts, setAccounts] = useState<SocialAccount[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  if (!isConventinho) {
+  useEffect(() => {
+    async function load() {
+      if (!user) return;
+      const result = await getConnectedAccounts(user.id);
+      setAccounts(result);
+      setLoading(false);
+    }
+    load();
+  }, [user]);
+
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
+  const hasInstagram = accounts.some(a => a.platform === "instagram");
+
+  if (loading) return null;
+
+  if (!hasInstagram && !isConventinho) {
     return <EmptyPlatformState platform="Instagram" icon={<Instagram className="w-8 h-8 text-pink-500" />} description="Vincule sua conta do Instagram para ver análises de seguidores, demografia e tendências em tempo real." />;
   }
+
 
   const topCities: LocationItem[] = [
     { id: 1, name: "Taubaté, SP", percentage: 18.5 },
