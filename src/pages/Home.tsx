@@ -20,8 +20,14 @@ export default function Home() {
 
   useEffect(() => {
     async function load() {
-      if (!user) { setLoadingAccounts(false); return; }
+      if (!user) { 
+        console.log("Dashboard: No user found");
+        setLoadingAccounts(false); 
+        return; 
+      }
+      console.log("Dashboard: Loading accounts for user", user.id);
       const result = await getConnectedAccounts(user.id);
+      console.log("Dashboard: Found accounts:", result.length);
       setAccounts(result);
       setLoadingAccounts(false);
     }
