@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { validateOAuthState } from "@/lib/oauth";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabase";
 
 // ─── Tipos ───────────────────────────────────────────────────────────────────
 
@@ -67,34 +68,19 @@ export default function MetaCallback() {
       try {
         setMessage("Trocando código de autorização...");
 
-        const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-        const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
         const redirectUri = import.meta.env.VITE_META_REDIRECT_URI ||
           `${window.location.origin}/auth/callback/meta`;
 
-        const res = await fetch(`${SUPABASE_URL}/functions/v1/meta-exchange`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify({
+        const { data, error: fnError } = await supabase.functions.invoke("meta-exchange", {
+          body: {
             code,
             redirectUri,
             userId: user.id,
-          }),
+          },
         });
 
-        const rawText = await res.text();
-        let data: any;
-        try {
-          data = JSON.parse(rawText);
-        } catch {
-          throw new Error(`Resposta inválida do servidor (${res.status}): ${rawText.slice(0, 200)}`);
-        }
-
-        if (!res.ok || !data.success) {
-          throw new Error(data.error || "Erro ao processar autorização.");
+        if (fnError || !data?.success) {
+          throw new Error(fnError?.message || data?.error || "Erro ao processar autorização.");
         }
 
         // Salvar dados no estado para exibir na tela de sucesso
