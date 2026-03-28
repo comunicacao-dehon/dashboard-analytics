@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, BarChart3, Target, Share2, Heart, ArrowRight, Activity, ArrowUpRight, BarChart, Instagram, Facebook, Youtube, Settings, User } from "lucide-react";
 import { motion } from "framer-motion";
@@ -9,18 +10,161 @@ import { InsightsPanel } from "@/components/social/InsightsPanel";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyDashboard } from "@/components/layout/EmptyDashboard";
+import { getConnectedAccounts } from "@/services/socialService";
+import type { SocialAccount } from "@/types/social";
 
 export default function Home() {
   const { user } = useAuth();
-  
-  // Regra de Multi-tenant (Apenas Conventinho vê os dados mockados no momento)
+  const [accounts, setAccounts] = useState<SocialAccount[]>([]);
+  const [loadingAccounts, setLoadingAccounts] = useState(true);
+
+  useEffect(() => {
+    async function load() {
+      if (!user) { setLoadingAccounts(false); return; }
+      const result = await getConnectedAccounts(user.id);
+      setAccounts(result);
+      setLoadingAccounts(false);
+    }
+    load();
+  }, [user]);
+
+  // Show loading spinner while checking for accounts
+  if (loadingAccounts) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Activity className="w-8 h-8 text-amber-500 animate-pulse" />
+      </div>
+    );
+  }
+
+  // If no accounts connected yet, show empty state
+  const hasAccounts = accounts.length > 0;
+  const igAccount = accounts.find(a => a.platform === "instagram");
+  const fbAccount = accounts.find(a => a.platform === "facebook");
+
+  // Also allow Conventinho's hardcoded demo data
   const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
 
-  if (!isConventinho) {
+  if (!hasAccounts && !isConventinho) {
     return <EmptyDashboard />;
   }
 
+  // ─── Dashboard for users with real connected accounts ───────────────────────
+  if (hasAccounts && !isConventinho) {
+    return (
+      <div className="min-h-screen bg-transparent selection:bg-amber-500/20 font-['Outfit'] pb-20">
+        <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-br from-amber-500/5 via-transparent to-transparent opacity-50 pointer-events-none -z-10 blur-3xl" />
+
+        <div className="container pt-10">
+          <motion.h1
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-3xl font-black text-white mb-2"
+          >
+            Seu Painel
+          </motion.h1>
+          <p className="text-white/40 mb-8 text-sm">
+            {accounts.length} conta{accounts.length > 1 ? "s" : ""} conectada{accounts.length > 1 ? "s" : ""}
+          </p>
+
+          {/* Connected Accounts Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            {accounts.map((acc) => (
+              <motion.div
+                key={acc.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={cn(
+                  "glass-dark border rounded-2xl p-6 flex items-center gap-4",
+                  acc.platform === "instagram" && "border-pink-500/30 hover:border-pink-500/60",
+                  acc.platform === "facebook" && "border-blue-500/30 hover:border-blue-500/60",
+                  acc.platform === "youtube" && "border-red-500/30 hover:border-red-500/60",
+                  "transition-all"
+                )}
+              >
+                {acc.profilePictureUrl ? (
+                  <img
+                    src={acc.profilePictureUrl}
+                    alt={acc.displayName}
+                    className={cn(
+                      "w-14 h-14 rounded-full object-cover border-2",
+                      acc.platform === "instagram" && "border-pink-500/40",
+                      acc.platform === "facebook" && "border-blue-500/40",
+                    )}
+                  />
+                ) : (
+                  <div className={cn(
+                    "w-14 h-14 rounded-full flex items-center justify-center",
+                    acc.platform === "instagram" && "bg-gradient-to-br from-pink-500 to-purple-600",
+                    acc.platform === "facebook" && "bg-blue-600",
+                    acc.platform === "youtube" && "bg-red-600",
+                  )}>
+                    {acc.platform === "instagram" && <Instagram className="w-7 h-7 text-white" />}
+                    {acc.platform === "facebook" && <Facebook className="w-7 h-7 text-white" />}
+                    {acc.platform === "youtube" && <Youtube className="w-7 h-7 text-white" />}
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    {acc.platform === "instagram" && <Instagram className="w-3.5 h-3.5 text-pink-400" />}
+                    {acc.platform === "facebook" && <Facebook className="w-3.5 h-3.5 text-blue-400" />}
+                    {acc.platform === "youtube" && <Youtube className="w-3.5 h-3.5 text-red-400" />}
+                    <span className={cn(
+                      "text-xs font-bold uppercase tracking-wide",
+                      acc.platform === "instagram" && "text-pink-400",
+                      acc.platform === "facebook" && "text-blue-400",
+                      acc.platform === "youtube" && "text-red-400",
+                    )}>
+                      {acc.platform}
+                    </span>
+                  </div>
+                  <p className="text-white font-bold truncate">{acc.displayName}</p>
+                  <p className="text-white/40 text-xs truncate">@{acc.username}</p>
+                </div>
+                <div className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0" title="Conectado" />
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Metrics coming soon notice */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="glass-dark border border-amber-500/20 rounded-2xl p-8 text-center"
+          >
+            <Activity className="w-10 h-10 text-amber-500 mx-auto mb-4 animate-pulse" />
+            <h2 className="text-xl font-bold text-white mb-2">Métricas sendo carregadas</h2>
+            <p className="text-sm text-white/40 max-w-md mx-auto mb-4">
+              Suas contas estão conectadas! As métricas detalhadas estão sendo sincronizadas.
+              Acesse a aba de cada plataforma no menu lateral para ver os dados.
+            </p>
+            <div className="flex flex-wrap gap-3 justify-center">
+              {igAccount && (
+                <Link href="/instagram">
+                  <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-pink-500/10 border border-pink-500/20 text-pink-400 text-sm hover:bg-pink-500/20 transition-all">
+                    <Instagram className="w-4 h-4" />
+                    Ver Instagram
+                  </button>
+                </Link>
+              )}
+              {fbAccount && (
+                <Link href="/facebook">
+                  <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm hover:bg-blue-500/20 transition-all">
+                    <Facebook className="w-4 h-4" />
+                    Ver Facebook
+                  </button>
+                </Link>
+              )}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+
   const avatarUrl = user?.user_metadata?.avatar_url;
+
   const instagramMetrics = [
     { label: "Seguidores", value: "5.395", icon: Heart, trend: "+12%", href: "/instagram" },
     { label: "Taxa de Engajamento", value: "4,19%", icon: TrendingUp, trend: "+0.8%" },
