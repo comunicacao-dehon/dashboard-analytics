@@ -29,6 +29,17 @@ export interface SocialMetrics {
   totalReach: number;
   totalImpressions: number;
   updatedAt: string;            // ISO date
+  
+  // Array de histórico direto da API (Últimos 28/30 dias)
+  historicalData?: Array<{
+    date: string;
+    followers: number;
+    reach: number;
+    impressions: number;
+    engagement: number;
+    views: number;
+    likes: number;
+  }>;
 }
 
 // ─── Métricas por Plataforma ────────────────────────────────────────────────

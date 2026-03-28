@@ -2,8 +2,7 @@ import { AnimatedCard } from "@/components/AnimatedCard";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { TrendingUp } from "lucide-react";
 
-// Variável limpa (Aguardando motor de sincronização)
-const data: any[] = [];
+import type { InstagramMetrics } from "@/types/social";
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -19,9 +18,19 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-export function FollowersTrendChart({ delay = 0 }: { delay?: number }) {
-  // Find min value to make the chart curve more dramatic
-  const minDomain = Math.min(...data.map(d => d.followers)) - 100;
+export function FollowersTrendChart({ delay = 0, metrics }: { delay?: number; metrics?: InstagramMetrics | null }) {
+  const formatChartDate = (isoStr: string) => {
+    const d = new Date(isoStr + 'T00:00:00');
+    return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}`;
+  };
+
+  const data = metrics?.historicalData ? metrics.historicalData.map(d => ({
+    date: formatChartDate(d.date),
+    followers: d.followers
+  })) : [];
+
+  const dataPoints = data.map(d => d.followers);
+  const minDomain = dataPoints.length > 0 ? Math.max(0, Math.min(...dataPoints) - 10) : 0;
 
   return (
     <AnimatedCard delay={delay} className="p-6 md:p-8 flex flex-col h-full bg-white/40">

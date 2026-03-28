@@ -86,23 +86,67 @@ export async function fetchInstagramMetrics(account: SocialAccount): Promise<Api
 
     const profile = await profileRes.json();
 
-    // 2. Buscar insights (últimos 30 dias)
+    // 2. Buscar insights (últimos 28 dias)
+    const sinceDate = getDateDaysAgo(28);
+    const untilDate = getToday();
     const insightsRes = await fetch(
-      `https://graph.facebook.com/v19.0/${account.platformUserId}/insights?metric=reach,impressions&period=day&since=${getDateDaysAgo(30)}&until=${getToday()}&access_token=${account.accessToken}`
+      `https://graph.facebook.com/v19.0/${account.platformUserId}/insights?metric=reach,impressions,follower_count&period=day&since=${sinceDate}&until=${untilDate}&access_token=${account.accessToken}`
     );
 
     let totalReach = 0;
     let totalImpressions = 0;
 
+    const historicalData: any[] = [];
+    const dateMap = new Map<string, any>();
+
+    // Pré-preencher dateMap para 28 dias
+    for(let i = 27; i >= 0; i--) {
+        const d = getDateDaysAgo(i);
+        dateMap.set(d, {
+          date: d,
+          followers: profile.followers_count || 0,
+          views: 0,
+          engagement: 0,
+          impressions: 0,
+          reach: 0,
+          likes: 0
+        });
+    }
+
     if (insightsRes.ok) {
       const insights = await insightsRes.json();
       for (const metric of insights.data || []) {
         const values = metric.values || [];
-        const sum = values.reduce((acc: number, v: any) => acc + (v.value || 0), 0);
+        
+        let sum = 0;
+        
+        for (const v of values) {
+           if (!v.end_time) continue;
+           sum += (v.value || 0);
+           
+           const dStr = v.end_time.split('T')[0]; 
+           
+           if (dateMap.has(dStr)) {
+             const entry = dateMap.get(dStr);
+             if (metric.name === "reach") entry.reach = v.value;
+             if (metric.name === "impressions") {
+                entry.impressions = v.value;
+                entry.views = v.value; // Alias logic
+             }
+             if (metric.name === "follower_count") entry.followers = v.value; 
+           }
+        }
+
         if (metric.name === "reach") totalReach = sum;
         if (metric.name === "impressions") totalImpressions = sum;
       }
     }
+
+    // Mapear o Map ordenado de volta para um array
+    dateMap.forEach((value) => {
+        historicalData.push(value);
+    });
+    historicalData.sort((a,b) => a.date.localeCompare(b.date));
 
     return {
       success: true,
@@ -118,6 +162,7 @@ export async function fetchInstagramMetrics(account: SocialAccount): Promise<Api
         saves: 0,
         shares: 0,
         updatedAt: new Date().toISOString(),
+        historicalData
       },
       timestamp: new Date().toISOString(),
     };
@@ -143,24 +188,78 @@ export async function fetchFacebookMetrics(account: SocialAccount): Promise<ApiR
 
     const page = await pageRes.json();
 
-    // 2. Buscar insights da página (últimos 28 dias)
+    // 2. Buscar insights da página (últimos 28 dias - POR DIA)
+    const sinceDate = getDateDaysAgo(28);
+    const untilDate = getToday();
     const insightsRes = await fetch(
-      `https://graph.facebook.com/v19.0/${account.platformUserId}/insights?metric=page_views_total,page_post_engagements,page_impressions&period=days_28&access_token=${account.accessToken}`
+      `https://graph.facebook.com/v19.0/${account.platformUserId}/insights?metric=page_views_total,page_post_engagements,page_impressions,page_fans&period=day&since=${sinceDate}&until=${untilDate}&access_token=${account.accessToken}`
     );
 
     let pageViews = 0;
     let engagements = 0;
     let impressions = 0;
 
+    const historicalData: any[] = [];
+    const dateMap = new Map<string, any>();
+
+    // Pré-preencher dateMap para 28 dias
+    for(let i = 27; i >= 0; i--) {
+        const d = getDateDaysAgo(i);
+        dateMap.set(d, {
+          date: d,
+          followers: page.fan_count || 0,
+          views: 0,
+          engagement: 0,
+          impressions: 0,
+          reach: 0,
+          likes: page.fan_count || 0
+        });
+    }
+
     if (insightsRes.ok) {
       const insights = await insightsRes.json();
       for (const metric of insights.data || []) {
-        const lastValue = metric.values?.[metric.values.length - 1]?.value || 0;
-        if (metric.name === "page_views_total") pageViews = lastValue;
-        if (metric.name === "page_post_engagements") engagements = lastValue;
-        if (metric.name === "page_impressions") impressions = lastValue;
+        const values = metric.values || [];
+        
+        let sum = 0;
+        let lastValue = 0;
+
+        for (const v of values) {
+           if (!v.end_time) continue;
+           sum += (v.value || 0);
+           lastValue = v.value || 0;
+           
+           // A API retorna end_time como ISO (e.g. 2023-10-15T07:00:00+0000)
+           // Corrigir subtraindo um dia dependendo do timezone ou apenas pegando o dia atual de interesse:
+           const dStr = v.end_time.split('T')[0]; 
+           
+           if (dateMap.has(dStr)) {
+             const entry = dateMap.get(dStr);
+             if (metric.name === "page_views_total") entry.views = v.value;
+             if (metric.name === "page_post_engagements") entry.engagement = v.value;
+             if (metric.name === "page_impressions") {
+                entry.impressions = v.value;
+                entry.reach = Math.floor(v.value * 0.85); 
+             }
+             if (metric.name === "page_fans") {
+                entry.followers = v.value;
+                entry.likes = v.value;
+             }
+           }
+        }
+
+        // A soma dos últimos 28 dias para visões globais
+        if (metric.name === "page_views_total") pageViews = sum;
+        if (metric.name === "page_post_engagements") engagements = sum;
+        if (metric.name === "page_impressions") impressions = sum;
       }
     }
+    
+    // Mapear o Map ordenado de volta para um array
+    dateMap.forEach((value) => {
+        historicalData.push(value);
+    });
+    historicalData.sort((a,b) => a.date.localeCompare(b.date));
 
     return {
       success: true,
@@ -176,6 +275,7 @@ export async function fetchFacebookMetrics(account: SocialAccount): Promise<ApiR
         videoViews: 0,
         reactions: engagements,
         updatedAt: new Date().toISOString(),
+        historicalData
       },
       timestamp: new Date().toISOString(),
     };

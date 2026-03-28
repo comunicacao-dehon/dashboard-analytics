@@ -167,15 +167,15 @@ export default function Followers() {
           <TabsContent value="tendencias" className="mt-0 focus-visible:outline-none focus-visible:ring-0">
             <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="mb-10">
               {/* Top Statistics Cards */}
-              <FollowersTrendCards />
+              <FollowersTrendCards metrics={metrics} />
 
               {/* Layout for Chart & Details side-by-side */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
                 <div className="lg:col-span-2 relative">
-                  <FollowersTrendChart delay={0.2} />
+                  <FollowersTrendChart delay={0.2} metrics={metrics} />
                 </div>
                 <div className="lg:col-span-1 border-l border-border/20 pl-0 lg:pl-2">
-                  <FollowersDetailsPanel delay={0.3} />
+                  <FollowersDetailsPanel delay={0.3} metrics={metrics} />
                 </div>
               </div>
             </motion.div>
