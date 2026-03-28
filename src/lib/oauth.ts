@@ -7,22 +7,15 @@ import type { SocialPlatform } from "@/types/social";
 
 const META_APP_ID = import.meta.env.VITE_META_APP_ID || "";
 const META_REDIRECT_URI = import.meta.env.VITE_META_REDIRECT_URI || `${window.location.origin}/auth/callback/meta`;
+const META_CONFIG_ID = import.meta.env.VITE_META_CONFIG_ID || "1457406572795983";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
 const GOOGLE_REDIRECT_URI = import.meta.env.VITE_GOOGLE_REDIRECT_URI || `${window.location.origin}/auth/callback/google`;
 
 // ─── URLs de Autorização ────────────────────────────────────────────────────
 
-// Permissões necessárias para o Instagram Graph API + Facebook Pages
-const META_SCOPES = [
-  "public_profile",
-  "email",
-  "pages_show_list",
-  "pages_read_engagement",
-  "instagram_basic",
-  "instagram_manage_insights",
-  "instagram_content_publish",
-].join(",");
+// As permissões do Meta agora são definidas DIRETAMENTE na Configuração do Login (no painel Meta)
+// Portanto, não usamos mais o parâmetro 'scope' manual no frontend, e sim o 'config_id'.
 
 // Permissões necessárias para o YouTube Data API
 const GOOGLE_SCOPES = [
@@ -40,7 +33,7 @@ export function startMetaOAuth() {
   const authUrl = new URL("https://www.facebook.com/v19.0/dialog/oauth");
   authUrl.searchParams.set("client_id", META_APP_ID);
   authUrl.searchParams.set("redirect_uri", META_REDIRECT_URI);
-  authUrl.searchParams.set("scope", META_SCOPES);
+  authUrl.searchParams.set("config_id", META_CONFIG_ID);
   authUrl.searchParams.set("response_type", "code");
   authUrl.searchParams.set("state", state);
 
