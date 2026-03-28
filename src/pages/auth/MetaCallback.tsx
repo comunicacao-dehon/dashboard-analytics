@@ -85,7 +85,13 @@ export default function MetaCallback() {
           }),
         });
 
-        const data = await res.json();
+        const rawText = await res.text();
+        let data: any;
+        try {
+          data = JSON.parse(rawText);
+        } catch {
+          throw new Error(`Resposta inválida do servidor (${res.status}): ${rawText.slice(0, 200)}`);
+        }
 
         if (!res.ok || !data.success) {
           throw new Error(data.error || "Erro ao processar autorização.");
