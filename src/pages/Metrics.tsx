@@ -68,25 +68,48 @@ const periods = [
   { label: "Este Ano", days: 365 }
 ];
 import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
+import { getConnectedAccounts } from "@/services/socialService";
+import type { SocialAccount } from "@/types/social";
 
 export default function Metrics() {
   const { user } = useAuth();
-  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
-
-  if (!isConventinho) {
-    return <EmptyPlatformState platform="Métricas Globais" icon={<Activity className="w-8 h-8 text-amber-500" />} description="Vincule suas redes sociais para acessar métricas detalhadas de seguidores, alcance e engajamento." />;
-  }
-
+  const [accounts, setAccounts] = useState<SocialAccount[]>([]);
+  const [loadingAccounts, setLoadingAccounts] = useState(true);
   const [selectedPlatform, setSelectedPlatform] = useState<Platform>("instagram");
   const [selectedPeriod, setSelectedPeriod] = useState<number>(30);
   const [loading, setLoading] = useState(true);
   const [metrics, setMetrics] = useState<Metric[]>([]);
 
   useEffect(() => {
-    if (user) {
-      fetchData();
+    async function init() {
+      if (user) {
+        const accs = await getConnectedAccounts(user.id);
+        setAccounts(accs);
+        setLoadingAccounts(false);
+        fetchData();
+      } else {
+        setLoadingAccounts(false);
+      }
     }
+    init();
   }, [selectedPlatform, selectedPeriod, user]);
+
+  const hasAccounts = accounts.length > 0;
+  const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
+
+  if (loadingAccounts) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Activity className="w-8 h-8 text-amber-500 animate-pulse" />
+      </div>
+    );
+  }
+
+  if (!isConventinho && !hasAccounts) {
+    return <EmptyPlatformState platform="Métricas Globais" icon={<Activity className="w-8 h-8 text-amber-500" />} description="Vincule suas redes sociais para acessar métricas detalhadas de seguidores, alcance e engajamento." />;
+  }
+
+
 
   const fetchData = async () => {
     setLoading(true);
