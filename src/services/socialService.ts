@@ -14,11 +14,28 @@ import type {
 
 // ─── Contas Vinculadas (CRUD via Supabase) ──────────────────────────────────
 
+import { teamService } from "./teamService";
+
 export async function getConnectedAccounts(userId: string): Promise<SocialAccount[]> {
+  // 1. Obter a equipe atual do usuário
+  const currentTeam = await teamService.getCurrentUserTeam(userId);
+  let userIdsToFetch = [userId];
+
+  if (currentTeam) {
+    // 2. Coletar o dono da equipe e (opcionalmente) os outros membros
+    const [teamMembers] = await Promise.all([
+       teamService.getTeamMembers(currentTeam.id)
+    ]);
+    const memberIds = teamMembers.map((m: any) => m.user_id);
+    
+    // Todos os usuários que pertencem ao mesmo time terão o right-to-view das contas cadastradas.
+    userIdsToFetch = Array.from(new Set([currentTeam.owner_id, ...memberIds]));
+  }
+
   const { data, error } = await supabase
     .from("social_accounts")
     .select("*")
-    .eq("user_id", userId)
+    .in("user_id", userIdsToFetch)
     .eq("is_active", true);
 
   if (error) {

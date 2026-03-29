@@ -37,7 +37,7 @@ const platformIcons = {
 };
 
 export default function Insights() {
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const [insights, setInsights] = useState<AIInsight[]>([]);
   const [loading, setLoading] = useState(true);
   const [analyzing, setAnalyzing] = useState(false);
@@ -70,7 +70,7 @@ export default function Insights() {
       const team = await teamService.getCurrentUserTeam(user!.id);
       if (team) {
          // Rodando motor estocástico
-         const liveData = await insightsService.simulateLiveAnalysis(team.id, user!.id);
+         const liveData = await insightsService.simulateLiveAnalysis(team.id, user!.id, session!.access_token);
          
          if (liveData && liveData.length > 0) {
              setInsights(prev => [...liveData, ...prev]);

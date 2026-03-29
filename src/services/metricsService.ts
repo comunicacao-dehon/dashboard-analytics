@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { getConnectedAccounts } from "./socialService";
 
 export type Platform = "instagram" | "facebook" | "youtube";
 
@@ -56,17 +57,13 @@ export const metricsService = {
   },
 
   /**
-   * Obtém métricas globais pela plataforma do usuário (caso não tenha selecionado uma conta específica)
+   * Obtém métricas globais pela plataforma do usuário (considerando toda a Equipe/Time)
    */
   async getMetricsByPlatform(platform: Platform, userId: string, startDate: string, endDate: string) {
-    // 1. Pega as contas
-    const { data: accounts, error: errAcct } = await supabase
-      .from("social_accounts")
-      .select("id")
-      .eq("platform", platform)
-      .eq("user_id", userId);
+    // 1. Pega as contas da equipe toda e filtra pela plataforma
+    const allAccounts = await getConnectedAccounts(userId);
+    const accounts = allAccounts.filter(a => a.platform === platform);
     
-    if (errAcct) throw errAcct;
     if (!accounts || accounts.length === 0) return [];
 
     const accountIds = accounts.map(a => a.id);

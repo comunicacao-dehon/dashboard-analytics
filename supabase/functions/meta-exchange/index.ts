@@ -59,16 +59,13 @@ serve(async (req) => {
     const accessToken = longTokenData.access_token || shortLivedToken;
     const expiresIn = longTokenData.expires_in; // em segundos
 
-    // 3. Buscar perfil do usuário (Facebook)
-    const meRes = await fetch(
-      `https://graph.facebook.com/v19.0/me?fields=id,name,picture&access_token=${accessToken}`
-    );
-    const meData = await meRes.json();
+    // 3 & 4. Buscar perfil de usuário (Facebook) e páginas do usuário em paralelo
+    const [meRes, pagesRes] = await Promise.all([
+      fetch(`https://graph.facebook.com/v19.0/me?fields=id,name,picture&access_token=${accessToken}`),
+      fetch(`https://graph.facebook.com/v19.0/me/accounts?fields=id,name,picture,instagram_business_account&access_token=${accessToken}`)
+    ]);
 
-    // 4. Buscar páginas do usuário para encontrar a conta de Instagram vinculada
-    const pagesRes = await fetch(
-      `https://graph.facebook.com/v19.0/me/accounts?fields=id,name,picture,instagram_business_account&access_token=${accessToken}`
-    );
+    const meData = await meRes.json();
     const pagesData = await pagesRes.json();
     const pages = pagesData.data || [];
 
@@ -82,13 +79,14 @@ serve(async (req) => {
       ? new Date(Date.now() + expiresIn * 1000).toISOString()
       : null;
 
-    // Salvar conta do Facebook (usuário pessoal ou primeira página)
+    // Salvar conta do Facebook
     const firstPage = pages[0];
     const fbPlatformId = firstPage?.id || meData.id;
     const fbUsername = firstPage?.name || meData.name;
     const fbPicture = firstPage?.picture?.data?.url || meData.picture?.data?.url || "";
 
-    await supabase.from("social_accounts").upsert({
+    console.log("Upserting Facebook account for user:", userId);
+    const { error: fbError } = await supabase.from("social_accounts").upsert({
       user_id: userId,
       platform: "facebook",
       platform_user_id: fbPlatformId,
@@ -101,6 +99,11 @@ serve(async (req) => {
       is_active: true,
     }, { onConflict: "user_id,platform" });
 
+    if (fbError) {
+      console.error("Facebook upsert error:", fbError);
+      throw new Error(`Erro ao salvar Facebook: ${fbError.message}`);
+    }
+
     // Verificar se tem conta de Instagram vinculada
     let instagramAccount = null;
     for (const page of pages) {
@@ -112,7 +115,8 @@ serve(async (req) => {
         const igData = await igRes.json();
 
         if (!igData.error) {
-          await supabase.from("social_accounts").upsert({
+          console.log("Upserting Instagram account:", igData.username);
+          const { error: igError } = await supabase.from("social_accounts").upsert({
             user_id: userId,
             platform: "instagram",
             platform_user_id: igId,
@@ -124,6 +128,11 @@ serve(async (req) => {
             connected_at: new Date().toISOString(),
             is_active: true,
           }, { onConflict: "user_id,platform" });
+
+          if (igError) {
+            console.error("Instagram upsert error:", igError);
+            throw new Error(`Erro ao salvar Instagram: ${igError.message}`);
+          }
 
           instagramAccount = {
             id: igId,

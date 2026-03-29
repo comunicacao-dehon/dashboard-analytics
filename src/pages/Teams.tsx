@@ -43,7 +43,7 @@ const RoleSelect = ({ value, onChange, disabled }: { value: Role, onChange: (r: 
 };
 
 export default function Teams() {
-  const { user } = useAuth();
+  const { user, session } = useAuth();
   const [team, setTeam] = useState<Team | null>(null);
   const [members, setMembers] = useState<any[]>([]);
   const [invitations, setInvitations] = useState<Invitation[]>([]);
@@ -88,24 +88,7 @@ export default function Teams() {
         }
 
       } else {
-        // Mock fallback/Start state: se o usuário não tem time no DB real (pq o schema acabou de ser criado e não houveram triggers).
-        // Na vida real, haveria um fluxo de "Criar Time". Mas simularemos aqui um time padrão dele mesmo para manter o dashboard funcional.
-        setTeam({
-           id: "mock-team-id",
-           name: "Meu Time Princiapl",
-           owner_id: user!.id,
-           created_at: new Date().toISOString()
-        });
-        setMembers([{
-           id: "mock-member-id",
-           team_id: "mock-team-id",
-           user_id: user!.id,
-           role: "admin",
-           created_at: new Date().toISOString(),
-           profiles: { id: user!.id, name: user?.user_metadata?.full_name || "Você", email: user!.email }
-        }]);
-        setInvitations([]);
-        setCurrentUserRole("admin");
+        toast.error("Nenhuma equipe encontrada para a sua conta.");
       }
     } catch (error) {
       console.error("Erro ao carregar equipe:", error);
@@ -126,22 +109,24 @@ export default function Teams() {
 
     setIsInviting(true);
     try {
-      // Mock para não crashar enquanto APIs não estão integradas 100% (caso mock-team)
-      if (team.id === "mock-team-id") {
-         setInvitations(prev => [{
-            id: `mock-inv-${Date.now()}`,
-            team_id: team.id,
-            email: inviteEmail,
-            role: inviteRole,
-            status: "pending",
-            created_at: new Date().toISOString()
-         }, ...prev]);
-         toast.success(`Convite enviado para ${inviteEmail}`);
-      } else {
-         const newInvite = await teamService.inviteUser(team.id, inviteEmail, inviteRole);
-         setInvitations([newInvite, ...invitations]);
-         toast.success("Convite enviado com sucesso!");
-      }
+      const resp = await fetch('/api/send-invite', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({
+           token: session?.access_token,
+           teamId: team.id,
+           teamName: team.name,
+           email: inviteEmail,
+           role: inviteRole
+         })
+      });
+
+      const body = await resp.json();
+      if (!resp.ok) throw new Error(body.error || "Erro ao emitir o E-mail de Convite.");
+
+      setInvitations([body.data, ...invitations]);
+      toast.success("E-mail com Convite de Equipe disparado com sucesso!");
+      
       setInviteEmail("");
       setIsInviteModalOpen(false);
     } catch (error: any) {
@@ -154,9 +139,7 @@ export default function Teams() {
   const handleUpdateRole = async (memberId: string, newRole: Role) => {
      if (currentUserRole !== "admin") return;
      try {
-        if (team?.id !== "mock-team-id") {
-           await teamService.updateMemberRole(memberId, newRole);
-        }
+        await teamService.updateMemberRole(memberId, newRole);
         setMembers(members.map(m => m.id === memberId ? { ...m, role: newRole } : m));
         toast.success("Permissão atualizada com sucesso.");
      } catch(error) {
@@ -169,9 +152,7 @@ export default function Teams() {
      if (!confirm("Tem certeza que deseja remover este membro da equipe? O acesso será revogado imediatamente.")) return;
 
      try {
-        if (team?.id !== "mock-team-id") {
-           await teamService.removeMember(memberId);
-        }
+        await teamService.removeMember(memberId);
         setMembers(members.filter(m => m.id !== memberId));
         toast.success("Membro removido da equipe.");
      } catch(error) {
@@ -182,9 +163,7 @@ export default function Teams() {
   const handleCancelInvite = async (invId: string) => {
      if (currentUserRole !== "admin") return;
      try {
-        if (team?.id !== "mock-team-id") {
-           await teamService.cancelInvitation(invId);
-        }
+        await teamService.cancelInvitation(invId);
         setInvitations(invitations.filter(i => i.id !== invId));
         toast.success("Convite cancelado.");
      } catch(error) {

@@ -8,16 +8,22 @@ import { ReportMetricCard } from "@/components/reports/ReportMetricCard";
 import { PostCard } from "@/components/reports/PostCard";
 import { EngagementChart } from "@/components/reports/EngagementChart";
 import { PerformanceAnalysis } from "@/components/reports/PerformanceAnalysis";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getConnectedAccounts } from "@/services/socialService";
 import type { SocialAccount } from "@/types/social";
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
+import { toast } from "sonner";
 
 export default function Reports() {
   const { user } = useAuth();
   const [accounts, setAccounts] = useState<SocialAccount[]>([]);
   const [loadingAccounts, setLoadingAccounts] = useState(true);
+  
+  const reportRef = useRef<HTMLElement>(null);
+  const [isExporting, setIsExporting] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -31,6 +37,54 @@ export default function Reports() {
     }
     load();
   }, [user]);
+
+  const handleExportPDF = async () => {
+    if (!reportRef.current) return;
+    setIsExporting(true);
+    
+    // Pequena pausa garantindo a sincronização em dispositivos lentos antes da captura visual.
+    toast.info("Processando vetor PDF. Isso pode levar alguns instantes...", { duration: 3000 });
+    await new Promise((resolve) => setTimeout(resolve, 800));
+
+    try {
+      const canvas = await html2canvas(reportRef.current, {
+         scale: 2, // 2x scale para alta resolução de gráficos e texto
+         useCORS: true,
+         backgroundColor: "#050505", // Fundo padronizado independente de sistema
+         windowWidth: 1200 // Força uma largura que acomoda grids responsivos de dashboards desktop
+      });
+
+      const imgData = canvas.toDataURL("image/jpeg", 0.95);
+
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      
+      let heightLeft = pdfHeight;
+      let position = 0;
+
+      // Injeta a primeira página
+      pdf.addImage(imgData, "JPEG", 0, position, pdfWidth, pdfHeight);
+      heightLeft -= pdf.internal.pageSize.getHeight();
+
+      // Se o layout exceder a altura do formato A4, criar paginação mecânica
+      while (heightLeft >= 0) {
+        position = heightLeft - pdfHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "JPEG", 0, position, pdfWidth, pdfHeight);
+        heightLeft -= pdf.internal.pageSize.getHeight();
+      }
+
+      pdf.save(`Relatorio_Inteligente_${new Date().toISOString().split('T')[0]}.pdf`);
+      toast.success("O seu relatório em arquivo local foi concluído e baixado!");
+      
+    } catch (error) {
+      console.error("Exceção ao processar PDF:", error);
+      toast.error("Houve uma quebra no carregamento de ativos e o motor visual colapsou.");
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   if (loadingAccounts) {
     return (
@@ -63,7 +117,7 @@ export default function Reports() {
       {/* Decorative Background Blob */}
       <div className="absolute top-0 inset-x-0 h-[300px] bg-gradient-to-b from-primary/5 to-transparent pointer-events-none -z-10" />
 
-      <main className="container pt-12">
+      <main ref={reportRef} className="container pt-12 sm:px-6">
         {/* Report Header */}
         <motion.div 
           initial="hidden" animate="visible" variants={staggerContainer}
@@ -81,17 +135,26 @@ export default function Reports() {
               Período: 01/12/2025 – 28/02/2026
             </motion.p>
           </div>
-          <motion.div variants={fadeIn} className="flex gap-3">
-            <Button variant="outline" className="rounded-full shadow-sm bg-white/50">
+          <motion.div variants={fadeIn} className="flex gap-3 relative z-50">
+            <Button variant="outline" className="rounded-full shadow-sm bg-white/50" onClick={() => window.location.reload()}>
               <RefreshCcw className="w-4 h-4 mr-2" />
               Atualizar Dados
             </Button>
-            <Button className="rounded-full shadow-md">
-              <Download className="w-4 h-4 mr-2" />
-              Exportar PDF
+            <Button 
+              className={`rounded-full shadow-md transition-all ${isExporting ? 'bg-primary/50 cursor-not-allowed' : 'bg-primary'}`}
+              onClick={handleExportPDF}
+              disabled={isExporting}
+            >
+              {isExporting ? (
+                 <RefreshCcw className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                 <Download className="w-4 h-4 mr-2 animate-bounce" />
+              )}
+              {isExporting ? "Gerando Matriz A4..." : "Exportar PDF Direto"}
             </Button>
           </motion.div>
         </motion.div>
+
 
         {/* Summary Metrics Grid */}
         <motion.div 

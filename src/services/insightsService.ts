@@ -40,68 +40,40 @@ export const insightsService = {
   },
 
   /**
-   * "Motor de IA Simulado" - Analisa os dados localmente e gera percepções acionáveis 
-   * Na versão final SaaS, isso deve bater numa rota no Node.js/Python que usa OpenAI/Gemini
+   * Dispara a leitura real e contata o Google Gemini via Serverless API.
    */
-  async simulateLiveAnalysis(teamId: string, userId: string): Promise<AIInsight[]> {
+  async simulateLiveAnalysis(teamId: string, userId: string, token: string): Promise<AIInsight[]> {
       const pastMonthStart = new Date();
       pastMonthStart.setDate(pastMonthStart.getDate() - 30);
       const strStart = pastMonthStart.toISOString().split('T')[0];
       const strEnd = new Date().toISOString().split('T')[0];
 
-      // Pegando apenas Instagram para teste
-      const metrics = await metricsService.getMetricsByPlatform("instagram", userId, strStart, strEnd);
-      const latest = metrics.length > 0 ? metrics[metrics.length - 1] : null;
-      
-      const insights: AIInsight[] = [];
-      const timestamp = new Date().toISOString();
+      // Coletar escopo do ecossistema todo para que a IA tenha um julgamento contextual
+      const instaMetrics = await metricsService.getMetricsByPlatform("instagram", userId, strStart, strEnd);
+      const fbMetrics = await metricsService.getMetricsByPlatform("facebook", userId, strStart, strEnd);
 
-      if (metrics.length > 5 && latest) {
-         // Calcular variação simples
-         const first = metrics[0];
+      const metricsPayload = {
+         instagramData: instaMetrics,
+         facebookData: fbMetrics
+      };
+
+      try {
+         const resp = await fetch("/api/generate-insights", {
+             method: "POST",
+             headers: { "Content-Type": "application/json" },
+             body: JSON.stringify({ token, teamId, metricsPayload })
+         });
          
-         if (latest.engagement > (first.engagement * 1.5)) {
-            insights.push({
-               id: `gen-1-${timestamp}`,
-               team_id: teamId,
-               platform: "instagram",
-               insight_type: "viral",
-               title: "Estouro de Engajamento Detectado! 🚀",
-               description: "A IA identificou um aumento súbito e orgânico nas taxas de interações em relação à semana passada.",
-               actionable_step: "Reposte o conteúdo nos Stories em horários de pico ou impulsione por R$ 50 para alavancar visibilidade.",
-               metrics_snapshot: { engagement: latest.engagement },
-               created_at: timestamp
-            });
+         const result = await resp.json();
+         if (resp.ok && result.success) {
+            return result.data as AIInsight[];
          }
-
-         if (latest.reach < first.reach) {
-            insights.push({
-               id: `gen-2-${timestamp}`,
-               team_id: teamId,
-               platform: "instagram",
-               insight_type: "drop",
-               title: "Queda na Entrega Orgânica 📉",
-               description: "O algoritmo distribuiu 20% a menos o seu conteúdo recente nas abas explorar e reels.",
-               actionable_step: "Teste alterar os horários de postagem (sugerido: 18h e 21h) e reforce o Call-To-Action focado em 'Salvar' post.",
-               metrics_snapshot: { reach: latest.reach },
-               created_at: timestamp
-            });
-         }
+         console.warn("A IA retornou um aviso ou erro parcial:", result);
+         throw new Error(result.error);
+      } catch (err: any) {
+         console.error("Falha no Motor Conectivo de IA:", err);
+         return [];
       }
-
-      insights.push({
-         id: `gen-3-${timestamp}`,
-         team_id: teamId,
-         platform: "instagram",
-         insight_type: "suggestion",
-         title: "Oportunidade Analítica",
-         description: "Perfis da sua categoria histórica (" + (latest?.platform || "Religioso") + ") têm dobrado a conversão rodando Lives semanais com convidados.",
-         actionable_step: "Programe 1 collab live por semana e anuncie no Feed.",
-         metrics_snapshot: null,
-         created_at: timestamp
-      });
-
-      return insights;
   },
 
   generateMockInsights(teamId: string): AIInsight[] {

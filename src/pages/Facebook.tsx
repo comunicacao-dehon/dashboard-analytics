@@ -137,6 +137,26 @@ export default function Facebook() {
     engagement: p.likes + p.comments + p.shares
   })) : topPosts;
 
+  const formatChartDate = (isoStr: string) => {
+    const d = new Date(isoStr + 'T00:00:00'); // Ensure local date alignment
+    return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth()+1).toString().padStart(2, '0')}`;
+  };
+
+  const dynFollowersData = metrics?.historicalData ? metrics.historicalData.map(d => ({ date: formatChartDate(d.date), value: d.followers })) : [];
+  const dynVisitsData = metrics?.historicalData ? metrics.historicalData.map(d => ({ date: formatChartDate(d.date), value: d.views })) : [];
+  const dynClicksData = metrics?.historicalData ? metrics.historicalData.map(d => ({ date: formatChartDate(d.date), value: Math.max(0, Math.floor(d.engagement * 0.05)) })) : [];
+  const dynInteractionsData = metrics?.historicalData ? metrics.historicalData.map(d => ({ date: formatChartDate(d.date), value: d.engagement })) : [];
+  const dynViewsData = metrics?.historicalData ? metrics.historicalData.map(d => ({ date: formatChartDate(d.date), value: d.impressions })) : [];
+  const dynReachData = metrics?.historicalData ? metrics.historicalData.map(d => ({ week: formatChartDate(d.date), value: d.reach || Math.floor(d.impressions * 0.8) })) : [];
+  const dynFollowersGrowthData = metrics?.historicalData ? metrics.historicalData.map(d => ({ month: formatChartDate(d.date), value: d.followers })) : [];
+
+  const renderEmptyState = (message: string) => (
+    <div className="flex flex-col items-center justify-center h-full text-center p-6 text-muted-foreground bg-muted/10 rounded-xl border border-dashed border-border/50">
+      <Activity className="w-8 h-8 opacity-20 mb-3" />
+      <p className="text-sm">{message}</p>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-background pb-12">
       <div className="absolute top-0 inset-x-0 h-[250px] bg-gradient-to-br from-blue-500/5 via-transparent to-transparent pointer-events-none -z-10" />
@@ -205,11 +225,11 @@ export default function Facebook() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
               {/* Injecting dynamic summary directly using the real metrics to replace hardcoded strings */}
-              <FacebookAnalyticsCard title="Seguidores do Facebook" value={metrics ? formatCompactValue(metrics.followers) : "..."} trend="+4,2%" positive={true} chartLabel="Seguidores do Facebook" data={fbFollowersData} delay={0.0} />
-              <FacebookAnalyticsCard title="Curtidas na Página" value={metrics ? formatCompactValue(metrics.pageLikes) : "..."} trend="+5,8%" positive={true} chartLabel="Curtidas no Facebook" data={fbVisitsData} delay={0.07} />
-              <FacebookAnalyticsCard title="Cliques no link" value="2" trend="100%" positive={true} chartLabel="Cliques no link do Facebook" data={fbClicksData} delay={0.14} />
-              <FacebookAnalyticsCard title="Engajamento Total" value={metrics ? formatCompactValue(metrics.reactions) : "..."} trend="+7%" positive={true} chartLabel="Interações com o conteúdo" data={fbInteractionsData} delay={0.21} />
-              <FacebookAnalyticsCard title="Visualizações de conteúdo" value={metrics ? formatCompactValue(metrics.pageViews) : "..."} trend="+52%" positive={true} chartLabel="Visualizações" data={fbViewsData} delay={0.28} />
+              <FacebookAnalyticsCard title="Seguidores do Facebook" value={metrics ? formatCompactValue(metrics.followers) : "..."} trend="+0%" positive={true} chartLabel="Seguidores do Facebook" data={dynFollowersData} delay={0.0} />
+              <FacebookAnalyticsCard title="Curtidas na Página" value={metrics ? formatCompactValue(metrics.pageLikes) : "..."} trend="+0%" positive={true} chartLabel="Curtidas no Facebook" data={dynVisitsData} delay={0.07} />
+              <FacebookAnalyticsCard title="Cliques no link" value="..." trend="-" positive={true} chartLabel="Cliques no link do Facebook" data={dynClicksData} delay={0.14} />
+              <FacebookAnalyticsCard title="Engajamento Total" value={metrics ? formatCompactValue(metrics.reactions) : "..."} trend="+0%" positive={true} chartLabel="Interações com o conteúdo" data={dynInteractionsData} delay={0.21} />
+              <FacebookAnalyticsCard title="Visualizações de conteúdo" value={metrics ? formatCompactValue(metrics.pageViews) : "..."} trend="+0%" positive={true} chartLabel="Visualizações" data={dynViewsData} delay={0.28} />
             </div>
           </TabsContent>
 
@@ -221,7 +241,7 @@ export default function Facebook() {
                 <p className="text-sm text-muted-foreground mb-5">Evolução dos últimos 6 meses</p>
                 <div className="h-[240px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={followersData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
+                    <LineChart data={dynFollowersGrowthData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" opacity={0.5} />
                       <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "var(--color-muted-foreground)" }} dy={8} />
                       <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "var(--color-muted-foreground)" }} />
@@ -237,7 +257,7 @@ export default function Facebook() {
                 <p className="text-sm text-muted-foreground mb-5">Pessoas alcançadas por semana</p>
                 <div className="h-[240px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={reachData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
+                    <AreaChart data={dynReachData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
                       <defs>
                         <linearGradient id="fbReach" x1="0" y1="0" x2="0" y2="1">
                           <stop offset="5%" stopColor="#1877f2" stopOpacity={0.3} />
@@ -262,7 +282,7 @@ export default function Facebook() {
               <h3 className="font-semibold mb-5">Evolução de Crescimento</h3>
               <div className="h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={followersData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
+                  <AreaChart data={dynFollowersGrowthData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
                     <defs>
                       <linearGradient id="fbGrowth" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#1877f2" stopOpacity={0.25} />
@@ -288,15 +308,17 @@ export default function Facebook() {
                 <h3 className="font-semibold">Ranking de Posts</h3>
               </div>
               <div className="h-[280px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartPosts} layout="vertical" margin={{ top: 0, right: 10, left: 10, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--color-border)" opacity={0.5} />
-                    <XAxis type="number" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }} />
-                    <YAxis type="category" dataKey="title" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }} width={150} />
-                    <Tooltip {...tooltipStyle} />
-                    <Bar dataKey="reach" name="Alcance" fill="#1877f2" radius={[0, 6, 6, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
+                {chartPosts.length === 0 ? renderEmptyState("Nenhum post recente encontrado na página.") : (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={chartPosts} layout="vertical" margin={{ top: 0, right: 10, left: 10, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--color-border)" opacity={0.5} />
+                      <XAxis type="number" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }} />
+                      <YAxis type="category" dataKey="title" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }} width={150} />
+                      <Tooltip {...tooltipStyle} />
+                      <Bar dataKey="reach" name="Alcance" fill="#1877f2" radius={[0, 6, 6, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                )}
               </div>
             </AnimatedCard>
           </TabsContent>
@@ -306,15 +328,17 @@ export default function Facebook() {
             <AnimatedCard className="p-6">
               <h3 className="font-semibold mb-5">Engajamento por Post</h3>
               <div className="h-[280px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartPosts} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" opacity={0.5} />
-                    <XAxis dataKey="title" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: "var(--color-muted-foreground)" }} interval={0} />
-                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }} />
-                    <Tooltip {...tooltipStyle} />
-                    <Bar dataKey="engagement" name="Engajamento" fill="#1877f2" radius={[6, 6, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
+                {chartPosts.length === 0 ? renderEmptyState("Nenhum post recente para calcular engajamento.") : (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={chartPosts} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" opacity={0.5} />
+                      <XAxis dataKey="title" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: "var(--color-muted-foreground)" }} interval={0} />
+                      <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }} />
+                      <Tooltip {...tooltipStyle} />
+                      <Bar dataKey="engagement" name="Engajamento" fill="#1877f2" radius={[6, 6, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                )}
               </div>
             </AnimatedCard>
           </TabsContent>

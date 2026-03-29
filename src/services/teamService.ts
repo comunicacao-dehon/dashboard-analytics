@@ -39,7 +39,7 @@ export const teamService = {
    * Obtém a equipe padrão do usuário (se não tiver, o ideal seria criar uma)
    */
   async getCurrentUserTeam(userId: string) {
-    // Busca equipes em que é dono ou membro
+    // 1. Busca equipes nas quais o usuário é dono (owner)
     const { data: ownedTeams } = await supabase
       .from("teams")
       .select("*")
@@ -49,6 +49,7 @@ export const teamService = {
       return ownedTeams[0] as Team;
     }
 
+    // 2. Busca equipes em que o usuário foi convidado e já aceitou (team_member)
     const { data: memberTeams } = await supabase
       .from("team_members")
       .select("teams(*)")
@@ -58,7 +59,30 @@ export const teamService = {
       return (memberTeams[0] as any).teams as Team;
     }
 
-    return null;
+    // 3. (Fallback) Se o usuário NÃO é dono nem membro de nenhum time, cria um time default para ele.
+    // Assim, removemos a necessidade de "Mock-Teams" no frontend.
+    const { data: userProfile } = await supabase.from("profiles").select("name").eq("id", userId).single();
+    const teamName = userProfile?.name ? `Equipe de ${userProfile.name}` : "Meu Time Principal";
+
+    const { data: newTeam, error: teamErr } = await supabase
+      .from("teams")
+      .insert({ name: teamName, owner_id: userId })
+      .select("*")
+      .single();
+
+    if (teamErr) {
+      console.error("Faield to auto-create team:", teamErr);
+      return null;
+    }
+
+    // Vincula o usuário como admin da sua própria equipe.
+    await supabase.from("team_members").insert({
+      team_id: newTeam.id,
+      user_id: userId,
+      role: "admin"
+    });
+
+    return newTeam as Team;
   },
 
   /**
