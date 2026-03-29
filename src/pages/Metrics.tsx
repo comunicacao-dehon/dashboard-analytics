@@ -81,18 +81,75 @@ export default function Metrics() {
   const [metrics, setMetrics] = useState<Metric[]>([]);
 
   useEffect(() => {
+    let active = true;
+
     async function init() {
       if (user) {
         const accs = await getConnectedAccounts(user.id);
-        setAccounts(accs);
-        setLoadingAccounts(false);
-        fetchData();
+        if (active) {
+           setAccounts(accs);
+           setLoadingAccounts(false);
+           await loadMetrics();
+        }
       } else {
-        setLoadingAccounts(false);
+        if (active) setLoadingAccounts(false);
       }
     }
+
+    async function loadMetrics() {
+        if (!user) return;
+        setLoading(true);
+        try {
+          const endDate = new Date();
+          const startDate = new Date();
+          startDate.setDate(endDate.getDate() - selectedPeriod);
+
+          const startDateStr = startDate.toISOString().split('T')[0];
+          const endDateStr = endDate.toISOString().split('T')[0];
+
+          const data = await metricsService.getMetricsByPlatform(selectedPlatform, user.id, startDateStr, endDateStr);
+          
+          if (active) {
+             if (!data || data.length === 0) {
+               setMetrics([]);
+             } else {
+               setMetrics(data);
+             }
+          }
+        } catch (error) {
+          console.error("Erro critico ao carregar métricas (Metrics.tsx):", error);
+          if (active) setMetrics([]); 
+        } finally {
+          if (active) setLoading(false);
+        }
+    }
+
     init();
+
+    return () => { active = false; };
   }, [selectedPlatform, selectedPeriod, user]);
+
+  const fetchData = async () => {
+     // Alias for manual button refresh
+     if (!user) return;
+     setLoading(true);
+     try {
+       const endDate = new Date();
+       const startDate = new Date();
+       startDate.setDate(endDate.getDate() - selectedPeriod);
+
+       const startDateStr = startDate.toISOString().split('T')[0];
+       const endDateStr = endDate.toISOString().split('T')[0];
+
+       const data = await metricsService.getMetricsByPlatform(selectedPlatform, user.id, startDateStr, endDateStr);
+       setMetrics(data || []);
+     } catch(e) {
+       console.error("Refresh Error:", e);
+       setMetrics([]);
+     } finally {
+       setLoading(false);
+     }
+  };
 
   const hasAccounts = accounts.length > 0;
   const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
@@ -108,33 +165,6 @@ export default function Metrics() {
   if (!isConventinho && !hasAccounts) {
     return <EmptyPlatformState platform="Métricas Globais" icon={<Activity className="w-8 h-8 text-amber-500" />} description="Vincule suas redes sociais para acessar métricas detalhadas de seguidores, alcance e engajamento." />;
   }
-
-
-
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const endDate = new Date();
-      const startDate = new Date();
-      startDate.setDate(endDate.getDate() - selectedPeriod);
-
-      const startDateStr = startDate.toISOString().split('T')[0];
-      const endDateStr = endDate.toISOString().split('T')[0];
-
-      const data = await metricsService.getMetricsByPlatform(selectedPlatform, user!.id, startDateStr, endDateStr);
-      
-      if (!data || data.length === 0) {
-        setMetrics([]);
-      } else {
-        setMetrics(data);
-      }
-    } catch (error) {
-      console.error("Erro ao carregar métricas:", error);
-      setMetrics([]); 
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const currentMetrics = metrics.length > 0 ? metrics[metrics.length - 1] : null;
   const previousMetrics = metrics.length > 1 ? metrics[0] : null;

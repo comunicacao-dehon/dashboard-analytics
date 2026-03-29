@@ -84,8 +84,8 @@ export default async function handler(req: any, res: any) {
           }
         }
 
-        // 3. Upsert into daily_metrics
-        const { error: upsertError } = await supabase.from("daily_metrics").upsert({
+        // 3. Upsert into metrics
+        const { error: upsertError } = await supabase.from("metrics").upsert({
           account_id: account.id,
           platform: account.platform,
           date: yesterdayDate,
