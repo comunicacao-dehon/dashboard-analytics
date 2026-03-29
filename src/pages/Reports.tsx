@@ -39,48 +39,21 @@ export default function Reports() {
   }, [user]);
 
   const handleExportPDF = async () => {
-    if (!reportRef.current) return;
     setIsExporting(true);
+    toast.info("Preparando estrutura nativa de layout para o Papel A4...", { duration: 3000 });
     
-    // Pequena pausa garantindo a sincronização em dispositivos lentos antes da captura visual.
-    toast.info("Processando vetor PDF. Isso pode levar alguns instantes...", { duration: 3000 });
+    // Pequeno tempo para o toast sumir no print e UI reflow 
     await new Promise((resolve) => setTimeout(resolve, 800));
 
     try {
-      const canvas = await html2canvas(reportRef.current, {
-         scale: 2, // 2x scale para alta resolução de gráficos e texto
-         useCORS: true,
-         backgroundColor: "#050505", // Fundo padronizado independente de sistema
-         windowWidth: 1200 // Força uma largura que acomoda grids responsivos de dashboards desktop
-      });
-
-      const imgData = canvas.toDataURL("image/jpeg", 0.95);
-
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      // Dispara o motor de PDF Nativo do próprio Google Chrome / Safari, que não quebra sob compressão de CSS Blur e Múltiplos SVGs
+      window.print();
       
-      let heightLeft = pdfHeight;
-      let position = 0;
-
-      // Injeta a primeira página
-      pdf.addImage(imgData, "JPEG", 0, position, pdfWidth, pdfHeight);
-      heightLeft -= pdf.internal.pageSize.getHeight();
-
-      // Se o layout exceder a altura do formato A4, criar paginação mecânica
-      while (heightLeft >= 0) {
-        position = heightLeft - pdfHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, "JPEG", 0, position, pdfWidth, pdfHeight);
-        heightLeft -= pdf.internal.pageSize.getHeight();
-      }
-
-      pdf.save(`Relatorio_Inteligente_${new Date().toISOString().split('T')[0]}.pdf`);
-      toast.success("O seu relatório em arquivo local foi concluído e baixado!");
-      
-    } catch (error) {
-      console.error("Exceção ao processar PDF:", error);
-      toast.error("Houve uma quebra no carregamento de ativos e o motor visual colapsou.");
+      // Assume sucesso pós-fechamento do diálogo
+      toast.success("O formulário nativo foi invocado com sucesso!");
+    } catch (error: any) {
+      console.error("Exceção ao processar impressão:", error);
+      toast.error(`Falha no Motor de Impressão nativa: ${error?.message || "Erro desconhecido"}`);
     } finally {
       setIsExporting(false);
     }
@@ -113,9 +86,32 @@ export default function Reports() {
   ];
 
   return (
-    <div className="min-h-screen bg-background selection:bg-primary/20 pb-24">
+    <div className="min-h-screen bg-background selection:bg-primary/20 pb-24 print-safe-wrapper">
+      <style dangerouslySetInnerHTML={{ __html: `
+        @media print {
+          body {
+            background-color: #000 !important;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+          }
+          nav, aside, .no-print, header, [role="navigation"] {
+            display: none !important;
+          }
+          .print-safe-wrapper {
+             padding: 0 !important;
+             margin: 0 !important;
+             background: #000 !important;
+          }
+          .container {
+             max-width: 100% !important;
+             width: 100% !important;
+             padding: 0 10px !important;
+          }
+        }
+      `}} />
+
       {/* Decorative Background Blob */}
-      <div className="absolute top-0 inset-x-0 h-[300px] bg-gradient-to-b from-primary/5 to-transparent pointer-events-none -z-10" />
+      <div className="absolute top-0 inset-x-0 h-[300px] bg-gradient-to-b from-primary/5 to-transparent pointer-events-none -z-10 no-print" />
 
       <main ref={reportRef} className="container pt-12 sm:px-6">
         {/* Report Header */}
@@ -128,14 +124,14 @@ export default function Reports() {
               <FileText className="w-4 h-4" />
               <span>Relatório Consolidado</span>
             </motion.div>
-            <motion.h1 variants={slideUp} className="text-4xl md:text-5xl font-bold tracking-tight mb-2">
+            <motion.h1 variants={slideUp} className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-white">
               Visão Geral do Relatório
             </motion.h1>
             <motion.p variants={slideUp} className="text-lg text-muted-foreground">
               Período: 01/12/2025 – 28/02/2026
             </motion.p>
           </div>
-          <motion.div variants={fadeIn} className="flex gap-3 relative z-50">
+          <motion.div variants={fadeIn} className="flex gap-3 relative z-50 no-print">
             <Button variant="outline" className="rounded-full shadow-sm bg-white/50" onClick={() => window.location.reload()}>
               <RefreshCcw className="w-4 h-4 mr-2" />
               Atualizar Dados
@@ -150,7 +146,7 @@ export default function Reports() {
               ) : (
                  <Download className="w-4 h-4 mr-2 animate-bounce" />
               )}
-              {isExporting ? "Gerando Matriz A4..." : "Exportar PDF Direto"}
+              {isExporting ? "Processando..." : "Exportar PDF Direto"}
             </Button>
           </motion.div>
         </motion.div>
