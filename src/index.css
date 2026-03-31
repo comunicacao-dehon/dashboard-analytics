@@ -43,39 +43,54 @@
 }
 
 :root {
-  --primary: #C0392B;
-  --primary-foreground: #FADBD8;
-  --sidebar-primary: #E74C3C;
-  --sidebar-primary-foreground: #FADBD8;
-  --chart-1: #F39C12;
-  --chart-2: #E74C3C;
-  --chart-3: #C0392B;
-  --chart-4: #A93226;
-  --chart-5: #922B21;
-  --radius: 0.5rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: #F39C12;
-  --secondary-foreground: #FFFFFF;
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: #E74C3C;
-  --accent-foreground: #FFFFFF;
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
+  /* ── Primário: Âmbar/Dourado (igual ao ícone do logo) ── */
+  --primary: #D97706;               /* Amber 600 */
+  --primary-foreground: #FFFFFF;
+  --sidebar-primary: #D97706;
+  --sidebar-primary-foreground: #FFFFFF;
+
+  /* ── Fundo: Branco puro ── */
+  --radius: 0.625rem;
+  --background: #FFFFFF;
+  --foreground: #1A1A2E;            /* Cinza azulado escuro */
+
+  /* ── Cards: Branco com sombra suave ── */
+  --card: #FFFFFF;
+  --card-foreground: #1A1A2E;
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1A2E;
+
+  /* ── Secundário/Muted ── */
+  --secondary: #F3F4F6;             /* Cinza muito claro */
+  --secondary-foreground: #374151;
+  --muted: #F9FAFB;
+  --muted-foreground: #6B7280;      /* Cinza médio */
+
+  /* ── Accent: Âmbar mais suave ── */
+  --accent: #FEF3C7;                /* Amber 100 */
+  --accent-foreground: #92400E;     /* Amber 800 */
+
+  /* ── Estado, bordas e inputs ── */
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --border: #E5E7EB;               /* Cinza claro */
+  --input: #E5E7EB;
+  --ring: #D97706;
+
+  /* ── Sidebar ── */
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1A1A2E;
+  --sidebar-accent: #F9FAFB;
+  --sidebar-accent-foreground: #374151;
+  --sidebar-border: #E5E7EB;
+  --sidebar-ring: #D97706;
+
+  /* ── Gráficos: Azul (igual à screenshot) ── */
+  --chart-1: #3B82F6;              /* Blue 500 */
+  --chart-2: #60A5FA;              /* Blue 400 */
+  --chart-3: #93C5FD;              /* Blue 300 */
+  --chart-4: #D97706;              /* Amber 600 */
+  --chart-5: #F59E0B;              /* Amber 500 */
 }
 
 .dark {
@@ -153,7 +168,7 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-gray-700 to-gray-500;
   }
   .text-gradient-primary {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-red-500 to-orange-400;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-400;
   }
   .glass {
     @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.04)];
