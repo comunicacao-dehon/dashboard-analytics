@@ -42,6 +42,6 @@ export const BRANDING_CONFIG: Record<string, Branding> = {
     logo: "/logo1.png",
     sidebarLogo: "/logo.png",
     welcomeMessage: "Client Dashboard",
-    footerText: "Acme Corp · Powered by Utxica",
+    footerText: "Dashboard Analytics · Conventinho SCJ",
   }
 };

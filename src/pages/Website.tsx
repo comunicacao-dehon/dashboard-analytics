@@ -57,7 +57,7 @@ export default function Website() {
             </Button>
           </div>
           <p className="text-[10px] text-foreground/30 uppercase tracking-widest font-black flex items-center justify-center gap-1.5 mt-4">
-             <Activity className="w-3 h-3" /> Integração via Utxica Pixel
+             <Activity className="w-3 h-3" /> Integração via Pixel de Análise
           </p>
         </motion.div>
       </div>
@@ -179,7 +179,7 @@ export default function Website() {
                   <div className="absolute inset-0 bg-indigo-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                   <Activity className="w-8 h-8 text-indigo-400 relative z-10" />
                </div>
-               <h3 className="text-xl font-bold tracking-tight text-foreground mb-2">Utxica Insights IA</h3>
+               <h3 className="text-xl font-bold tracking-tight text-foreground mb-2">Análise de IA</h3>
                <p className="text-sm font-medium text-foreground/50 mb-8 leading-relaxed">
                  O tráfego da página <strong>/doacoes</strong> teve um aumento de 145% nos últimos 7 dias. Recomendamos adicionar um CTA mais visível no banner pincipal.
                </p>

@@ -112,7 +112,7 @@ export default function Login() {
               </div>
               
               <h1 className="text-white text-2xl md:text-3xl font-bold tracking-tight mb-3">
-                Painel Utxica
+                {branding.name}
               </h1>
               
               <p className="text-amber-200/60 text-base italic font-['Crimson_Text'] tracking-wide">
@@ -133,7 +133,7 @@ export default function Login() {
                       <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/10 group-focus-within:text-amber-500 transition-colors" />
                       <Input 
                         id="name"
-                        placeholder="Ex: Frater Utxica"
+                        placeholder="Ex: Usuário Admin"
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
                         required={isSignUp}
