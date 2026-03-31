@@ -189,9 +189,9 @@ export default function Metrics() {
       <motion.div initial="hidden" animate="visible" variants={slideUp} className="space-y-6">
         
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row shadow-[0_4px_20px_-10px_rgba(0,0,0,0.5)] bg-white/[0.04] backdrop-blur-[40px] border border-white/[0.08] rounded-[2rem] p-6 items-center justify-between gap-4">
+        <div className="flex flex-col md:flex-row shadow-xl bg-card border border-border rounded-[2rem] p-6 items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-sm">
               <Activity className="w-5 h-5" />
             </div>
             <div>
