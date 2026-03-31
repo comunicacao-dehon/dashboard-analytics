@@ -336,12 +336,12 @@ export default function Profile() {
                         <p className="text-xs text-white/40 font-medium">Gerencie o acesso e a segurança da sua conta</p>
                       </div>
                       <div className="p-8 md:p-10 space-y-6">
-                        <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-6 flex flex-col gap-4">
-                          <div className="flex items-center gap-3 text-amber-500">
+                        <div className="bg-primary/5 border border-primary/20 rounded-xl p-6 flex flex-col gap-4">
+                          <div className="flex items-center gap-3 text-primary">
                             <Lock className="w-5 h-5" />
                             <h4 className="font-bold">Acesso via Link Mágico</h4>
                           </div>
-                          <p className="text-sm text-white/60">
+                          <p className="text-sm text-muted-foreground">
                             Atualmente, o login do seu sistema usa Links Mágicos ou OAuth (Google/Facebook) para maior segurança e conveniência, dispensando o uso de senhas.
                           </p>
                         </div>
@@ -399,9 +399,9 @@ export default function Profile() {
                             </div>
                           </div>
                         </div>
-                        <div className="bg-white/[0.02] border-t border-white/[0.08] p-6 px-8 md:px-10 flex items-center justify-end gap-3">
-                          <Button type="button" variant="ghost" onClick={fetchProfile} className="rounded-xl text-white/50 hover:text-white">Cancelar</Button>
-                          <Button type="submit" disabled={updating} className="rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                        <div className="bg-muted border-t border-border p-6 px-8 md:px-10 flex items-center justify-end gap-3">
+                          <Button type="button" variant="ghost" onClick={fetchProfile} className="rounded-xl text-muted-foreground hover:text-foreground">Cancelar</Button>
+                          <Button type="submit" disabled={updating} className="rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 shadow-lg">
                             {updating ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                             Salvar informações
                           </Button>
