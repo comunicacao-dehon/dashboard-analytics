@@ -43,13 +43,13 @@ export default function Landing() {
             <div className="w-8 h-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center border border-primary/30 shadow-[0_0_15px_rgba(245,158,11,0.3)]">
               <Activity size={18} className="text-primary" />
             </div>
-            <span className="font-bold text-xl tracking-tight">{branding.name}</span>
+            <span className="font-bold text-xl tracking-tight text-white">{branding.name}</span>
           </div>
           
           <div className="hidden md:flex items-center gap-6">
-            <a href="#beneficios" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Funcionalidades</a>
-            <a href="#preview" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Dashboard</a>
-            <a href="#depoimentos" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Clientes</a>
+            <a href="#beneficios" className="text-sm font-medium text-white/50 hover:text-white transition-colors">Funcionalidades</a>
+            <a href="#preview" className="text-sm font-medium text-white/50 hover:text-white transition-colors">Dashboard</a>
+            <a href="#depoimentos" className="text-sm font-medium text-white/50 hover:text-white transition-colors">Clientes</a>
           </div>
 
           <div className="flex items-center gap-4">
