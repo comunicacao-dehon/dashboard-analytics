@@ -106,11 +106,11 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative w-full rounded-[2.5rem] overflow-hidden bg-muted backdrop-blur-[40px] border border-border shadow-xl flex flex-col"
+          className="relative w-full rounded-3xl overflow-hidden bg-muted backdrop-blur-[40px] border border-border shadow-xl flex flex-col"
         >
           <div className="relative px-6 md:px-10 py-6 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex flex-col sm:flex-row items-center gap-5">
-              <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 rounded-[1.5rem] border border-white/10 bg-white/5 backdrop-blur-md shadow-xl flex items-center justify-center overflow-hidden hover:-translate-y-1 hover:shadow-2xl transition-all duration-500 cursor-pointer group/avatar relative">
+              <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-xl flex items-center justify-center overflow-hidden hover:-translate-y-1 hover:shadow-2xl transition-all duration-500 cursor-pointer group/avatar relative">
                 <div className="absolute inset-0 bg-amber-500/20 opacity-0 group-hover/avatar:opacity-100 transition-opacity blur-xl z-0" />
                 <img
                   src={displayAvatar}
@@ -238,7 +238,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
-                className="group relative overflow-hidden rounded-[2rem] border border-border bg-card p-5 flex items-center justify-between shadow-xl hover:shadow-2xl hover:-translate-y-1 cursor-pointer transition-all duration-300"
+                className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 flex items-center justify-between shadow-xl hover:shadow-2xl hover:-translate-y-1 cursor-pointer transition-all duration-300"
               >
                 {/* Subtle background glow */}
                 <div className={cn(
@@ -248,7 +248,7 @@ export default function Home() {
 
                 <div className="flex items-center gap-4 relative z-10">
                   <div className={cn(
-                    "w-12 h-12 rounded-[1rem] flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-md border border-white/20 relative z-10",
+                    "w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-md border border-white/20 relative z-10",
                     p.label === "Instagram" ? "bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white" :
                     p.label === "Facebook" ? "bg-gradient-to-br from-[#1877f2] to-[#0a52b3] text-white" :
                     "bg-gradient-to-br from-[#ff0000] to-[#b30000] text-white"

@@ -264,7 +264,7 @@ export default function Profile() {
                  
                  {/* Minha Conta Tab */}
                  {activeTab === 'minha-conta' && (
-                    <AnimatedCard className="border-border bg-card shadow-xl overflow-hidden">
+                    <AnimatedCard className="border-border bg-card shadow-xl overflow-hidden rounded-3xl">
                       <div className="p-8 md:p-10 border-b border-border">
                         <h2 className="text-2xl font-black tracking-tight text-foreground mb-1">Minha Conta</h2>
                         <p className="text-xs text-muted-foreground font-medium">Gerencie suas informações pessoais e detalhes da sua conta</p>
@@ -276,7 +276,7 @@ export default function Profile() {
                           <div className="flex items-center gap-6">
                             <div className="relative group">
                               <div className={cn(
-                                "w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md flex items-center justify-center relative z-10 shadow-2xl transition-all",
+                                "w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md flex items-center justify-center relative z-10 shadow-2xl transition-all",
                                 uploading && "opacity-50"
                               )}>
                                 {avatarUrl ? (
@@ -316,14 +316,14 @@ export default function Profile() {
                                 <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Nome Completo</Label>
                                 <div className="relative group">
                                   <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/30 group-focus-within:text-primary transition-colors" />
-                                  <Input value={fullName} onChange={(e) => setFullName(e.target.value)} className="h-12 pl-12 rounded-xl bg-muted border-border text-foreground focus:border-primary focus:ring-primary/20 font-medium" placeholder="Ex: João da Silva" />
+                                  <Input value={fullName} onChange={(e) => setFullName(e.target.value)} className="h-12 pl-12 rounded-lg bg-muted border-border text-foreground focus:border-primary focus:ring-primary/20 font-medium" placeholder="Ex: João da Silva" />
                                 </div>
                             </div>
                             <div className="space-y-3">
                                 <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">E-mail</Label>
                                 <div className="relative">
                                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
-                                  <Input value={email} disabled className="h-12 pl-12 rounded-xl bg-card border-white/[0.04] opacity-50 cursor-not-allowed font-medium text-muted-foreground" />
+                                  <Input value={email} disabled className="h-12 pl-12 rounded-lg bg-card border-white/[0.04] opacity-50 cursor-not-allowed font-medium text-muted-foreground" />
                                 </div>
                             </div>
                           </div>
@@ -331,8 +331,8 @@ export default function Profile() {
 
                         {/* Footer actions */}
                         <div className="bg-muted p-6 px-8 md:px-10 flex items-center justify-end gap-3 border-t border-border">
-                          <Button type="button" variant="ghost" onClick={fetchProfile} className="rounded-xl text-muted-foreground hover:text-foreground">Cancelar</Button>
-                          <Button type="submit" disabled={updating} className="rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 shadow-lg">
+                          <Button type="button" variant="ghost" onClick={fetchProfile} className="rounded-lg text-muted-foreground hover:text-foreground">Cancelar</Button>
+                          <Button type="submit" disabled={updating} className="rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 shadow-lg">
                             {updating ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                             Salvar alterações
                           </Button>
@@ -357,14 +357,14 @@ export default function Profile() {
                               key={brand.id}
                               onClick={() => handleSwitchBranding(brand.id)}
                               className={cn(
-                                "p-4 rounded-xl border flex items-center justify-between transition-all group",
+                                "p-4 rounded-lg border flex items-center justify-between transition-all group",
                                 branding.id === brand.id 
                                   ? "border-primary bg-primary/10 shadow-sm" 
                                   : "border-border bg-muted/30 hover:border-primary/40 hover:bg-muted"
                               )}
                             >
                               <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center overflow-hidden border border-white/10">
+                                <div className="w-8 h-8 rounded-md bg-white/5 flex items-center justify-center overflow-hidden border border-white/10">
                                   <img src={brand.sidebarLogo} alt="L" className="w-4 h-4 object-contain" />
                                 </div>
                                 <div className="text-left">
@@ -382,13 +382,13 @@ export default function Profile() {
 
                  {/* Senha Tab */}
                  {activeTab === 'senha' && (
-                   <AnimatedCard className="border-border bg-card shadow-xl overflow-hidden">
+                   <AnimatedCard className="border-border bg-card shadow-xl overflow-hidden rounded-2xl">
                       <div className="p-8 md:p-10 border-b border-border">
                         <h2 className="text-2xl font-black tracking-tight text-foreground mb-1">Alterar Senha</h2>
                         <p className="text-xs text-muted-foreground font-medium">Gerencie o acesso e a segurança da sua conta</p>
                       </div>
                       <div className="p-8 md:p-10 space-y-6">
-                        <div className="bg-primary/5 border border-primary/20 rounded-xl p-6 flex flex-col gap-4">
+                        <div className="bg-primary/5 border border-primary/20 rounded-lg p-6 flex flex-col gap-4">
                           <div className="flex items-center gap-3 text-primary">
                             <Lock className="w-5 h-5" />
                             <h4 className="font-bold">Acesso via Link Mágico</h4>
@@ -402,7 +402,7 @@ export default function Profile() {
                         <div className="mt-12 pt-8 border-t border-red-500/20">
                           <h4 className="text-sm font-bold text-red-400 mb-2">Zona de Perigo</h4>
                           <p className="text-sm text-foreground/40 mb-4">A exclusão da conta é irreversível e apagará permanentemente todos os seus dados.</p>
-                          <Button variant="outline" onClick={handleDeleteAccount} className="border-red-500/20 text-red-500 hover:bg-red-500 hover:text-foreground rounded-xl">
+                          <Button variant="outline" onClick={handleDeleteAccount} className="border-red-500/20 text-red-500 hover:bg-red-500 hover:text-foreground rounded-lg">
                             <Trash2 className="w-4 h-4 mr-2" /> Excluir Conta
                           </Button>
                         </div>
@@ -412,7 +412,7 @@ export default function Profile() {
 
                  {/* Empresa Tab */}
                  {activeTab === 'empresa' && (
-                    <AnimatedCard className="border-border bg-card shadow-xl overflow-hidden">
+                    <AnimatedCard className="border-border bg-card shadow-xl overflow-hidden rounded-2xl">
                       <div className="p-8 md:p-10 border-b border-border">
                         <h2 className="text-2xl font-black tracking-tight text-foreground mb-1">Perfil da Empresa</h2>
                         <p className="text-xs text-foreground/40 font-medium">Informações profissionais e de atuação no sistema</p>
@@ -425,35 +425,35 @@ export default function Profile() {
                                 <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest ml-1">Telefone / WhatsApp</Label>
                                 <div className="relative group">
                                   <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/20 group-focus-within:text-amber-500 transition-colors" />
-                                  <Input value={phone} onChange={(e) => setPhone(e.target.value)} className="h-12 pl-12 rounded-xl bg-white/[0.04] border-white/10 text-foreground focus:border-amber-500 focus:ring-amber-500/20 font-medium" placeholder="+55 (00) 00000-0000" />
+                                  <Input value={phone} onChange={(e) => setPhone(e.target.value)} className="h-12 pl-12 rounded-lg bg-white/[0.04] border-white/10 text-foreground focus:border-amber-500 focus:ring-amber-500/20 font-medium" placeholder="+55 (00) 00000-0000" />
                                 </div>
                             </div>
                             <div className="space-y-3">
                                 <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest ml-1">Cargo / Função</Label>
                                 <div className="relative group">
                                   <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/20 group-focus-within:text-amber-500 transition-colors" />
-                                  <Input value={role} onChange={(e) => setRole(e.target.value)} className="h-12 pl-12 rounded-xl bg-white/[0.04] border-white/10 text-foreground focus:border-amber-500 focus:ring-amber-500/20 font-medium" placeholder="Ex: Gestor de Redes" />
+                                  <Input value={role} onChange={(e) => setRole(e.target.value)} className="h-12 pl-12 rounded-lg bg-white/[0.04] border-white/10 text-foreground focus:border-amber-500 focus:ring-amber-500/20 font-medium" placeholder="Ex: Gestor de Redes" />
                                 </div>
                             </div>
                             <div className="space-y-3 md:col-span-2">
                                 <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest ml-1">Localização</Label>
                                 <div className="relative group">
                                   <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/20 group-focus-within:text-amber-500 transition-colors" />
-                                  <Input value={locationName} onChange={(e) => setLocationName(e.target.value)} className="h-12 pl-12 rounded-xl bg-white/[0.04] border-white/10 text-foreground focus:border-amber-500 focus:ring-amber-500/20 font-medium" placeholder="Ex: São Paulo, SP" />
+                                  <Input value={locationName} onChange={(e) => setLocationName(e.target.value)} className="h-12 pl-12 rounded-lg bg-white/[0.04] border-white/10 text-foreground focus:border-amber-500 focus:ring-amber-500/20 font-medium" placeholder="Ex: São Paulo, SP" />
                                 </div>
                             </div>
                             <div className="space-y-3 md:col-span-2">
                                 <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest ml-1">Biografia</Label>
                                 <div className="relative group">
                                   <Info className="absolute left-4 top-5 w-4 h-4 text-foreground/20 group-focus-within:text-amber-500 transition-colors" />
-                                  <textarea value={bio} onChange={(e) => setBio(e.target.value)} rows={4} className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/[0.04] border border-white/10 text-foreground placeholder:text-foreground/30 focus:border-amber-500 focus:ring-amber-500/20 font-medium resize-none outline-none" placeholder="Conte um pouco sobre a atuação..." />
+                                  <textarea value={bio} onChange={(e) => setBio(e.target.value)} rows={4} className="w-full pl-12 pr-4 py-4 rounded-lg bg-white/[0.04] border border-white/10 text-foreground placeholder:text-foreground/30 focus:border-amber-500 focus:ring-amber-500/20 font-medium resize-none outline-none" placeholder="Conte um pouco sobre a atuação..." />
                                 </div>
                             </div>
                           </div>
                         </div>
                         <div className="bg-muted border-t border-border p-6 px-8 md:px-10 flex items-center justify-end gap-3">
-                          <Button type="button" variant="ghost" onClick={fetchProfile} className="rounded-xl text-muted-foreground hover:text-foreground">Cancelar</Button>
-                          <Button type="submit" disabled={updating} className="rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 shadow-lg">
+                          <Button type="button" variant="ghost" onClick={fetchProfile} className="rounded-lg text-muted-foreground hover:text-foreground">Cancelar</Button>
+                          <Button type="submit" disabled={updating} className="rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 shadow-lg">
                             {updating ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                             Salvar informações
                           </Button>
@@ -464,7 +464,7 @@ export default function Profile() {
 
                  {/* Preferencias Tab */}
                  {activeTab === 'preferencias' && (
-                    <AnimatedCard className="border-border bg-card shadow-xl overflow-hidden">
+                    <AnimatedCard className="border-border bg-card shadow-xl overflow-hidden rounded-2xl">
                       <div className="p-8 md:p-10 border-b border-border">
                         <h2 className="text-2xl font-black tracking-tight text-foreground mb-1">Preferências</h2>
                         <p className="text-xs text-foreground/40 font-medium">Personalize a aparência do seu sistema Analytics</p>
@@ -519,7 +519,7 @@ export default function Profile() {
 
                  {/* Conexoes Tab */}
                  {activeTab === 'conexoes' && (
-                    <AnimatedCard className="border-border bg-card shadow-xl overflow-hidden">
+                    <AnimatedCard className="border-border bg-card shadow-xl overflow-hidden rounded-3xl">
                       <div className="p-8 md:p-10 border-b border-border">
                         <h2 className="text-2xl font-black tracking-tight text-foreground mb-1">Conexões de Dados</h2>
                         <p className="text-xs text-foreground/40 font-medium">Vincule suas contas de redes sociais e sites para coletar métricas automaticamente</p>
