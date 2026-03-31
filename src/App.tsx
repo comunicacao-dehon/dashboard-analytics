@@ -42,7 +42,7 @@ function ProtectedRoute({ component: Component, ...rest }: any) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#050505]">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <Loader2 className="w-10 h-10 text-amber-500 animate-spin" />
       </div>
     );
@@ -63,7 +63,7 @@ function PublicRoute({ component: Component, ...rest }: any) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#050505]">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <Loader2 className="w-10 h-10 text-amber-500 animate-spin" />
       </div>
     );

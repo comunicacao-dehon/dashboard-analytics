@@ -76,7 +76,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-[#050505] font-['Outfit'] text-foreground overflow-x-hidden relative selection:bg-amber-500/30">
+    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-background font-sans text-foreground overflow-x-hidden relative selection:bg-amber-500/30">
       {/* Background Decor */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <motion.div 
@@ -214,8 +214,8 @@ export default function Login() {
               >
                 {loading ? (
                   <div className="flex items-center gap-3">
-                    <Loader2 className="h-6 w-6 animate-spin mx-auto text-[#050505]" />
-                    {isSignUp && <span className="text-xs animate-pulse text-[#050505]">Enviando código...</span>}
+                    <Loader2 className="h-6 w-6 animate-spin mx-auto text-primary-foreground" />
+                    {isSignUp && <span className="text-xs animate-pulse text-primary-foreground">Enviando código...</span>}
                   </div>
                 ) : (
                   <div className="flex items-center justify-center gap-2 uppercase tracking-widest">
