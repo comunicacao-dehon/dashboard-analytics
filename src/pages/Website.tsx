@@ -86,7 +86,7 @@ export default function Website() {
         <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="space-y-8">
           
           {/* Header */}
-          <motion.div variants={slideUp} className="flex flex-col md:flex-row items-center justify-between shadow-xl bg-card border border-border rounded-[2rem] p-6 gap-6 relative overflow-hidden">
+          <motion.div variants={slideUp} className="flex flex-col md:flex-row items-center justify-between shadow-xl bg-card border border-border rounded-3xl p-6 gap-6 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-3xl pointer-events-none rounded-full" />
             
             <div className="flex items-center gap-5 relative z-10 w-full justify-center md:justify-start text-center md:text-left">
