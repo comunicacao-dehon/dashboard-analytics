@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { Sidebar } from "./Sidebar";
 import { MobileNav } from "./MobileNav";
+import { cn } from "@/lib/utils";
 
 interface LayoutProps {
   children: ReactNode;
