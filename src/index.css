@@ -49,40 +49,40 @@
   --sidebar-primary: #B45309;
   --sidebar-primary-foreground: #FFFBEB;
 
-  /* ── Fundo: Cinza médio aquecido com gradiente — dá profundidade ao glass ── */
+  /* ── Fundo: Stone-50 — levemente aquecido, não cansa a vista ── */
   --radius: 0.625rem;
-  --background: #D6D3D1;            /* Stone 300 — cinza médio, não branco */
-  --foreground: #1C1917;            /* Stone 900 */
+  --background: #FAFAF9;            /* Stone 50 */
+  --foreground: #1C1917;            /* Stone 900 — quase preto, mais suave */
 
-  /* ── Cards: Branco semitransparente — glassmorphism ── */
-  --card: rgba(255, 255, 255, 0.72);
+  /* ── Cards: Branco puro para destacar do fundo Stone ── */
+  --card: #FFFFFF;
   --card-foreground: #1C1917;
-  --popover: rgba(255, 255, 255, 0.90);
+  --popover: #FFFFFF;
   --popover-foreground: #1C1917;
 
-  /* ── Secundário/Muted: Stone suave ── */
-  --secondary: rgba(255, 255, 255, 0.50);
+  /* ── Secundário/Muted: Stone palette — coeso e suave ── */
+  --secondary: #F5F5F4;             /* Stone 100 */
   --secondary-foreground: #44403C;  /* Stone 700 */
-  --muted: rgba(255, 255, 255, 0.40);
-  --muted-foreground: #78716C;      /* Stone 500 */
+  --muted: #F5F5F4;                 /* Stone 100 */
+  --muted-foreground: #78716C;      /* Stone 500 — warm gray */
 
-  /* ── Accent: Âmbar suave ── */
-  --accent: rgba(254, 243, 199, 0.80); /* Amber 100, semitransparente */
-  --accent-foreground: #78350F;
+  /* ── Accent: Âmbar muito suave — destaque sem agressão ── */
+  --accent: #FEF3C7;                /* Amber 100 */
+  --accent-foreground: #78350F;     /* Amber 900 — escuro, legível */
 
   /* ── Estado, bordas e inputs ── */
-  --destructive: #DC2626;
+  --destructive: #DC2626;           /* Red 600 */
   --destructive-foreground: #FEF2F2;
-  --border: rgba(255, 255, 255, 0.60);
-  --input: rgba(255, 255, 255, 0.55);
+  --border: #E7E5E4;                /* Stone 200 */
+  --input: #E7E5E4;
   --ring: #B45309;
 
-  /* ── Sidebar: vidro fosco ── */
-  --sidebar: rgba(255, 255, 255, 0.65);
+  /* ── Sidebar: levemente diferente do fundo para hierarquia visual ── */
+  --sidebar: #FFFFFF;
   --sidebar-foreground: #1C1917;
-  --sidebar-accent: rgba(255, 255, 255, 0.45);
+  --sidebar-accent: #F5F5F4;
   --sidebar-accent-foreground: #44403C;
-  --sidebar-border: rgba(255, 255, 255, 0.50);
+  --sidebar-border: #E7E5E4;
   --sidebar-ring: #B45309;
 
   /* ── Gráficos: Índigo/Violeta para dados + âmbar para destaque ── */
@@ -148,15 +148,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply text-foreground font-sans;
-    /* Fundo cinza com blobs de gradiente — base para o efeito vidro fosco */
-    background-color: #C8C5C2;
-    background-image:
-      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(214,211,209,0.9) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(180,83,9,0.08) 0%, transparent 55%),
-      radial-gradient(ellipse 70% 60% at 50% 80%, rgba(200,197,194,0.95) 0%, transparent 65%),
-      radial-gradient(ellipse 50% 40% at 85% 75%, rgba(180,83,9,0.06) 0%, transparent 50%);
-    min-height: 100vh;
+    @apply bg-background text-foreground font-sans;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold tracking-tight;
@@ -191,21 +183,13 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-gray-700 to-gray-500;
   }
   .text-gradient-primary {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-amber-700 via-amber-600 to-amber-500;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-400;
   }
   .glass {
-    background: rgba(255, 255, 255, 0.62);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.75);
-    box-shadow: 0 8px 32px 0 rgba(80, 60, 30, 0.10);
+    @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.04)];
   }
   .glass-dark {
-    background: rgba(28, 25, 23, 0.55);
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+    @apply bg-black/40 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)];
   }
 }
 
