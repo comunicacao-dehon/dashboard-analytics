@@ -12,8 +12,10 @@ import {
   Activity,
   ChevronRight
 } from "lucide-react";
+import { useBranding } from "@/hooks/useBranding";
 
 export default function Landing() {
+  const branding = useBranding();
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -41,7 +43,7 @@ export default function Landing() {
             <div className="w-8 h-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center border border-primary/30 shadow-[0_0_15px_rgba(245,158,11,0.3)]">
               <Activity size={18} className="text-primary" />
             </div>
-            <span className="font-bold text-xl tracking-tight">Utxica</span>
+            <span className="font-bold text-xl tracking-tight">{branding.name}</span>
           </div>
           
           <div className="hidden md:flex items-center gap-6">
@@ -264,14 +266,14 @@ export default function Landing() {
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
             <Activity className="text-primary w-6 h-6" />
-            <span className="font-bold text-lg">Utxica</span>
+            <span className="font-bold text-lg">{branding.name}</span>
           </div>
           <div className="flex items-center gap-6 text-sm text-muted-foreground">
             <a href="#" className="hover:text-primary transition-colors">Termos</a>
             <a href="#" className="hover:text-primary transition-colors">Privacidade</a>
             <a href="#" className="hover:text-primary transition-colors">Contato</a>
           </div>
-          <p className="text-sm text-muted-foreground">© 2026 Utxica. Todos os direitos reservados.</p>
+          <p className="text-sm text-muted-foreground">© 2026 {branding.name}. Todos os direitos reservados.</p>
         </div>
       </footer>
     </div>
