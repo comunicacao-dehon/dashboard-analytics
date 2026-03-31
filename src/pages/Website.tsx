@@ -86,7 +86,7 @@ export default function Website() {
         <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="space-y-8">
           
           {/* Header */}
-          <motion.div variants={slideUp} className="flex flex-col md:flex-row items-center justify-between shadow-[0_4px_20px_-10px_rgba(0,0,0,0.5)] bg-white/[0.04] backdrop-blur-[40px] border border-white/[0.08] rounded-[2rem] p-6 gap-6 relative overflow-hidden">
+          <motion.div variants={slideUp} className="flex flex-col md:flex-row items-center justify-between shadow-xl bg-card border border-border rounded-[2rem] p-6 gap-6 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-3xl pointer-events-none rounded-full" />
             
             <div className="flex items-center gap-5 relative z-10 w-full justify-center md:justify-start text-center md:text-left">
@@ -101,7 +101,7 @@ export default function Website() {
                      <Star className="w-3 h-3 text-emerald-400 fill-emerald-400" />
                    </div>
                 </div>
-                <div className="flex items-center gap-3 text-[10px] uppercase font-black tracking-widest text-white/40 justify-center md:justify-start mt-1">
+                <div className="flex items-center gap-3 text-[10px] uppercase font-black tracking-widest text-foreground/40 justify-center md:justify-start mt-1">
                    <div className="flex items-center gap-1.5 text-emerald-400">
                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_5px_rgba(52,211,153,0.8)]" />
                      Rastreamento Ativo
@@ -117,15 +117,15 @@ export default function Website() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {metrics.map((m, i) => (
               <motion.div key={i} variants={slideUp}>
-                <AnimatedCard className="p-6 border-white/[0.08] relative overflow-hidden group hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] transition-all">
-                  <div className="flex items-center justify-between text-white/40 mb-3 relative z-10">
+                <AnimatedCard className="p-6 border-border relative overflow-hidden group hover:shadow-xl transition-all">
+                  <div className="flex items-center justify-between text-foreground/40 mb-3 relative z-10">
                     <span className="text-[10px] font-black uppercase tracking-widest">{m.label}</span>
                     <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
                       <m.icon className={`w-4 h-4 ${m.color}`} />
                     </div>
                   </div>
                   <div className="space-y-1 relative z-10">
-                    <p className="text-2xl font-black tracking-tight text-white">{m.value}</p>
+                    <p className="text-2xl font-black tracking-tight text-foreground">{m.value}</p>
                     <div className="flex items-center gap-1.5">
                       <span className="text-[10px] font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5 bg-emerald-500/10 text-emerald-400">
                         <ArrowUpRight className="w-2.5 h-2.5" />
@@ -140,10 +140,10 @@ export default function Website() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <AnimatedCard className="lg:col-span-2 p-6 md:p-8 bg-white/[0.02] border-white/[0.08]">
+            <AnimatedCard className="lg:col-span-2 p-6 md:p-8 bg-card border-border shadow-md">
               <div className="flex items-center gap-2 mb-8">
                 <BarChart3 className="w-5 h-5 text-emerald-500" />
-                <h3 className="text-xl font-bold tracking-tight text-white">Tráfego por Página</h3>
+                <h3 className="text-xl font-bold tracking-tight text-foreground">Tráfego por Página</h3>
               </div>
               <div className="space-y-6">
                 {topPages.map((page, i) => (
@@ -152,21 +152,21 @@ export default function Website() {
                      <div className="absolute top-0 left-0 h-full bg-emerald-500/5 transition-all duration-1000 -z-10" style={{ width: `${100 - (i * 15)}%` }} />
                      
                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-xs font-black text-white/40 border border-white/5">0{i+1}</div>
-                        <p className="font-bold text-white font-mono text-sm tracking-tight">{page.path}</p>
+                        <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-xs font-black text-foreground/40 border border-white/5">0{i+1}</div>
+                        <p className="font-bold text-foreground font-mono text-sm tracking-tight">{page.path}</p>
                      </div>
                      <div className="flex items-center gap-6 text-sm">
                         <div className="text-center">
-                           <p className="text-[10px] font-black uppercase text-white/30 tracking-widest mb-1">Visualizações</p>
-                           <p className="font-bold text-white">{page.views}</p>
+                           <p className="text-[10px] font-black uppercase text-foreground/30 tracking-widest mb-1">Visualizações</p>
+                           <p className="font-bold text-foreground">{page.views}</p>
                         </div>
                         <div className="text-center hidden sm:block">
-                           <p className="text-[10px] font-black uppercase text-white/30 tracking-widest mb-1">Rejeição</p>
+                           <p className="text-[10px] font-black uppercase text-foreground/30 tracking-widest mb-1">Rejeição</p>
                            <p className="font-bold text-amber-400">{page.bounce}</p>
                         </div>
                         <div className="text-center hidden sm:block">
-                           <p className="text-[10px] font-black uppercase text-white/30 tracking-widest mb-1">Duração</p>
-                           <p className="font-bold text-white/70">{page.time}</p>
+                           <p className="text-[10px] font-black uppercase text-foreground/30 tracking-widest mb-1">Duração</p>
+                           <p className="font-bold text-foreground/70">{page.time}</p>
                         </div>
                      </div>
                   </div>
@@ -174,16 +174,16 @@ export default function Website() {
               </div>
             </AnimatedCard>
             
-            <AnimatedCard className="p-6 md:p-8 bg-white/[0.02] border-white/[0.08] flex flex-col items-center justify-center text-center">
+            <AnimatedCard className="p-6 md:p-8 bg-card border-border shadow-md flex flex-col items-center justify-center text-center">
                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center border border-indigo-500/30 mb-6 drop-shadow-xl relative group">
                   <div className="absolute inset-0 bg-indigo-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                   <Activity className="w-8 h-8 text-indigo-400 relative z-10" />
                </div>
-               <h3 className="text-xl font-bold tracking-tight text-white mb-2">Utxica Insights IA</h3>
-               <p className="text-sm font-medium text-white/50 mb-8 leading-relaxed">
+               <h3 className="text-xl font-bold tracking-tight text-foreground mb-2">Utxica Insights IA</h3>
+               <p className="text-sm font-medium text-foreground/50 mb-8 leading-relaxed">
                  O tráfego da página <strong>/doacoes</strong> teve um aumento de 145% nos últimos 7 dias. Recomendamos adicionar um CTA mais visível no banner pincipal.
                </p>
-               <Button className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold h-12 shadow-[0_0_15px_rgba(99,102,241,0.3)] rounded-xl uppercase tracking-widest text-[10px]">
+               <Button className="w-full bg-indigo-500 hover:bg-indigo-600 text-foreground font-bold h-12 shadow-[0_0_15px_rgba(99,102,241,0.3)] rounded-xl uppercase tracking-widest text-[10px]">
                  Ver mais análises
                </Button>
             </AnimatedCard>
