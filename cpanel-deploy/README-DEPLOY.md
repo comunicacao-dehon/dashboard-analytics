@@ -38,6 +38,29 @@ Para que os dados do Instagram/Facebook atualizem sozinhos todo dia:
 
 ---
 
+---
+
+## 🛡️ INSTALAÇÃO SEGURA (PARA NÃO AFETAR O SITE ATUAL)
+
+Como você já tem um sistema rodando em `sistema.conventinho.org.br`, siga estes passos para garantir 100% de segurança:
+
+### 1. Use um Subdiretório
+Em vez de jogar tudo na raiz da `public_html`, crie uma pasta chamada **`analise`** (ou qualquer nome que preferir) e suba os arquivos lá. 
+- Seu acesso será: `sistema.conventinho.org.br/analise`
+
+### 2. Configure o .htaccess
+Se você usar a pasta `/analise`, abra o arquivo `.htaccess` e mude a linha 4:
+De: `RewriteBase /`  
+Para: `RewriteBase /analise/`
+
+### 3. O Arquivo de Configuração
+Renomeamos nosso arquivo para **`config_analytics.php`**. 
+Coloque-o na pasta raiz da sua conta (`/home3/conven80/`), **fora** da `public_html`. Nossos scripts já estão programados para procurar por este nome específico, então não haverá conflito com o `config.php` do seu outro sistema.
+
+---
+
 ## 🛠️ Detalhes Técnicos
 - **Roteamento:** O arquivo `.htaccess` cuida para que o React Router funcione corretamente (evita erro 404 ao atualizar a página).
 - **Segurança:** As APIs agora usam PHP cURL para falar com o Gemini e Supabase, protegendo suas chaves de API.
+- **Isolamento:** O uso de `config_analytics.php` garante que você possa ter múltiplos sistemas PHP na mesma conta sem que um interfira nos segredos do outro.
+

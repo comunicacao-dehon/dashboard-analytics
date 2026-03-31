@@ -6,7 +6,7 @@
  * Exemplo de comando no cPanel: /usr/local/bin/php /home/user/public_html/api/cron.php > /dev/null 2>&1
  */
 
-require_once '../config.php';
+require_once dirname(__DIR__, 2) . '/config_analytics.php';
 
 // Segurança opcional: verificar secret via GET se rodar via URL
 // if ($_GET['secret'] !== 'seu_cron_secret') { die('Unauthorized'); }

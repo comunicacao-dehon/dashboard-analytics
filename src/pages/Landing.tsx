@@ -253,7 +253,7 @@ export default function Landing() {
                       <p className="text-xs text-primary/80">Especialista de Marketing</p>
                     </div>
                   </div>
-                  <p className="text-sm text-white/90 italic font-medium">"{i === 1 ? "A Utxica mudou completamente como entregamos resultados. A análise por IA é impressionante e super precisa." : "Excelente plataforma. Centralizou todo nosso trabalho e agora não perdemos horas montando planilhas manuais."}"</p>
+                  <p className="text-sm text-white/90 italic font-medium">"{i === 1 ? "A Comunicação Conventinho mudou completamente como entregamos resultados. A análise por IA é impressionante e super precisa." : "Excelente plataforma. Centralizou todo nosso trabalho e agora não perdemos horas montando planilhas manuais."}"</p>
                 </div>
               ))}
             </div>
@@ -266,9 +266,9 @@ export default function Landing() {
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
             <Activity className="text-primary w-6 h-6" />
-            <span className="font-bold text-lg">{branding.name}</span>
+            <span className="font-bold text-lg">Comunicação Conventinho</span>
           </div>
-          <p className="text-sm text-white/50">© 2026 {branding.name}. Todos os direitos reservados.</p>
+          <p className="text-white/30 text-[10px] font-black uppercase tracking-widest">© 2026 Comunicação Conventinho. Todos os direitos reservados. · <span className="opacity-50">v1.1.0-Fixed</span></p>
         </div>
       </footer>
     </div>

@@ -46,15 +46,16 @@ export function EmptyDashboard() {
           className="text-4xl md:text-5xl font-black tracking-tight text-white mb-4"
         >
           Bem-vindo à Utxica
+          Bem-vindo
         </motion.h1>
 
         <motion.p 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-lg text-white/50 max-w-xl mx-auto mb-12"
+          className="text-muted-foreground mb-10 max-w-sm mx-auto"
         >
-          Seu painel analítico está vazio. Conecte suas redes sociais para começar a monitorar seu engajamento e obter relatórios com Inteligência Artificial.
+          Sua conta de Análise está ativa. Conecte sua primeira rede social para começar a coletar dados e gerar insights.
         </motion.p>
 
         <motion.div 

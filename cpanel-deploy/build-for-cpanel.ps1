@@ -32,5 +32,5 @@ Copy-Item -Path "cpanel-deploy/api/*.php" -Destination "cpanel-dist/api/"
 
 Write-Host "------------------------------------------------" -ForegroundColor Cyan
 Write-Host "SUCESSO! O conteúdo da pasta 'cpanel-dist' está pronto para upload na public_html." -ForegroundColor Green
-Write-Host "Não esqueça de configurar o config.php fora da pasta pública!" -ForegroundColor Yellow
+Write-Host "Não esqueça de configurar o config_analytics.php fora da pasta pública!" -ForegroundColor Yellow
 Write-Host "------------------------------------------------" -ForegroundColor Cyan

@@ -11,21 +11,22 @@ export interface Branding {
 
 export const BRANDING_CONFIG: Record<string, Branding> = {
   default: {
-    id: "utxica",
-    name: "Utxica",
-    logo: "/logo1.png",
+    id: "conventinho",
+    name: "Comunicação Conventinho",
+    logo: "/logo.png",
     sidebarLogo: "/logo.png",
     welcomeMessage: "Entrar No Painel",
-    footerText: "Painel Utxica · Analytics Dashboard",
+    footerText: "Painel de Análise · Conventinho SCJ",
   },
   conventinho: {
     id: "conventinho",
-    name: "Utxica",
-    logo: "/logo1.png",
+    name: "Comunicação Conventinho",
+    logo: "/logo.png",
     sidebarLogo: "/logo.png",
+    primaryColor: "#8B0000",
     motto: "“Tudo por Ele, tudo com Ele, tudo n’Ele.”",
     welcomeMessage: "Entrar No Painel",
-    footerText: "Painel Utxica · Conventinho SCJ",
+    footerText: "Dashboard Analytics · Conventinho SCJ",
   },
   gestao: {
     id: "gestao",

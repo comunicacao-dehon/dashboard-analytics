@@ -5,7 +5,7 @@
  * Substitui o endpoint Vercel /api/generate-insights
  */
 
-require_once '../config.php';
+require_once dirname(__DIR__, 2) . '/config_analytics.php';
 
 // Configurações de CORS
 header("Access-Control-Allow-Origin: " . ALLOWED_ORIGIN);

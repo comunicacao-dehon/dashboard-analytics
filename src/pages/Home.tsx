@@ -58,7 +58,7 @@ export default function Home() {
   const avatarUrl = user?.user_metadata?.avatar_url;
   const primaryAccount = accounts[0];
   const displayAvatar = primaryAccount?.profilePictureUrl || avatarUrl || "/logo.png";
-  const displayName = primaryAccount?.displayName || user?.user_metadata?.full_name || "Seu Projeto";
+  const displayName = primaryAccount?.displayName || user?.user_metadata?.full_name || "Comunicação";
   const displayUsername = primaryAccount?.username ? `@${primaryAccount.username}` : (user?.email || "");
 
   const instagramMetrics = [
@@ -442,7 +442,7 @@ export default function Home() {
           <div className="w-8 h-8 rounded-xl bg-muted border border-border flex items-center justify-center">
             <Activity className="w-4 h-4 text-amber-600" />
           </div>
-          <p>© 2026 Utxica · Conventinho SCJ. Todos os direitos reservados. · <span className="opacity-50 text-white/30">v1.1.0-Fixed</span></p>
+          <p>© 2026 Comunicação Conventinho · SCJ. Todos os direitos reservados. · <span className="opacity-50 text-white/30">v1.1.0-Fixed</span></p>
         </div>
       </footer>
     </div>
