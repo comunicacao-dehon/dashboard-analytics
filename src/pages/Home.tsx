@@ -125,7 +125,7 @@ export default function Home() {
               </div>
               <div className="text-center sm:text-left">
                 <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">{displayName}</h1>
-                <p className="text-base font-medium text-muted-foreground mt-0.5">{displayUsername}</p>
+                <p className="text-base font-semibold text-white/60 mt-0.5">{displayUsername}</p>
               </div>
             </div>
             <div className="flex flex-col items-end gap-3 shrink-0">
@@ -140,7 +140,7 @@ export default function Home() {
                     {avatarUrl ? (
                       <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
                     ) : (
-                      <User className="w-4 h-4 text-muted-foreground" />
+                      <User className="w-4 h-4 text-white/50" />
                     )}
                   </button>
                 </Link>
@@ -220,7 +220,7 @@ export default function Home() {
                     </span>
                   </div>
                   <p className="text-foreground font-bold truncate">{acc.displayName}</p>
-                  <p className="text-muted-foreground text-xs truncate">@{acc.username}</p>
+                  <p className="text-white/60 text-xs truncate">@{acc.username}</p>
                 </div>
                 <div className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0" title="Conectado" />
               </motion.div>
@@ -257,7 +257,7 @@ export default function Home() {
                   </div>
                   <div>
                     <p className="font-extrabold text-xl tracking-tight mb-0.5 text-foreground">{p.value}</p>
-                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{p.label}</p>
+                    <p className="text-[10px] font-black text-white/50 uppercase tracking-widest">{p.label}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full relative z-10">
@@ -302,7 +302,7 @@ export default function Home() {
                 </div>
                 <div>
                   <h3 className="text-3xl font-black tracking-tighter text-foreground mb-1">{metric.value}</h3>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{metric.label}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/50">{metric.label}</p>
                 </div>
               </AnimatedCard>
             );
@@ -341,7 +341,7 @@ export default function Home() {
                 <div className="w-3 h-3 rounded-full bg-amber-500 shadow-inner" />
                 <div className="w-3 h-3 rounded-full bg-emerald-500 shadow-inner" />
               </div>
-              <div className="mx-auto flex items-center text-[10px] uppercase tracking-widest font-black text-muted-foreground bg-muted border border-border px-3 py-1 rounded-full">
+              <div className="mx-auto flex items-center text-[10px] uppercase tracking-widest font-black text-white/60 bg-muted border border-border px-3 py-1 rounded-full">
                 <BarChart className="w-3 h-3 mr-1.5 text-amber-500" />
                 Performance Engine
               </div>
@@ -362,7 +362,7 @@ export default function Home() {
         <div className="container">
           <div className="max-w-xl mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Estratégias de Crescimento</h2>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-lg text-white/60">
               Ações táticas recomendadas para maximizar o alcance das publicações.
             </p>
           </div>
@@ -373,7 +373,7 @@ export default function Home() {
                   {strategy.number}
                 </div>
                 <h3 className="text-xl font-semibold mb-3">{strategy.title}</h3>
-                <p className="text-muted-foreground mb-6 line-clamp-2">{strategy.description}</p>
+                <p className="text-white/60 mb-6 line-clamp-2">{strategy.description}</p>
                 <div className="pt-4 border-t border-border/50">
                   <span className="inline-flex items-center text-sm font-medium text-primary bg-primary/5 px-2.5 py-1 rounded-md">
                     <Target className="w-4 h-4 mr-1.5" />
@@ -400,7 +400,7 @@ export default function Home() {
             Evolução de <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">Performance</span> Digital
           </motion.h2>
 
-          <motion.p variants={slideUp} className="text-sm text-muted-foreground mb-8 max-w-xl leading-relaxed font-medium">
+          <motion.p variants={slideUp} className="text-sm text-white/50 mb-8 max-w-xl leading-relaxed font-medium">
             Sincronize <strong className="text-foreground">redes sociais</strong> com Inteligência Artificial, detectando padrões virais 24/7.
           </motion.p>
         </motion.div>
@@ -438,11 +438,11 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-border bg-transparent py-10 mt-10">
-        <div className="container text-center text-muted-foreground text-[10px] uppercase tracking-widest font-black flex flex-col items-center gap-4">
+        <div className="container text-center text-white/40 text-[10px] uppercase tracking-widest font-black flex flex-col items-center gap-4">
           <div className="w-8 h-8 rounded-xl bg-muted border border-border flex items-center justify-center">
             <Activity className="w-4 h-4 text-amber-600" />
           </div>
-          <p>© 2026 Utxica · Conventinho SCJ. Todos os direitos reservados. · <span className="opacity-50">v1.1.0-Fixed</span></p>
+          <p>© 2026 Utxica · Conventinho SCJ. Todos os direitos reservados. · <span className="opacity-50 text-white/30">v1.1.0-Fixed</span></p>
         </div>
       </footer>
     </div>

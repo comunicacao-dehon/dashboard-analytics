@@ -54,7 +54,7 @@ export default function Landing() {
 
           <div className="flex items-center gap-4">
             <Link href="/login">
-              <span className="text-sm font-medium hover:text-primary transition-colors cursor-pointer text-muted-foreground">Entrar</span>
+              <span className="text-sm font-medium hover:text-primary transition-colors cursor-pointer text-white/70">Entrar</span>
             </Link>
             <Link href="/login">
               <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:shadow-[0_0_25px_rgba(245,158,11,0.4)] transition-all rounded-full px-6">
@@ -113,7 +113,7 @@ export default function Landing() {
               </Button>
             </Link>
             <Button size="lg" variant="outline" className="w-full sm:w-auto rounded-full px-8 h-14 text-base glass-dark border-white/10 hover:bg-white/5 transition-all">
-              Ver Demonstração <ChevronRight className="ml-1 w-5 h-5 text-muted-foreground" />
+              Ver Demonstração <ChevronRight className="ml-1 w-5 h-5 text-white/50" />
             </Button>
           </motion.div>
         </section>
@@ -184,7 +184,7 @@ export default function Landing() {
         <section id="beneficios" className="container mx-auto px-4 py-24 relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-bold mb-4">Feito para <span className="text-primary">Creator Analytics</span></h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Tudo que você precisa para entender sua audiência e crescer suas redes de forma estruturada e inteligente.</p>
+            <p className="text-white/70 text-lg max-w-2xl mx-auto">Tudo que você precisa para entender sua audiência e crescer suas redes de forma estruturada e inteligente.</p>
           </div>
 
           <motion.div 
@@ -209,7 +209,7 @@ export default function Landing() {
                   <benefit.icon className="w-6 h-6 text-primary" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">{benefit.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{benefit.desc}</p>
+                <p className="text-white/60 text-sm leading-relaxed">{benefit.desc}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -228,7 +228,7 @@ export default function Landing() {
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-3">
                     <CheckCircle2 className="text-primary w-5 h-5 flex-shrink-0" />
-                    <span className="text-muted-foreground">{item}</span>
+                    <span className="text-white/70">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -253,7 +253,7 @@ export default function Landing() {
                       <p className="text-xs text-primary/80">Especialista de Marketing</p>
                     </div>
                   </div>
-                  <p className="text-sm text-foreground/80 italic font-medium">"{i === 1 ? "A Utxica mudou completamente como entregamos resultados. A análise por IA é impressionante e super precisa." : "Excelente plataforma. Centralizou todo nosso trabalho e agora não perdemos horas montando planilhas manuais."}"</p>
+                  <p className="text-sm text-white/90 italic font-medium">"{i === 1 ? "A Utxica mudou completamente como entregamos resultados. A análise por IA é impressionante e super precisa." : "Excelente plataforma. Centralizou todo nosso trabalho e agora não perdemos horas montando planilhas manuais."}"</p>
                 </div>
               ))}
             </div>
@@ -268,12 +268,7 @@ export default function Landing() {
             <Activity className="text-primary w-6 h-6" />
             <span className="font-bold text-lg">{branding.name}</span>
           </div>
-          <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-primary transition-colors">Termos</a>
-            <a href="#" className="hover:text-primary transition-colors">Privacidade</a>
-            <a href="#" className="hover:text-primary transition-colors">Contato</a>
-          </div>
-          <p className="text-sm text-muted-foreground">© 2026 {branding.name}. Todos os direitos reservados.</p>
+          <p className="text-sm text-white/50">© 2026 {branding.name}. Todos os direitos reservados.</p>
         </div>
       </footer>
     </div>

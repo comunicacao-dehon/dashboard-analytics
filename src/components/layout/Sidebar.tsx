@@ -81,7 +81,7 @@ function NavItem({ item, location, collapsed }: { item: typeof analyticsItems[0]
           "flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300 group relative",
           isActive
             ? "bg-amber-500/10 text-amber-500 shadow-[0_4px_20px_-5px_rgba(245,158,11,0.3)] ring-1 ring-amber-500/20"
-            : "hover:bg-sidebar-accent text-sidebar-foreground/50 hover:text-sidebar-foreground"
+            : "hover:bg-sidebar-accent text-white/40 hover:text-white"
         )}
       >
         {style && !isActive ? (
@@ -182,7 +182,7 @@ export function Sidebar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-[9px] font-black text-sidebar-foreground/30 uppercase tracking-[0.2em] px-3 mb-1"
+              className="text-[9px] font-black text-white/30 uppercase tracking-[0.2em] px-3 mb-1"
             >
               Conta
             </motion.p>
@@ -204,7 +204,7 @@ export function Sidebar() {
             setLocation("/login");
           }}
           className={cn(
-            "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300 group text-muted-foreground hover:bg-red-500/10 hover:text-red-400 active:scale-95",
+            "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300 group text-white/50 hover:bg-red-500/10 hover:text-red-400 active:scale-95",
             collapsed && "justify-center"
           )}
         >
@@ -223,7 +223,7 @@ export function Sidebar() {
       {/* Collapse Toggle */}
       <button
         onClick={() => setCollapsed((c) => !c)}
-        className="flex items-center justify-center m-3 p-2 rounded-xl hover:bg-sidebar-accent transition-colors text-sidebar-foreground/40 hover:text-sidebar-foreground border-t border-sidebar-border"
+        className="flex items-center justify-center m-3 p-2 rounded-xl hover:bg-sidebar-accent transition-colors text-white/40 hover:text-white border-t border-sidebar-border"
       >
         {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
       </button>
