@@ -153,7 +153,7 @@ export default function Home() {
                   </Button>
                 </Link>
                 <Link href="/comparison">
-                  <Button variant="outline" className="rounded-xl px-5 h-12 border-white/20 text-white hover:bg-white/10 font-bold bg-white/5">
+                  <Button variant="outline" className="rounded-xl px-5 h-12 border-border text-foreground hover:bg-muted font-bold">
                     Comparar
                   </Button>
                 </Link>
@@ -219,8 +219,8 @@ export default function Home() {
                       {acc.platform}
                     </span>
                   </div>
-                  <p className="text-white font-bold truncate">{acc.displayName}</p>
-                  <p className="text-white/40 text-xs truncate">@{acc.username}</p>
+                  <p className="text-foreground font-bold truncate">{acc.displayName}</p>
+                  <p className="text-muted-foreground text-xs truncate">@{acc.username}</p>
                 </div>
                 <div className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0" title="Conectado" />
               </motion.div>
@@ -256,8 +256,8 @@ export default function Home() {
                     <p.icon className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="font-extrabold text-xl tracking-tight mb-0.5 text-white">{p.value}</p>
-                    <p className="text-[10px] font-black text-white/40 uppercase tracking-widest">{p.label}</p>
+                    <p className="font-extrabold text-xl tracking-tight mb-0.5 text-foreground">{p.value}</p>
+                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{p.label}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full relative z-10">
@@ -283,12 +283,12 @@ export default function Home() {
             <span>Novo Relatório Disponível</span>
           </motion.div>
 
-          <motion.h2 variants={slideUp} className="text-4xl md:text-6xl font-black tracking-tighter mb-8 text-white">
+          <motion.h2 variants={slideUp} className="text-4xl md:text-6xl font-black tracking-tighter mb-8 text-foreground">
             Evolução de <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">Performance</span> <br className="hidden md:block" />Digital Integrada
           </motion.h2>
 
-          <motion.p variants={slideUp} className="text-lg text-white/50 mb-8 max-w-2xl leading-relaxed font-medium">
-            Sincronize <strong className="text-white">Instagram, Facebook e YouTube</strong> com Inteligência Artificial, detectando padrões virais e anomalias 24/7.
+          <motion.p variants={slideUp} className="text-lg text-muted-foreground mb-8 max-w-2xl leading-relaxed font-medium">
+            Sincronize <strong className="text-foreground">Instagram, Facebook e YouTube</strong> com Inteligência Artificial, detectando padrões virais e anomalias 24/7.
           </motion.p>
 
           <motion.div variants={slideUp} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
@@ -299,7 +299,7 @@ export default function Home() {
               </Button>
             </Link>
             <Link href="/insights">
-              <Button size="lg" variant="outline" className="rounded-xl px-8 h-12 text-base border-white/20 text-white font-bold bg-white/[0.04] hover:bg-white/[0.08] uppercase tracking-widest">
+              <Button size="lg" variant="outline" className="rounded-xl px-8 h-12 text-base border-border text-foreground font-bold hover:bg-muted uppercase tracking-widest">
                 Utxica IA
               </Button>
             </Link>
@@ -313,7 +313,7 @@ export default function Home() {
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] flex items-center justify-center shadow-[0_0_15px_rgba(225,48,108,0.3)]">
             <Instagram className="w-5 h-5 text-white" />
           </div>
-          <h2 className="text-xl font-bold text-white tracking-tight">Métricas do Instagram</h2>
+          <h2 className="text-xl font-bold text-foreground tracking-tight">Métricas do Instagram</h2>
         </div>
         <motion.div
           variants={staggerContainer}
@@ -327,17 +327,17 @@ export default function Home() {
             const cardContent = (
               <AnimatedCard delay={idx * 0.1} className={`p-6 ${metric.href ? "hover:border-amber-500/50 cursor-pointer" : ""}`}>
                 <div className="flex justify-between items-start mb-6">
-                  <div className="p-3 bg-white/5 rounded-xl border border-white/10">
-                    <Icon className="w-5 h-5 text-white/70" />
+                  <div className="p-3 bg-primary/10 rounded-xl border border-primary/20">
+                    <Icon className="w-5 h-5 text-primary" />
                   </div>
-                  <span className="flex items-center text-[10px] font-black tracking-wider uppercase text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                  <span className="flex items-center text-[10px] font-black tracking-wider uppercase text-emerald-600 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
                     <ArrowUpRight className="w-3 h-3 mr-1" />
                     {metric.trend}
                   </span>
                 </div>
                 <div>
-                  <h3 className="text-3xl font-black tracking-tighter text-white mb-1 drop-shadow-md">{metric.value}</h3>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-white/40">{metric.label}</p>
+                  <h3 className="text-3xl font-black tracking-tighter text-foreground mb-1">{metric.value}</h3>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{metric.label}</p>
                 </div>
               </AnimatedCard>
             );
@@ -376,7 +376,7 @@ export default function Home() {
                 <div className="w-3 h-3 rounded-full bg-amber-500 shadow-inner" />
                 <div className="w-3 h-3 rounded-full bg-emerald-500 shadow-inner" />
               </div>
-              <div className="mx-auto flex items-center text-[10px] uppercase tracking-widest font-black text-white/40 bg-white/5 border border-white/10 px-3 py-1 rounded-full">
+              <div className="mx-auto flex items-center text-[10px] uppercase tracking-widest font-black text-muted-foreground bg-muted border border-border px-3 py-1 rounded-full">
                 <BarChart className="w-3 h-3 mr-1.5 text-amber-500" />
                 Performance Engine
               </div>
@@ -453,9 +453,9 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-white/[0.08] bg-transparent py-10 mt-10">
-        <div className="container text-center text-white/40 text-[10px] uppercase tracking-widest font-black flex flex-col items-center gap-4">
-          <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
-            <Activity className="w-4 h-4 text-amber-500" />
+        <div className="container text-center text-muted-foreground text-[10px] uppercase tracking-widest font-black flex flex-col items-center gap-4">
+          <div className="w-8 h-8 rounded-xl bg-muted border border-border flex items-center justify-center">
+            <Activity className="w-4 h-4 text-amber-600" />
           </div>
           <p>© 2026 Utxica · Conventinho SCJ. Todos os direitos reservados.</p>
         </div>

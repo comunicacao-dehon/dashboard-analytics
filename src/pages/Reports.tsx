@@ -124,7 +124,7 @@ export default function Reports() {
               <FileText className="w-4 h-4" />
               <span>Relatório Consolidado</span>
             </motion.div>
-            <motion.h1 variants={slideUp} className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-white">
+            <motion.h1 variants={slideUp} className="text-4xl md:text-5xl font-bold tracking-tight mb-2 text-foreground">
               Visão Geral do Relatório
             </motion.h1>
             <motion.p variants={slideUp} className="text-lg text-muted-foreground">

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Instagram, 
@@ -39,7 +39,7 @@ const platformConfig = {
     color: "#f59e0b", // Amber theme override
     textClass: "text-amber-500",
     activeClass: "bg-amber-500/10 text-amber-500 ring-1 ring-amber-500/30",
-    hoverClass: "hover:bg-white/[0.06] hover:text-white/80",
+    hoverClass: "hover:bg-muted hover:text-foreground",
     borderClass: "border-amber-500/10"
   },
   facebook: {
@@ -48,7 +48,7 @@ const platformConfig = {
     color: "#f59e0b",
     textClass: "text-amber-500",
     activeClass: "bg-amber-500/10 text-amber-500 ring-1 ring-amber-500/30",
-    hoverClass: "hover:bg-white/[0.06] hover:text-white/80",
+    hoverClass: "hover:bg-muted hover:text-foreground",
     borderClass: "border-amber-500/10"
   },
   youtube: {
@@ -57,7 +57,7 @@ const platformConfig = {
     color: "#f59e0b",
     textClass: "text-amber-500",
     activeClass: "bg-amber-500/10 text-amber-500 ring-1 ring-amber-500/30",
-    hoverClass: "hover:bg-white/[0.06] hover:text-white/80",
+    hoverClass: "hover:bg-muted hover:text-foreground",
     borderClass: "border-amber-500/10"
   }
 };
@@ -117,7 +117,7 @@ export default function Metrics() {
              }
           }
         } catch (error) {
-          console.error("Erro critico ao carregar métricas (Metrics.tsx):", error);
+          console.error("Erro critico ao carregar mÃ©tricas (Metrics.tsx):", error);
           if (active) setMetrics([]); 
         } finally {
           if (active) setLoading(false);
@@ -163,7 +163,7 @@ export default function Metrics() {
   }
 
   if (!isConventinho && !hasAccounts) {
-    return <EmptyPlatformState platform="Métricas Globais" icon={<Activity className="w-8 h-8 text-amber-500" />} description="Vincule suas redes sociais para acessar métricas detalhadas de seguidores, alcance e engajamento." />;
+    return <EmptyPlatformState platform="MÃ©tricas Globais" icon={<Activity className="w-8 h-8 text-amber-500" />} description="Vincule suas redes sociais para acessar mÃ©tricas detalhadas de seguidores, alcance e engajamento." />;
   }
 
   const currentMetrics = metrics.length > 0 ? metrics[metrics.length - 1] : null;
@@ -179,7 +179,7 @@ export default function Metrics() {
   const summaryCards = currentMetrics ? [
     { label: "Seguidores", value: currentMetrics.followers, prev: previousMetrics?.followers, icon: Users },
     { label: "Alcance", value: currentMetrics.reach, prev: previousMetrics?.reach, icon: Activity },
-    { label: "Impressões", value: currentMetrics.impressions, prev: previousMetrics?.impressions, icon: Eye },
+    { label: "ImpressÃµes", value: currentMetrics.impressions, prev: previousMetrics?.impressions, icon: Eye },
     { label: "Engajamento", value: currentMetrics.engagement, prev: previousMetrics?.engagement, icon: TrendingUp },
     { label: "Cliques", value: currentMetrics.clicks, prev: previousMetrics?.clicks, icon: MousePointerClick },
   ] : [];
@@ -195,14 +195,14 @@ export default function Metrics() {
               <Activity className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-white mb-1">Métricas Globais</h1>
-              <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Análise profissional de redes sociais</p>
+              <h1 className="text-xl font-bold tracking-tight text-foreground mb-1">MÃ©tricas Globais</h1>
+              <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">AnÃ¡lise profissional de redes sociais</p>
             </div>
           </div>
           <Button 
             variant="outline" 
             size="sm"
-            className="h-12 px-6 rounded-xl border-white/20 bg-white/[0.04] text-white hover:bg-white/[0.08] font-bold shadow-lg shadow-black/20"
+            className="h-12 px-6 rounded-xl border-border bg-muted text-foreground hover:bg-secondary font-bold shadow-sm"
             onClick={fetchData}
             disabled={loading}
           >
@@ -226,7 +226,7 @@ export default function Metrics() {
                     "flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-bold transition-all whitespace-nowrap flex-1 justify-center",
                     isActive 
                       ? config.activeClass 
-                      : `text-white/40 ${config.hoverClass}`
+                      : `text-muted-foreground ${config.hoverClass}`
                   )}
                 >
                   <Icon className="w-4 h-4" />
@@ -247,7 +247,7 @@ export default function Metrics() {
                     "flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex-1",
                     isActive 
                       ? "bg-amber-500/10 text-amber-500 ring-1 ring-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.1)]" 
-                      : "text-white/40 hover:bg-white/[0.06] hover:text-white"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
                   )}
                 >
                   <Calendar className="w-3.5 h-3.5" />
@@ -267,9 +267,9 @@ export default function Metrics() {
         ) : metrics.length === 0 ? (
            <div className="h-[400px] flex flex-col items-center justify-center border border-dashed border-border/50 rounded-2xl bg-muted/10">
               <Activity className="w-10 h-10 text-muted-foreground/30 mb-4" />
-              <h3 className="text-lg font-bold text-foreground">Ainda não há dados aqui</h3>
+              <h3 className="text-lg font-bold text-foreground">Ainda nÃ£o hÃ¡ dados aqui</h3>
               <p className="text-sm text-muted-foreground mt-2 max-w-sm text-center">
-                 Conecte suas contas ou aguarde a primeira sincronização para visualizar as métricas.
+                 Conecte suas contas ou aguarde a primeira sincronizaÃ§Ã£o para visualizar as mÃ©tricas.
               </p>
            </div>
         ) : (
@@ -292,10 +292,10 @@ export default function Metrics() {
                       key={i} 
                       className="p-5 border-white/[0.08] relative overflow-hidden flex flex-col justify-between"
                     >
-                      <div className="flex items-center justify-between text-white/40 mb-3">
+                      <div className="flex items-center justify-between text-muted-foreground mb-3">
                          <span className="text-[10px] font-black uppercase tracking-widest">{card.label}</span>
-                         <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center">
-                            <card.icon className="w-4 h-4 text-white/50" />
+                         <div className="w-8 h-8 rounded-lg bg-muted border border-border flex items-center justify-center">
+                             <card.icon className="w-4 h-4 text-muted-foreground" />
                          </div>
                       </div>
                       <div className="space-y-1">
@@ -323,8 +323,8 @@ export default function Metrics() {
                 <AnimatedCard className="p-6 border-white/[0.08] col-span-1 lg:col-span-2">
                   <div className="flex items-center justify-between mb-8">
                     <div>
-                      <h3 className="text-xl font-bold text-white tracking-tight">Evolução de Alcance e Impressões</h3>
-                      <p className="text-[10px] uppercase font-black tracking-widest text-white/40 mt-1">Comparativo de performance diária</p>
+                      <h3 className="text-xl font-bold text-foreground tracking-tight">EvoluÃ§Ã£o de Alcance e ImpressÃµes</h3>
+                      <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground mt-1">Comparativo de performance diÃ¡ria</p>
                     </div>
                   </div>
                   <div className="h-[300px] w-full">
@@ -378,7 +378,7 @@ export default function Metrics() {
                         <Line 
                           type="monotone" 
                           dataKey="impressions" 
-                          name="Impressões" 
+                          name="ImpressÃµes" 
                           stroke="hsl(var(--muted-foreground))" 
                           strokeWidth={2}
                           strokeDasharray="4 4"
@@ -393,8 +393,8 @@ export default function Metrics() {
                 {/* Engagement Bar Chart */}
                 <AnimatedCard className="p-6 border-white/[0.08]">
                   <div className="mb-8">
-                    <h3 className="text-xl font-bold text-white tracking-tight">Engajamento Diário</h3>
-                    <p className="text-[10px] uppercase font-black tracking-widest text-white/40 mt-1">Volume de interações</p>
+                    <h3 className="text-xl font-bold text-foreground tracking-tight">Engajamento DiÃ¡rio</h3>
+                    <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground mt-1">Volume de interaÃ§Ãµes</p>
                   </div>
                   <div className="h-[220px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
@@ -431,32 +431,32 @@ export default function Metrics() {
                 {/* Growth Funnel Setup */}
                 <AnimatedCard className="p-6 border-white/[0.08] flex flex-col justify-center">
                    <div className="mb-8">
-                    <h3 className="text-xl font-bold text-white tracking-tight">Desempenho Base</h3>
-                    <p className="text-[10px] uppercase font-black tracking-widest text-white/40 mt-1">Métricas de conversão</p>
+                    <h3 className="text-xl font-bold text-foreground tracking-tight">Desempenho Base</h3>
+                    <p className="text-[10px] uppercase font-black tracking-widest text-white/40 mt-1">MÃ©tricas de conversÃ£o</p>
                   </div>
                   <div className="space-y-5">
                      <div>
-                        <div className="flex justify-between text-[10px] font-black tracking-widest uppercase mb-2 text-white/70">
-                           <span>Visualizações Totais</span>
-                           <span className="text-white">100%</span>
+                        <div className="flex justify-between text-[10px] font-black tracking-widest uppercase mb-2 text-foreground/70">
+                           <span>VisualizaÃ§Ãµes Totais</span>
+                           <span className="text-foreground">100%</span>
                         </div>
                         <div className="h-2 rounded-full bg-white/10 overflow-hidden shadow-inner flex">
                            <div className="h-full bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" style={{ width: '100%' }} />
                         </div>
                      </div>
                      <div>
-                        <div className="flex justify-between text-[10px] font-black tracking-widest uppercase mb-2 text-white/70">
+                        <div className="flex justify-between text-[10px] font-black tracking-widest uppercase mb-2 text-foreground/70">
                            <span>Visitas ao Perfil</span>
-                           <span className="text-white">{((currentMetrics?.engagement || 0) / (currentMetrics?.views || 1) * 100).toFixed(1)}%</span>
+                           <span className="text-foreground">{((currentMetrics?.engagement || 0) / (currentMetrics?.views || 1) * 100).toFixed(1)}%</span>
                         </div>
                         <div className="h-2 rounded-full bg-white/10 overflow-hidden shadow-inner flex">
                            <div className="h-full bg-amber-500 rounded-full shadow-[0_0_10px_rgba(245,158,11,0.5)] transition-all" style={{ width: `${((currentMetrics?.engagement || 0) / (currentMetrics?.views || 1) * 100)}%`}} />
                         </div>
                      </div>
                      <div>
-                        <div className="flex justify-between text-[10px] font-black tracking-widest uppercase mb-2 text-white/70">
-                           <span>Ações Estratégicas (Cliques)</span>
-                           <span className="text-white">{((currentMetrics?.clicks || 0) / (currentMetrics?.views || 1) * 100).toFixed(1)}%</span>
+                        <div className="flex justify-between text-[10px] font-black tracking-widest uppercase mb-2 text-foreground/70">
+                           <span>AÃ§Ãµes EstratÃ©gicas (Cliques)</span>
+                           <span className="text-foreground">{((currentMetrics?.clicks || 0) / (currentMetrics?.views || 1) * 100).toFixed(1)}%</span>
                         </div>
                         <div className="h-2 rounded-full bg-white/10 overflow-hidden shadow-inner flex">
                            <div className="h-full bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.5)] transition-all" style={{ width: `${((currentMetrics?.clicks || 0) / (currentMetrics?.views || 1) * 100)}%`}} />
@@ -473,3 +473,4 @@ export default function Metrics() {
     </div>
   );
 }
+
