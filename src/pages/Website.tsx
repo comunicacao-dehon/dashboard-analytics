@@ -120,8 +120,8 @@ export default function Website() {
                 <AnimatedCard className="p-6 border-border relative overflow-hidden group hover:shadow-xl transition-all">
                   <div className="flex items-center justify-between text-foreground/40 mb-3 relative z-10">
                     <span className="text-[10px] font-black uppercase tracking-widest">{m.label}</span>
-                    <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                      <m.icon className={`w-4 h-4 ${m.color}`} />
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+                      <m.icon className={`w-4 h-4 text-emerald-500`} />
                     </div>
                   </div>
                   <div className="space-y-1 relative z-10">
@@ -147,7 +147,7 @@ export default function Website() {
               </div>
               <div className="space-y-6">
                 {topPages.map((page, i) => (
-                  <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-card border border-white/5 hover:border-white/10 hover:bg-muted transition-colors relative overflow-hidden group">
+                  <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-card border border-border hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-colors relative overflow-hidden group">
                      {/* Progress bar background */}
                      <div className="absolute top-0 left-0 h-full bg-emerald-500/5 transition-all duration-1000 -z-10" style={{ width: `${100 - (i * 15)}%` }} />
                      

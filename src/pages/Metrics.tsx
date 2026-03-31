@@ -294,9 +294,9 @@ export default function Metrics() {
                     >
                       <div className="flex items-center justify-between text-muted-foreground mb-3">
                          <span className="text-[10px] font-black uppercase tracking-widest">{card.label}</span>
-                         <div className="w-8 h-8 rounded-lg bg-muted border border-border flex items-center justify-center">
-                             <card.icon className="w-4 h-4 text-muted-foreground" />
-                         </div>
+                          <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                              <card.icon className="w-4 h-4 text-primary" />
+                          </div>
                       </div>
                       <div className="space-y-1">
                          <p className="text-2xl font-bold tracking-tight text-foreground">{card.value.toLocaleString()}</p>
