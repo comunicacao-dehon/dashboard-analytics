@@ -43,89 +43,104 @@
 }
 
 :root {
-  /* ── Primário: Âmbar/Dourado (igual ao ícone do logo) ── */
-  --primary: #D97706;               /* Amber 600 */
-  --primary-foreground: #FFFFFF;
-  --sidebar-primary: #D97706;
-  --sidebar-primary-foreground: #FFFFFF;
+  /* ── Primário: Âmbar refinado — escuro o suficiente para não agredir ── */
+  --primary: #B45309;               /* Amber 700 — elegante, legível sobre branco */
+  --primary-foreground: #FFFBEB;    /* Amber 50 — quente, não cru */
+  --sidebar-primary: #B45309;
+  --sidebar-primary-foreground: #FFFBEB;
 
-  /* ── Fundo: Branco puro ── */
+  /* ── Fundo: Stone-50 — levemente aquecido, não cansa a vista ── */
   --radius: 0.625rem;
-  --background: #FFFFFF;
-  --foreground: #1A1A2E;            /* Cinza azulado escuro */
+  --background: #FAFAF9;            /* Stone 50 */
+  --foreground: #1C1917;            /* Stone 900 — quase preto, mais suave */
 
-  /* ── Cards: Branco com sombra suave ── */
+  /* ── Cards: Branco puro para destacar do fundo Stone ── */
   --card: #FFFFFF;
-  --card-foreground: #1A1A2E;
+  --card-foreground: #1C1917;
   --popover: #FFFFFF;
-  --popover-foreground: #1A1A2E;
+  --popover-foreground: #1C1917;
 
-  /* ── Secundário/Muted ── */
-  --secondary: #F3F4F6;             /* Cinza muito claro */
-  --secondary-foreground: #374151;
-  --muted: #F9FAFB;
-  --muted-foreground: #6B7280;      /* Cinza médio */
+  /* ── Secundário/Muted: Stone palette — coeso e suave ── */
+  --secondary: #F5F5F4;             /* Stone 100 */
+  --secondary-foreground: #44403C;  /* Stone 700 */
+  --muted: #F5F5F4;                 /* Stone 100 */
+  --muted-foreground: #78716C;      /* Stone 500 — warm gray */
 
-  /* ── Accent: Âmbar mais suave ── */
+  /* ── Accent: Âmbar muito suave — destaque sem agressão ── */
   --accent: #FEF3C7;                /* Amber 100 */
-  --accent-foreground: #92400E;     /* Amber 800 */
+  --accent-foreground: #78350F;     /* Amber 900 — escuro, legível */
 
   /* ── Estado, bordas e inputs ── */
-  --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
-  --border: #E5E7EB;               /* Cinza claro */
-  --input: #E5E7EB;
-  --ring: #D97706;
+  --destructive: #DC2626;           /* Red 600 */
+  --destructive-foreground: #FEF2F2;
+  --border: #E7E5E4;                /* Stone 200 */
+  --input: #E7E5E4;
+  --ring: #B45309;
 
-  /* ── Sidebar ── */
+  /* ── Sidebar: levemente diferente do fundo para hierarquia visual ── */
   --sidebar: #FFFFFF;
-  --sidebar-foreground: #1A1A2E;
-  --sidebar-accent: #F9FAFB;
-  --sidebar-accent-foreground: #374151;
-  --sidebar-border: #E5E7EB;
-  --sidebar-ring: #D97706;
+  --sidebar-foreground: #1C1917;
+  --sidebar-accent: #F5F5F4;
+  --sidebar-accent-foreground: #44403C;
+  --sidebar-border: #E7E5E4;
+  --sidebar-ring: #B45309;
 
-  /* ── Gráficos: Azul (igual à screenshot) ── */
-  --chart-1: #3B82F6;              /* Blue 500 */
-  --chart-2: #60A5FA;              /* Blue 400 */
-  --chart-3: #93C5FD;              /* Blue 300 */
-  --chart-4: #D97706;              /* Amber 600 */
-  --chart-5: #F59E0B;              /* Amber 500 */
+  /* ── Gráficos: Índigo/Violeta para dados + âmbar para destaque ── */
+  --chart-1: #4F46E5;              /* Indigo 600 — contraste forte, confiável */
+  --chart-2: #7C3AED;              /* Violet 600 */
+  --chart-3: #0891B2;              /* Cyan 600 */
+  --chart-4: #B45309;              /* Amber 700 — brand */
+  --chart-5: #059669;              /* Emerald 600 */
 }
 
 .dark {
-  --primary: #f59e0b; /* Amber 500 */
-  --primary-foreground: #050505;
-  --sidebar-primary: #f59e0b;
-  --sidebar-primary-foreground: #050505;
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.85 0.005 65);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.85 0.005 65);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.85 0.005 65);
-  --secondary: oklch(0.24 0.006 286.033);
-  --secondary-foreground: oklch(0.7 0.005 65);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground:  oklch(0.92 0.005 65);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: #f59e0b;
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.85 0.005 65);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground:  oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.488 0.243 264.376);
+  /* ── Primário: Amber 400 — brilha bem sobre dark sem queimar ── */
+  --primary: #FBBF24;               /* Amber 400 */
+  --primary-foreground: #1C1917;    /* Stone 900 */
+  --sidebar-primary: #FBBF24;
+  --sidebar-primary-foreground: #1C1917;
+
+  /* ── Fundo: Stone-950 — quente, acolhedor, não frio azulado ── */
+  --background: #0C0A09;            /* Stone 950 */
+  --foreground: #FAFAF9;            /* Stone 50 */
+
+  /* ── Cards: Stone 900 para separar do fundo ── */
+  --card: #1C1917;                  /* Stone 900 */
+  --card-foreground: #FAFAF9;
+  --popover: #1C1917;
+  --popover-foreground: #FAFAF9;
+
+  /* ── Secundário/Muted: Stone ── */
+  --secondary: #292524;             /* Stone 800 */
+  --secondary-foreground: #D6D3D1;  /* Stone 300 */
+  --muted: #292524;
+  --muted-foreground: #A8A29E;      /* Stone 400 */
+
+  /* ── Accent: Stone sutilmente diferente ── */
+  --accent: #292524;
+  --accent-foreground: #FAFAF9;
+
+  /* ── Estado, bordas e inputs ── */
+  --destructive: #EF4444;
+  --destructive-foreground: #FEF2F2;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.10);
+  --ring: #FBBF24;
+
+  /* ── Sidebar: Stone 900 ── */
+  --sidebar: #1C1917;
+  --sidebar-foreground: #FAFAF9;
+  --sidebar-accent: #292524;
+  --sidebar-accent-foreground: #FAFAF9;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #FBBF24;
+
+  /* ── Gráficos dark: versões mais claras ── */
+  --chart-1: #818CF8;              /* Indigo 400 */
+  --chart-2: #A78BFA;              /* Violet 400 */
+  --chart-3: #22D3EE;              /* Cyan 400 */
+  --chart-4: #FBBF24;              /* Amber 400 */
+  --chart-5: #34D399;              /* Emerald 400 */
 }
 
 @layer base {
