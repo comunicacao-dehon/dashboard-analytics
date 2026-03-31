@@ -80,7 +80,7 @@ function NavItem({ item, location, collapsed }: { item: typeof analyticsItems[0]
           "flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300 group relative",
           isActive
             ? "bg-amber-500/10 text-amber-500 shadow-[0_4px_20px_-5px_rgba(245,158,11,0.3)] ring-1 ring-amber-500/20"
-            : "hover:bg-white/[0.06] text-white/50 hover:text-white"
+            : "hover:bg-sidebar-accent text-sidebar-foreground/50 hover:text-sidebar-foreground"
         )}
       >
         {style && !isActive ? (
@@ -134,10 +134,10 @@ export function Sidebar() {
       initial={false}
       animate={{ width: collapsed ? 72 : 240 }}
       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className="relative hidden md:flex flex-col h-screen sticky top-0 bg-white/[0.04] backdrop-blur-[30px] border-r border-white/[0.08] shadow-[20px_0_40px_-20px_rgba(0,0,0,0.5)] shrink-0 z-40 overflow-hidden"
+      className="relative hidden md:flex flex-col h-screen sticky top-0 bg-sidebar backdrop-blur-[30px] border-r border-sidebar-border shadow-[20px_0_40px_-20px_rgba(0,0,0,0.1)] shrink-0 z-40 overflow-hidden"
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 px-4 h-16 border-b border-white/[0.08] shrink-0">
+      <div className="flex items-center gap-3 px-4 h-16 border-b border-sidebar-border shrink-0">
         <motion.div
           animate={{ rotate: collapsed ? 0 : 0 }}
           className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center overflow-hidden shrink-0 shadow-[0_0_15px_rgba(245,158,11,0.2)]"
@@ -170,7 +170,7 @@ export function Sidebar() {
         ))}
 
         {/* Separator */}
-        <div className="my-3 mx-3 border-t border-white/[0.06]" />
+        <div className="my-3 mx-3 border-t border-sidebar-border/30" />
 
         {/* Section header */}
         <AnimatePresence>
@@ -179,7 +179,7 @@ export function Sidebar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-[9px] font-black text-white/30 uppercase tracking-[0.2em] px-3 mb-1"
+              className="text-[9px] font-black text-sidebar-foreground/30 uppercase tracking-[0.2em] px-3 mb-1"
             >
               Conta
             </motion.p>
@@ -220,7 +220,7 @@ export function Sidebar() {
       {/* Collapse Toggle */}
       <button
         onClick={() => setCollapsed((c) => !c)}
-        className="flex items-center justify-center m-3 p-2 rounded-xl hover:bg-white/[0.06] transition-colors text-white/40 hover:text-white border-t border-white/[0.08]"
+        className="flex items-center justify-center m-3 p-2 rounded-xl hover:bg-sidebar-accent transition-colors text-sidebar-foreground/40 hover:text-sidebar-foreground border-t border-sidebar-border"
       >
         {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
       </button>

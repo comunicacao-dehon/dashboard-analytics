@@ -9,7 +9,7 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <div className="flex min-h-screen bg-[#050505] text-white font-['Outfit'] selection:bg-amber-500/30 overflow-hidden relative">
+    <div className="flex min-h-screen bg-background text-foreground font-sans selection:bg-amber-500/30 overflow-hidden relative">
       {/* Background Decor matching Login */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <motion.div 
