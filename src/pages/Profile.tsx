@@ -188,7 +188,7 @@ export default function Profile() {
       <div className="min-h-screen flex items-center justify-center bg-transparent">
         <div className="text-center space-y-4">
           <Loader2 className="w-10 h-10 text-amber-500 animate-spin mx-auto" />
-          <p className="text-white/50 font-black tracking-widest uppercase text-[10px] animate-pulse">Carregando dados...</p>
+          <p className="text-muted-foreground font-black tracking-widest uppercase text-[10px] animate-pulse">Carregando dados...</p>
         </div>
       </div>
     );
@@ -251,10 +251,10 @@ export default function Profile() {
                  
                  {/* Minha Conta Tab */}
                  {activeTab === 'minha-conta' && (
-                    <AnimatedCard className="border-white/[0.08] bg-white/[0.02] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden">
-                      <div className="p-8 md:p-10 border-b border-white/[0.08]">
-                        <h2 className="text-2xl font-black tracking-tight text-white mb-1">Minha Conta</h2>
-                        <p className="text-xs text-white/40 font-medium">Gerencie suas informações pessoais e detalhes da sua conta</p>
+                    <AnimatedCard className="border-border bg-card shadow-xl overflow-hidden">
+                      <div className="p-8 md:p-10 border-b border-border">
+                        <h2 className="text-2xl font-black tracking-tight text-foreground mb-1">Minha Conta</h2>
+                        <p className="text-xs text-muted-foreground font-medium">Gerencie suas informações pessoais e detalhes da sua conta</p>
                       </div>
 
                       <form onSubmit={handleUpdate}>
@@ -281,8 +281,8 @@ export default function Profile() {
                             </div>
                             <div className="space-y-3">
                               <div>
-                                <h3 className="text-lg font-bold text-white leading-none">{fullName || "Usuário"}</h3>
-                                <p className="text-sm text-white/40">{email}</p>
+                                <h3 className="text-lg font-bold text-foreground leading-none">{fullName || "Usuário"}</h3>
+                                <p className="text-sm text-muted-foreground">{email}</p>
                               </div>
                               <div className="flex items-center gap-2">
                                 <Button type="button" variant="outline" size="sm" onClick={() => fileInputRef.current?.click()} disabled={uploading} className="rounded-lg border-amber-500/30 text-amber-500 bg-amber-500/5 hover:bg-amber-500/10">
@@ -300,10 +300,10 @@ export default function Profile() {
                           {/* Fields */}
                           <div className="space-y-6">
                             <div className="space-y-3">
-                                <Label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Nome Completo</Label>
+                                <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Nome Completo</Label>
                                 <div className="relative group">
-                                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-amber-500 transition-colors" />
-                                  <Input value={fullName} onChange={(e) => setFullName(e.target.value)} className="h-12 pl-12 rounded-xl bg-white/[0.04] border-white/10 text-white focus:border-amber-500 focus:ring-amber-500/20 font-medium" placeholder="Ex: João da Silva" />
+                                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/30 group-focus-within:text-primary transition-colors" />
+                                  <Input value={fullName} onChange={(e) => setFullName(e.target.value)} className="h-12 pl-12 rounded-xl bg-muted border-border text-foreground focus:border-primary focus:ring-primary/20 font-medium" placeholder="Ex: João da Silva" />
                                 </div>
                             </div>
                             <div className="space-y-3">
@@ -317,9 +317,9 @@ export default function Profile() {
                         </div>
 
                         {/* Footer actions */}
-                        <div className="bg-white/[0.02] border-t border-white/[0.08] p-6 px-8 md:px-10 flex items-center justify-end gap-3">
-                          <Button type="button" variant="ghost" onClick={fetchProfile} className="rounded-xl text-white/50 hover:text-white">Cancelar</Button>
-                          <Button type="submit" disabled={updating} className="rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold px-6 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                        <div className="bg-muted p-6 px-8 md:px-10 flex items-center justify-end gap-3 border-t border-border">
+                          <Button type="button" variant="ghost" onClick={fetchProfile} className="rounded-xl text-muted-foreground hover:text-foreground">Cancelar</Button>
+                          <Button type="submit" disabled={updating} className="rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 shadow-lg">
                             {updating ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                             Salvar alterações
                           </Button>
