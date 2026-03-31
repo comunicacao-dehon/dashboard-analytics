@@ -106,7 +106,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative w-full rounded-[2.5rem] overflow-hidden bg-white/[0.04] backdrop-blur-[40px] border border-white/[0.08] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] flex flex-col"
+          className="relative w-full rounded-[2.5rem] overflow-hidden bg-muted backdrop-blur-[40px] border border-border shadow-xl flex flex-col"
         >
           <div className="relative px-6 md:px-10 py-6 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex flex-col sm:flex-row items-center gap-5">
@@ -200,9 +200,9 @@ export default function Home() {
                     acc.platform === "facebook" && "bg-blue-600",
                     acc.platform === "youtube" && "bg-red-600",
                   )}>
-                    {acc.platform === "instagram" && <Instagram className="w-7 h-7 text-white" />}
-                    {acc.platform === "facebook" && <Facebook className="w-7 h-7 text-white" />}
-                    {acc.platform === "youtube" && <Youtube className="w-7 h-7 text-white" />}
+                    {acc.platform === "instagram" && <Instagram className="w-7 h-7 text-foreground" />}
+                    {acc.platform === "facebook" && <Facebook className="w-7 h-7 text-foreground" />}
+                    {acc.platform === "youtube" && <Youtube className="w-7 h-7 text-foreground" />}
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
@@ -238,7 +238,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
-                className="group relative overflow-hidden rounded-[2rem] border border-white/[0.08] bg-white/[0.04] backdrop-blur-[30px] p-5 flex items-center justify-between shadow-xl hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] hover:bg-white/[0.06] hover:-translate-y-1 cursor-pointer transition-all duration-300"
+                className="group relative overflow-hidden rounded-[2rem] border border-border bg-muted backdrop-blur-[30px] p-5 flex items-center justify-between shadow-xl hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] hover:bg-white/[0.06] hover:-translate-y-1 cursor-pointer transition-all duration-300"
               >
                 {/* Subtle background glow */}
                 <div className={cn(
@@ -249,9 +249,9 @@ export default function Home() {
                 <div className="flex items-center gap-4 relative z-10">
                   <div className={cn(
                     "w-12 h-12 rounded-[1rem] flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm border border-white/10 relative z-10",
-                    p.label === "Instagram" ? "bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white" :
-                    p.label === "Facebook" ? "bg-gradient-to-br from-[#1877f2] to-[#0a52b3] text-white" :
-                    "bg-gradient-to-br from-[#ff0000] to-[#b30000] text-white"
+                    p.label === "Instagram" ? "bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-foreground" :
+                    p.label === "Facebook" ? "bg-gradient-to-br from-[#1877f2] to-[#0a52b3] text-foreground" :
+                    "bg-gradient-to-br from-[#ff0000] to-[#b30000] text-foreground"
                   )}>
                     <p.icon className="w-6 h-6" />
                   </div>
@@ -311,7 +311,7 @@ export default function Home() {
       <section className="container py-10">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] flex items-center justify-center shadow-[0_0_15px_rgba(225,48,108,0.3)]">
-            <Instagram className="w-5 h-5 text-white" />
+            <Instagram className="w-5 h-5 text-foreground" />
           </div>
           <h2 className="text-xl font-bold text-foreground tracking-tight">Métricas do Instagram</h2>
         </div>
@@ -369,8 +369,8 @@ export default function Home() {
           className="relative"
         >
           <div className="absolute inset-0 bg-amber-500/5 blur-[100px] rounded-[3rem] -z-10" />
-          <div className="rounded-[2.5rem] border border-white/[0.08] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] bg-white/[0.04] backdrop-blur-[30px] overflow-hidden">
-            <div className="h-12 border-b border-white/[0.08] bg-white/[0.02] flex items-center px-4 gap-2">
+          <div className="rounded-[2.5rem] border border-border shadow-xl overflow-hidden">
+            <div className="h-12 border-b border-border bg-muted flex items-center px-4 gap-2">
               <div className="flex gap-1.5 ml-2">
                 <div className="w-3 h-3 rounded-full bg-red-500 shadow-inner" />
                 <div className="w-3 h-3 rounded-full bg-amber-500 shadow-inner" />
@@ -431,7 +431,7 @@ export default function Home() {
         >
           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-50" />
           <div className="relative z-10 p-12 md:p-20 text-center">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Pronto para Escalar?</h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Pronto para Escalar?</h2>
             <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
               Implemente nossas estratégias e acompanhe o crescimento exponencial em todas as redes sociais.
             </p>
@@ -442,7 +442,7 @@ export default function Home() {
                 </Button>
               </Link>
               <Link href="/reports">
-                <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base border-gray-700 text-white hover:bg-gray-800">
+                <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base border-gray-700 text-foreground hover:bg-gray-800">
                   Baixar Relatório
                 </Button>
               </Link>
@@ -452,7 +452,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/[0.08] bg-transparent py-10 mt-10">
+      <footer className="border-t border-border bg-transparent py-10 mt-10">
         <div className="container text-center text-muted-foreground text-[10px] uppercase tracking-widest font-black flex flex-col items-center gap-4">
           <div className="w-8 h-8 rounded-xl bg-muted border border-border flex items-center justify-center">
             <Activity className="w-4 h-4 text-amber-600" />

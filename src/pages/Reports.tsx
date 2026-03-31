@@ -185,7 +185,7 @@ export default function Reports() {
             <EngagementChart />
             
             {/* Engagement Analysis (AI) */}
-            <AnimatedCard delay={0.5} className="p-6 md:p-8 flex-1 glass-dark mt-2 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700 text-white shadow-xl">
+            <AnimatedCard delay={0.5} className="p-6 md:p-8 flex-1  mt-2 bg-card border-border text-foreground shadow-xl">
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-primary/20 rounded-xl shrink-0">
                   <Activity className="w-6 h-6 text-primary-foreground" />
