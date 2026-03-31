@@ -270,42 +270,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Hero */}
-      <section className="container py-8">
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          animate="visible"
-          className="flex flex-col items-center text-center max-w-4xl mx-auto"
-        >
-          <motion.div variants={slideUp} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-xs font-black uppercase tracking-widest mb-8 shadow-[0_0_15px_rgba(245,158,11,0.1)]">
-            <SparklesIcon className="w-4 h-4" />
-            <span>Novo Relatório Disponível</span>
-          </motion.div>
 
-          <motion.h2 variants={slideUp} className="text-4xl md:text-6xl font-black tracking-tighter mb-8 text-foreground">
-            Evolução de <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">Performance</span> <br className="hidden md:block" />Digital Integrada
-          </motion.h2>
-
-          <motion.p variants={slideUp} className="text-lg text-muted-foreground mb-8 max-w-2xl leading-relaxed font-medium">
-            Sincronize <strong className="text-foreground">Instagram, Facebook e YouTube</strong> com Inteligência Artificial, detectando padrões virais e anomalias 24/7.
-          </motion.p>
-
-          <motion.div variants={slideUp} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <Link href="/comparison">
-              <Button size="lg" className="rounded-xl px-8 h-12 text-base shadow-[0_0_20px_rgba(245,158,11,0.2)] bg-amber-500 hover:bg-amber-600 text-[#050505] font-black uppercase tracking-widest">
-                Visão Global
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
-            <Link href="/insights">
-              <Button size="lg" variant="outline" className="rounded-xl px-8 h-12 text-base border-border text-foreground font-bold hover:bg-muted uppercase tracking-widest">
-                Utxica IA
-              </Button>
-            </Link>
-          </motion.div>
-        </motion.div>
-      </section>
 
       {/* Instagram Metrics Bento Grid */}
       <section className="container py-10">
