@@ -100,8 +100,13 @@ export default function Home() {
       {/* Decorative Background Blob */}
       <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-br from-amber-500/10 via-transparent to-transparent opacity-50 pointer-events-none -z-10 blur-3xl" />
 
+      {/* DEBUG BANNER - TESTE DE SINCRONIZAÇÃO */}
+      <div className="bg-red-600 text-white text-[10px] font-black uppercase tracking-widest py-1 text-center fixed top-0 inset-x-0 z-[9999]">
+        DEBUG: SE VOCÊ ESTÁ VENDO ISSO, O DEPLOY FUNCIONOU
+      </div>
+
       {/* Profile Card */}
-      <section className="container pt-8 pb-6">
+      <section className="container pt-12 pb-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
