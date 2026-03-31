@@ -52,11 +52,11 @@ export default function Website() {
                 placeholder="seusite.com.br"
                 className="flex-1 bg-transparent border-none outline-none text-foreground font-bold tracking-tight placeholder:text-muted-foreground/50 h-12"
             />
-            <Button className="rounded-xl h-12 px-6 ml-1 bg-emerald-500 hover:bg-emerald-600 text-white font-black uppercase tracking-widest text-xs shadow-[0_0_15px_rgba(16,185,129,0.3)] shrink-0">
+            <Button className="rounded-xl h-12 px-6 ml-1 bg-emerald-500 hover:bg-emerald-600 text-foreground font-black uppercase tracking-widest text-xs shadow-[0_0_15px_rgba(16,185,129,0.3)] shrink-0">
               Vincular
             </Button>
           </div>
-          <p className="text-[10px] text-white/30 uppercase tracking-widest font-black flex items-center justify-center gap-1.5 mt-4">
+          <p className="text-[10px] text-foreground/30 uppercase tracking-widest font-black flex items-center justify-center gap-1.5 mt-4">
              <Activity className="w-3 h-3" /> Integração via Utxica Pixel
           </p>
         </motion.div>
@@ -92,7 +92,7 @@ export default function Website() {
             <div className="flex items-center gap-5 relative z-10 w-full justify-center md:justify-start text-center md:text-left">
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#059669] to-[#047857] flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.4)] shrink-0 border border-emerald-400/20 relative group overflow-hidden">
                 <div className="absolute inset-0 bg-white/20 blur opacity-0 group-hover:opacity-100 transition-opacity" />
-                <Globe className="w-7 h-7 text-white relative z-10" />
+                <Globe className="w-7 h-7 text-foreground relative z-10" />
               </div>
               <div>
                 <div className="flex items-center gap-2 justify-center md:justify-start">
@@ -147,7 +147,7 @@ export default function Website() {
               </div>
               <div className="space-y-6">
                 {topPages.map((page, i) => (
-                  <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-card border border-white/5 hover:border-white/10 hover:bg-white/[0.04] transition-colors relative overflow-hidden group">
+                  <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-card border border-white/5 hover:border-white/10 hover:bg-muted transition-colors relative overflow-hidden group">
                      {/* Progress bar background */}
                      <div className="absolute top-0 left-0 h-full bg-emerald-500/5 transition-all duration-1000 -z-10" style={{ width: `${100 - (i * 15)}%` }} />
                      

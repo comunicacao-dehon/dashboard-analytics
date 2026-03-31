@@ -213,7 +213,7 @@ export default function Metrics() {
 
         {/* Controls (Platform & Period) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="flex bg-white/[0.02] p-1.5 rounded-[1.5rem] border border-white/[0.08] gap-1 overflow-x-auto shadow-inner">
+          <div className="flex bg-muted p-1.5 rounded-[1.5rem] border border-border gap-1 overflow-x-auto shadow-inner">
             {(Object.keys(platformConfig) as Platform[]).map((platform) => {
               const config = platformConfig[platform];
               const isActive = selectedPlatform === platform;
@@ -236,7 +236,7 @@ export default function Metrics() {
             })}
           </div>
 
-          <div className="flex bg-white/[0.02] p-1.5 rounded-[1.5rem] border border-white/[0.08] gap-1 shadow-inner">
+          <div className="flex bg-muted p-1.5 rounded-[1.5rem] border border-border gap-1 shadow-inner">
             {periods.map((period) => {
               const isActive = selectedPeriod === period.days;
               return (
@@ -290,7 +290,7 @@ export default function Metrics() {
                   return (
                     <AnimatedCard 
                       key={i} 
-                      className="p-5 border-white/[0.08] relative overflow-hidden flex flex-col justify-between"
+                      className="p-5 border-border relative overflow-hidden flex flex-col justify-between"
                     >
                       <div className="flex items-center justify-between text-muted-foreground mb-3">
                          <span className="text-[10px] font-black uppercase tracking-widest">{card.label}</span>
@@ -320,7 +320,7 @@ export default function Metrics() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 
                 {/* Evolution Chart */}
-                <AnimatedCard className="p-6 border-white/[0.08] col-span-1 lg:col-span-2">
+                <AnimatedCard className="p-6 border-border col-span-1 lg:col-span-2">
                   <div className="flex items-center justify-between mb-8">
                     <div>
                       <h3 className="text-xl font-bold text-foreground tracking-tight">Evolução de Alcance e Impressões</h3>
@@ -391,7 +391,7 @@ export default function Metrics() {
                 </AnimatedCard>
 
                 {/* Engagement Bar Chart */}
-                <AnimatedCard className="p-6 border-white/[0.08]">
+                <AnimatedCard className="p-6 border-border">
                   <div className="mb-8">
                     <h3 className="text-xl font-bold text-foreground tracking-tight">Engajamento Diário</h3>
                     <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground mt-1">Volume de interações</p>
@@ -429,10 +429,10 @@ export default function Metrics() {
                 </AnimatedCard>
 
                 {/* Growth Funnel Setup */}
-                <AnimatedCard className="p-6 border-white/[0.08] flex flex-col justify-center">
+                <AnimatedCard className="p-6 border-border flex flex-col justify-center">
                    <div className="mb-8">
                     <h3 className="text-xl font-bold text-foreground tracking-tight">Desempenho Base</h3>
-                    <p className="text-[10px] uppercase font-black tracking-widest text-white/40 mt-1">Métricas de conversão</p>
+                    <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground mt-1">Métricas de conversão</p>
                   </div>
                   <div className="space-y-5">
                      <div>

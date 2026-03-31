@@ -80,12 +80,12 @@ export default function Settings() {
           animate="visible"
           className="flex items-center gap-4 mb-10"
         >
-          <motion.div variants={slideUp} className="w-12 h-12 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center">
-            <SettingsIcon className="w-6 h-6 text-white/50" />
+          <motion.div variants={slideUp} className="w-12 h-12 rounded-2xl bg-muted border border-white/10 flex items-center justify-center">
+            <SettingsIcon className="w-6 h-6 text-foreground/50" />
           </motion.div>
           <div>
-            <motion.h1 variants={slideUp} className="text-3xl font-bold tracking-tight text-white">Configurações</motion.h1>
-            <motion.p variants={slideUp} className="text-white/40 text-sm font-medium">Gerencie conexões de contas e preferências da plataforma</motion.p>
+            <motion.h1 variants={slideUp} className="text-3xl font-bold tracking-tight text-foreground">Configurações</motion.h1>
+            <motion.p variants={slideUp} className="text-foreground/40 text-sm font-medium">Gerencie conexões de contas e preferências da plataforma</motion.p>
           </div>
         </motion.div>
 
@@ -93,7 +93,7 @@ export default function Settings() {
         <AnimatedCard className="p-8 mb-6 border-border bg-card">
           <div className="flex items-center gap-3 mb-6 pb-5 border-b border-white/[0.06]">
             <Link2 className="w-5 h-5 text-primary" />
-            <h3 className="text-base font-bold text-white tracking-tight">Conexões de Conta</h3>
+            <h3 className="text-base font-bold text-foreground tracking-tight">Conexões de Conta</h3>
           </div>
           <div className="space-y-3">
             {platforms.map((p, i) => (
@@ -114,8 +114,8 @@ export default function Settings() {
                     <p.icon className={`w-5 h-5 ${p.color}`} />
                   </div>
                   <div>
-                    <p className="font-bold text-sm text-white">{p.name}</p>
-                    <p className="text-[11px] text-white/40 font-medium">{p.api}</p>
+                    <p className="font-bold text-sm text-foreground">{p.name}</p>
+                    <p className="text-[11px] text-foreground/40 font-medium">{p.api}</p>
                     {p.account && (
                       <p className={`text-[11px] font-bold mt-0.5 ${p.color}`}>{p.account}</p>
                     )}
@@ -136,14 +136,14 @@ export default function Settings() {
               </motion.div>
             ))}
           </div>
-          <p className="text-[11px] text-white/30 font-bold mt-5 p-4 bg-card border border-white/[0.05] rounded-xl leading-relaxed">
+          <p className="text-[11px] text-foreground/30 font-bold mt-5 p-4 bg-card border border-white/[0.05] rounded-xl leading-relaxed">
             🔒 Suas credenciais são criptografadas e nunca armazenadas em texto puro. A integração utiliza OAuth 2.0 com as APIs oficiais das plataformas.
           </p>
         </AnimatedCard>
 
         {/* Preferences */}
         <AnimatedCard delay={0.15} className="p-8 border-border bg-card">
-          <h3 className="text-base font-bold text-white tracking-tight mb-6 pb-5 border-b border-white/[0.06]">Preferências</h3>
+          <h3 className="text-base font-bold text-foreground tracking-tight mb-6 pb-5 border-b border-white/[0.06]">Preferências</h3>
           <div className="space-y-3">
             {preferences.map((pref, i) => (
               <div
@@ -151,12 +151,12 @@ export default function Settings() {
                 className="flex items-center justify-between p-4 rounded-xl border border-white/[0.06] bg-white/[0.01] hover:bg-white/[0.03] transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center">
-                    <pref.icon className="w-4 h-4 text-white/40" />
+                  <div className="w-9 h-9 rounded-xl bg-muted border border-white/10 flex items-center justify-center">
+                    <pref.icon className="w-4 h-4 text-foreground/40" />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-white">{pref.label}</p>
-                    <p className="text-[11px] text-white/40 font-medium">{pref.desc}</p>
+                    <p className="text-sm font-bold text-foreground">{pref.label}</p>
+                    <p className="text-[11px] text-foreground/40 font-medium">{pref.desc}</p>
                   </div>
                 </div>
                 {/* Functional toggle */}

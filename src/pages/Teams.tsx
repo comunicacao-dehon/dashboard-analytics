@@ -31,7 +31,7 @@ const RoleSelect = ({ value, onChange, disabled }: { value: Role, onChange: (r: 
       onChange={(e) => onChange(e.target.value as Role)}
       disabled={disabled}
       className={cn(
-        "bg-white/[0.04] border border-border text-white text-[10px] font-black uppercase tracking-widest rounded-xl focus:ring-amber-500/50 focus:border-amber-500 block w-full p-2.5 outline-none transition-all cursor-pointer",
+        "bg-muted border border-border text-foreground text-[10px] font-black uppercase tracking-widest rounded-xl focus:ring-amber-500/50 focus:border-amber-500 block w-full p-2.5 outline-none transition-all cursor-pointer",
         disabled && "opacity-50 cursor-not-allowed"
       )}
     >
@@ -190,7 +190,7 @@ export default function Teams() {
       <motion.div initial="hidden" animate="visible" variants={slideUp} className="space-y-6">
         
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row shadow-[0_4px_20px_-10px_rgba(0,0,0,0.5)] bg-white/[0.04] backdrop-blur-[40px] border border-border rounded-[2rem] p-6 items-center justify-between gap-4">
+        <div className="flex flex-col md:flex-row shadow-[0_4px_20px_-10px_rgba(0,0,0,0.5)] bg-muted backdrop-blur-[40px] border border-border rounded-[2rem] p-6 items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
               <Users className="w-5 h-5" />
@@ -204,7 +204,7 @@ export default function Teams() {
              <Button 
                variant="outline" 
                size="sm"
-               className="h-12 px-6 rounded-xl border-white/20 bg-white/[0.04] text-white hover:bg-white/[0.08] font-bold shadow-lg shadow-black/20"
+               className="h-12 px-6 rounded-xl border-white/20 bg-muted text-foreground hover:bg-muted font-bold shadow-lg shadow-black/20"
                onClick={loadTeamData}
                disabled={loading}
              >
@@ -249,7 +249,7 @@ export default function Teams() {
                                </div>
                                <div>
                                   <div className="flex items-center gap-2">
-                                     <span className="font-bold text-sm text-white">
+                                     <span className="font-bold text-sm text-foreground">
                                         {member.profiles?.name || "Usuário"} {isMe && <span className="text-muted-foreground font-normal">(Você)</span>}
                                      </span>
                                      {isOwner && (
@@ -276,7 +276,7 @@ export default function Teams() {
                                      />
                                      <button 
                                         onClick={() => handleRemoveMember(member.id)}
-                                        className="p-2.5 text-white/30 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors shrink-0 outline-none"
+                                        className="p-2.5 text-foreground/30 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors shrink-0 outline-none"
                                         title="Remover Membro"
                                      >
                                         <Trash2 className="w-4 h-4" />
@@ -295,14 +295,14 @@ export default function Teams() {
                 <div className="space-y-4 pt-6 mt-6 border-t border-border">
                    <h3 className="text-[10px] uppercase font-black tracking-widest text-muted-foreground px-1 mb-2 flex items-center gap-2">
                       Convites Pendentes
-                      <span className="text-[10px] bg-white/[0.08] text-white/70 px-2 py-0.5 rounded-full">{invitations.length}</span>
+                      <span className="text-[10px] bg-muted text-foreground/70 px-2 py-0.5 rounded-full">{invitations.length}</span>
                    </h3>
 
                    {invitations.length === 0 ? (
                       <div className="p-8 border border-dashed border-border rounded-[2rem] bg-card text-center flex flex-col items-center justify-center">
-                         <Mail className="w-6 h-6 text-white/20 mb-3" />
+                         <Mail className="w-6 h-6 text-foreground/20 mb-3" />
                          <span className="text-sm font-bold text-muted-foreground">Nenhum convite pendente.</span>
-                         <span className="text-[10px] font-black uppercase tracking-widest text-white/30 mt-2">Clique em "Convidar" no topo para adicionar.</span>
+                         <span className="text-[10px] font-black uppercase tracking-widest text-foreground/30 mt-2">Clique em "Convidar" no topo para adicionar.</span>
                       </div>
                    ) : (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -310,11 +310,11 @@ export default function Teams() {
                             <AnimatedCard key={inv.id} className="p-5 border-border border-dashed flex items-center justify-between gap-3 bg-card">
                                <div className="flex items-center gap-3 overflow-hidden">
                                   <div className="w-10 h-10 rounded-[1rem] bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                                     <Mail className="w-4 h-4 text-white/40" />
+                                     <Mail className="w-4 h-4 text-foreground/40" />
                                   </div>
                                   <div className="truncate">
-                                     <p className="text-sm font-bold text-white truncate max-w-[150px]">{inv.email}</p>
-                                     <p className="text-[10px] text-white/40 uppercase tracking-widest font-black mt-1">
+                                     <p className="text-sm font-bold text-foreground truncate max-w-[150px]">{inv.email}</p>
+                                     <p className="text-[10px] text-foreground/40 uppercase tracking-widest font-black mt-1">
                                         Como: <span className="text-amber-500">{roleLabels[inv.role as keyof typeof roleLabels]}</span>
                                      </p>
                                   </div>
@@ -323,7 +323,7 @@ export default function Teams() {
                                {isAdmin && (
                                   <button 
                                      onClick={() => handleCancelInvite(inv.id)}
-                                     className="p-2 text-white/30 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors shrink-0 outline-none"
+                                     className="p-2 text-foreground/30 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-colors shrink-0 outline-none"
                                      title="Cancelar Convite"
                                   >
                                      <X className="w-4 h-4" />
@@ -362,16 +362,16 @@ export default function Teams() {
                            <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
                               <UserPlus className="w-4 h-4 text-amber-500" />
                            </div>
-                           <h2 className="text-lg font-bold text-white tracking-tight">Convidar Membro</h2>
+                           <h2 className="text-lg font-bold text-foreground tracking-tight">Convidar Membro</h2>
                         </div>
-                        <button onClick={() => setIsInviteModalOpen(false)} className="text-white/40 hover:text-white transition-colors p-2 rounded-xl hover:bg-white/[0.06]">
+                        <button onClick={() => setIsInviteModalOpen(false)} className="text-foreground/40 hover:text-foreground transition-colors p-2 rounded-xl hover:bg-white/[0.06]">
                            <X className="w-5 h-5"/>
                         </button>
                      </div>
                      
                      <form onSubmit={handleInvite} className="p-6 space-y-6">
                         <div className="space-y-3">
-                           <Label htmlFor="email" className="text-[10px] font-black text-white/50 uppercase tracking-widest pl-1">E-mail do Colaborador</Label>
+                           <Label htmlFor="email" className="text-[10px] font-black text-foreground/50 uppercase tracking-widest pl-1">E-mail do Colaborador</Label>
                            <Input 
                               id="email"
                               type="email"
@@ -379,12 +379,12 @@ export default function Teams() {
                               value={inviteEmail}
                               onChange={(e) => setInviteEmail(e.target.value)}
                               required
-                              className="h-12 rounded-xl bg-white/[0.04] border-white/10 text-white placeholder:text-white/30 focus:border-amber-500 focus:ring-amber-500/20"
+                              className="h-12 rounded-xl bg-muted border-white/10 text-foreground placeholder:text-foreground/30 focus:border-amber-500 focus:ring-amber-500/20"
                            />
                         </div>
 
                         <div className="space-y-3">
-                           <Label className="text-[10px] font-black text-white/50 uppercase tracking-widest pl-1">Nível de Permissão</Label>
+                           <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest pl-1">Nível de Permissão</Label>
                            <div className="grid grid-cols-1 gap-2">
                               {[
                                  { id: 'admin', title: 'Admin', desc: 'Acesso total, convida/remove membros.' },
@@ -398,7 +398,7 @@ export default function Teams() {
                                        "p-4 rounded-[1.25rem] border cursor-pointer transition-all duration-300 flex items-start gap-4",
                                        inviteRole === role.id 
                                           ? "bg-amber-500/10 border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.15)]"
-                                          : "bg-card border-border hover:bg-white/[0.04] hover:border-white/[0.15]"
+                                          : "bg-card border-border hover:bg-muted hover:border-white/[0.15]"
                                     )}
                                  >
                                     <div className={cn(
@@ -408,10 +408,10 @@ export default function Teams() {
                                        {inviteRole === role.id && <div className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />}
                                     </div>
                                     <div>
-                                       <p className={cn("text-sm font-bold tracking-tight", inviteRole === role.id ? "text-white" : "text-white/70")}>
+                                       <p className={cn("text-sm font-bold tracking-tight", inviteRole === role.id ? "text-foreground" : "text-foreground/70")}>
                                           {role.title}
                                        </p>
-                                       <p className="text-[10px] uppercase font-black tracking-wider text-white/40 mt-1 leading-relaxed">{role.desc}</p>
+                                       <p className="text-[10px] uppercase font-black tracking-wider text-foreground/40 mt-1 leading-relaxed">{role.desc}</p>
                                     </div>
                                  </div>
                               ))}
@@ -419,7 +419,7 @@ export default function Teams() {
                         </div>
 
                         <div className="pt-6 flex gap-3">
-                           <Button type="button" variant="outline" className="flex-1 rounded-xl h-12 border-white/20 bg-transparent hover:bg-white/5 text-white font-bold" onClick={() => setIsInviteModalOpen(false)}>
+                           <Button type="button" variant="outline" className="flex-1 rounded-xl h-12 border-white/20 bg-transparent hover:bg-white/5 text-foreground font-bold" onClick={() => setIsInviteModalOpen(false)}>
                               Cancelar
                            </Button>
                            <Button type="submit" className="flex-1 rounded-xl h-12 bg-amber-500 hover:bg-amber-600 text-[#050505] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(245,158,11,0.2)]" disabled={isInviting || !inviteEmail}>
