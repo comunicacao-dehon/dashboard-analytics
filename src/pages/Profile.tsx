@@ -203,9 +203,9 @@ export default function Profile() {
                
                {/* Integrações */}
                <div>
-                   <h4 className="text-[10px] uppercase font-black text-white/40 tracking-widest mb-3 pl-2">Integrações</h4>
+                   <h4 className="text-[10px] uppercase font-black text-muted-foreground tracking-widest mb-3 pl-2">Integrações</h4>
                    <nav className="space-y-1">
-                       <button onClick={() => handleTabChange('conexoes')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'conexoes' ? "bg-amber-500/10 text-amber-500 font-bold ring-1 ring-amber-500/20" : "text-white/50 hover:bg-white/5 font-medium")}>
+                       <button onClick={() => handleTabChange('conexoes')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'conexoes' ? "bg-primary/10 text-primary font-bold ring-1 ring-primary/20" : "text-muted-foreground hover:bg-muted font-medium")}>
                            <LinkIcon className="w-4 h-4" /> Conexões
                        </button>
                    </nav>
@@ -213,12 +213,12 @@ export default function Profile() {
                
                {/* Configurações da Conta */}
                <div>
-                   <h4 className="text-[10px] uppercase font-black text-white/40 tracking-widest mb-3 pl-2">Configurações da conta</h4>
+                   <h4 className="text-[10px] uppercase font-black text-muted-foreground tracking-widest mb-3 pl-2">Configurações da conta</h4>
                    <nav className="space-y-1">
-                       <button onClick={() => handleTabChange('minha-conta')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'minha-conta' ? "bg-amber-500/10 text-amber-500 font-bold ring-1 ring-amber-500/20" : "text-white/50 hover:bg-white/5 font-medium")}>
+                       <button onClick={() => handleTabChange('minha-conta')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'minha-conta' ? "bg-primary/10 text-primary font-bold ring-1 ring-primary/20" : "text-muted-foreground hover:bg-muted font-medium")}>
                            <User className="w-4 h-4" /> Minha Conta
                        </button>
-                       <button onClick={() => handleTabChange('senha')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'senha' ? "bg-amber-500/10 text-amber-500 font-bold ring-1 ring-amber-500/20" : "text-white/50 hover:bg-white/5 font-medium")}>
+                       <button onClick={() => handleTabChange('senha')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'senha' ? "bg-primary/10 text-primary font-bold ring-1 ring-primary/20" : "text-muted-foreground hover:bg-muted font-medium")}>
                            <Lock className="w-4 h-4" /> Alterar Senha
                        </button>
                    </nav>
@@ -226,12 +226,12 @@ export default function Profile() {
 
                {/* Configurações da Empresa */}
                <div>
-                   <h4 className="text-[10px] uppercase font-black text-white/40 tracking-widest mb-3 pl-2">Configurações da Empresa</h4>
+                   <h4 className="text-[10px] uppercase font-black text-muted-foreground tracking-widest mb-3 pl-2">Configurações da Empresa</h4>
                    <nav className="space-y-1">
-                       <button onClick={() => handleTabChange('empresa')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'empresa' ? "bg-amber-500/10 text-amber-500 font-bold ring-1 ring-amber-500/20" : "text-white/50 hover:bg-white/5 font-medium")}>
+                       <button onClick={() => handleTabChange('empresa')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'empresa' ? "bg-primary/10 text-primary font-bold ring-1 ring-primary/20" : "text-muted-foreground hover:bg-muted font-medium")}>
                            <Briefcase className="w-4 h-4" /> Perfil da Empresa
                        </button>
-                       <button onClick={() => handleTabChange('preferencias')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'preferencias' ? "bg-amber-500/10 text-amber-500 font-bold ring-1 ring-amber-500/20" : "text-white/50 hover:bg-white/5 font-medium")}>
+                       <button onClick={() => handleTabChange('preferencias')} className={cn("w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all", activeTab === 'preferencias' ? "bg-primary/10 text-primary font-bold ring-1 ring-primary/20" : "text-muted-foreground hover:bg-muted font-medium")}>
                            <Palette className="w-4 h-4" /> Preferências
                        </button>
                    </nav>
@@ -349,8 +349,8 @@ export default function Profile() {
                         {/* Zona de Perigo */}
                         <div className="mt-12 pt-8 border-t border-red-500/20">
                           <h4 className="text-sm font-bold text-red-400 mb-2">Zona de Perigo</h4>
-                          <p className="text-sm text-white/40 mb-4">A exclusão da conta é irreversível e apagará permanentemente todos os seus dados.</p>
-                          <Button variant="outline" onClick={handleDeleteAccount} className="border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white rounded-xl">
+                          <p className="text-sm text-foreground/40 mb-4">A exclusão da conta é irreversível e apagará permanentemente todos os seus dados.</p>
+                          <Button variant="outline" onClick={handleDeleteAccount} className="border-red-500/20 text-red-500 hover:bg-red-500 hover:text-foreground rounded-xl">
                             <Trash2 className="w-4 h-4 mr-2" /> Excluir Conta
                           </Button>
                         </div>
@@ -362,39 +362,39 @@ export default function Profile() {
                  {activeTab === 'empresa' && (
                     <AnimatedCard className="border-white/[0.08] bg-white/[0.02] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden">
                       <div className="p-8 md:p-10 border-b border-white/[0.08]">
-                        <h2 className="text-2xl font-black tracking-tight text-white mb-1">Perfil da Empresa</h2>
-                        <p className="text-xs text-white/40 font-medium">Informações profissionais e de atuação no sistema</p>
+                        <h2 className="text-2xl font-black tracking-tight text-foreground mb-1">Perfil da Empresa</h2>
+                        <p className="text-xs text-foreground/40 font-medium">Informações profissionais e de atuação no sistema</p>
                       </div>
 
                       <form onSubmit={handleUpdate}>
                         <div className="p-8 md:p-10 space-y-6">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-3">
-                                <Label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Telefone / WhatsApp</Label>
+                                <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest ml-1">Telefone / WhatsApp</Label>
                                 <div className="relative group">
-                                  <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-amber-500 transition-colors" />
-                                  <Input value={phone} onChange={(e) => setPhone(e.target.value)} className="h-12 pl-12 rounded-xl bg-white/[0.04] border-white/10 text-white focus:border-amber-500 focus:ring-amber-500/20 font-medium" placeholder="+55 (00) 00000-0000" />
+                                  <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/20 group-focus-within:text-amber-500 transition-colors" />
+                                  <Input value={phone} onChange={(e) => setPhone(e.target.value)} className="h-12 pl-12 rounded-xl bg-white/[0.04] border-white/10 text-foreground focus:border-amber-500 focus:ring-amber-500/20 font-medium" placeholder="+55 (00) 00000-0000" />
                                 </div>
                             </div>
                             <div className="space-y-3">
-                                <Label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Cargo / Função</Label>
+                                <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest ml-1">Cargo / Função</Label>
                                 <div className="relative group">
-                                  <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-amber-500 transition-colors" />
-                                  <Input value={role} onChange={(e) => setRole(e.target.value)} className="h-12 pl-12 rounded-xl bg-white/[0.04] border-white/10 text-white focus:border-amber-500 focus:ring-amber-500/20 font-medium" placeholder="Ex: Gestor de Redes" />
+                                  <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/20 group-focus-within:text-amber-500 transition-colors" />
+                                  <Input value={role} onChange={(e) => setRole(e.target.value)} className="h-12 pl-12 rounded-xl bg-white/[0.04] border-white/10 text-foreground focus:border-amber-500 focus:ring-amber-500/20 font-medium" placeholder="Ex: Gestor de Redes" />
                                 </div>
                             </div>
                             <div className="space-y-3 md:col-span-2">
-                                <Label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Localização</Label>
+                                <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest ml-1">Localização</Label>
                                 <div className="relative group">
-                                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-amber-500 transition-colors" />
-                                  <Input value={locationName} onChange={(e) => setLocationName(e.target.value)} className="h-12 pl-12 rounded-xl bg-white/[0.04] border-white/10 text-white focus:border-amber-500 focus:ring-amber-500/20 font-medium" placeholder="Ex: São Paulo, SP" />
+                                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/20 group-focus-within:text-amber-500 transition-colors" />
+                                  <Input value={locationName} onChange={(e) => setLocationName(e.target.value)} className="h-12 pl-12 rounded-xl bg-white/[0.04] border-white/10 text-foreground focus:border-amber-500 focus:ring-amber-500/20 font-medium" placeholder="Ex: São Paulo, SP" />
                                 </div>
                             </div>
                             <div className="space-y-3 md:col-span-2">
-                                <Label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">Biografia</Label>
+                                <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest ml-1">Biografia</Label>
                                 <div className="relative group">
-                                  <Info className="absolute left-4 top-5 w-4 h-4 text-white/20 group-focus-within:text-amber-500 transition-colors" />
-                                  <textarea value={bio} onChange={(e) => setBio(e.target.value)} rows={4} className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder:text-white/30 focus:border-amber-500 focus:ring-amber-500/20 font-medium resize-none outline-none" placeholder="Conte um pouco sobre a atuação..." />
+                                  <Info className="absolute left-4 top-5 w-4 h-4 text-foreground/20 group-focus-within:text-amber-500 transition-colors" />
+                                  <textarea value={bio} onChange={(e) => setBio(e.target.value)} rows={4} className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/[0.04] border border-white/10 text-foreground placeholder:text-foreground/30 focus:border-amber-500 focus:ring-amber-500/20 font-medium resize-none outline-none" placeholder="Conte um pouco sobre a atuação..." />
                                 </div>
                             </div>
                           </div>
@@ -414,29 +414,29 @@ export default function Profile() {
                  {activeTab === 'preferencias' && (
                     <AnimatedCard className="border-white/[0.08] bg-white/[0.02] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden">
                       <div className="p-8 md:p-10 border-b border-white/[0.08]">
-                        <h2 className="text-2xl font-black tracking-tight text-white mb-1">Preferências</h2>
-                        <p className="text-xs text-white/40 font-medium">Personalize a aparência do seu sistema Analytics</p>
+                        <h2 className="text-2xl font-black tracking-tight text-foreground mb-1">Preferências</h2>
+                        <p className="text-xs text-foreground/40 font-medium">Personalize a aparência do seu sistema Analytics</p>
                       </div>
 
                       <div className="p-8 md:p-10 space-y-12">
                         {/* Tema */}
                         <div>
-                          <Label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1 mb-4 flex">Modo de Exibição</Label>
+                          <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest ml-1 mb-4 flex">Modo de Exibição</Label>
                           <div className="grid grid-cols-2 gap-4">
                             <button onClick={() => theme !== "light" && toggleTheme()} className={cn("flex items-center gap-3 p-4 rounded-xl border transition-all duration-300", theme === "light" ? "border-amber-500/60 bg-amber-500/10 shadow-[0_0_15px_rgba(245,158,11,0.2)]" : "border-white/10 bg-white/[0.02] hover:bg-white/[0.04]")}>
-                              <Sun className={cn("w-6 h-6", theme === "light" ? "text-amber-400" : "text-white/30")} />
-                              <span className={cn("text-sm font-bold", theme === "light" ? "text-amber-400" : "text-white/40")}>Tema Claro</span>
+                              <Sun className={cn("w-6 h-6", theme === "light" ? "text-amber-400" : "text-foreground/30")} />
+                              <span className={cn("text-sm font-bold", theme === "light" ? "text-amber-400" : "text-foreground/40")}>Tema Claro</span>
                             </button>
                             <button onClick={() => theme !== "dark" && toggleTheme()} className={cn("flex items-center gap-3 p-4 rounded-xl border transition-all duration-300", theme === "dark" ? "border-violet-500/60 bg-violet-500/10 shadow-[0_0_15px_rgba(139,92,246,0.2)]" : "border-white/10 bg-white/[0.02] hover:bg-white/[0.04]")}>
-                              <Moon className={cn("w-6 h-6", theme === "dark" ? "text-violet-400" : "text-white/30")} />
-                              <span className={cn("text-sm font-bold", theme === "dark" ? "text-violet-400" : "text-white/40")}>Tema Escuro</span>
+                              <Moon className={cn("w-6 h-6", theme === "dark" ? "text-violet-400" : "text-foreground/30")} />
+                              <span className={cn("text-sm font-bold", theme === "dark" ? "text-violet-400" : "text-foreground/40")}>Tema Escuro</span>
                             </button>
                           </div>
                         </div>
 
                         {/* Paleta */}
                         <div>
-                          <Label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1 mb-4 flex">Paleta de Cores</Label>
+                          <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest ml-1 mb-4 flex">Paleta de Cores</Label>
                           <div className="flex flex-wrap gap-4">
                             {(
                               [
@@ -456,7 +456,7 @@ export default function Profile() {
                                 )}
                               >
                                 <div className={cn("w-8 h-8 rounded-full mb-1 transition-transform", palette === p.id && "scale-110")} style={{ backgroundColor: p.color, boxShadow: palette === p.id ? `0 0 16px 2px ${p.shadow}` : "none" }} />
-                                <span className={cn("text-[10px] font-bold tracking-widest uppercase", palette === p.id ? "text-white" : "text-white/40")}>{p.label}</span>
+                                <span className={cn("text-[10px] font-bold tracking-widest uppercase", palette === p.id ? "text-foreground" : "text-foreground/40")}>{p.label}</span>
                               </button>
                             ))}
                           </div>
@@ -470,8 +470,8 @@ export default function Profile() {
                  {activeTab === 'conexoes' && (
                     <AnimatedCard className="border-white/[0.08] bg-white/[0.02] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden">
                       <div className="p-8 md:p-10 border-b border-white/[0.08]">
-                        <h2 className="text-2xl font-black tracking-tight text-white mb-1">Conexões de Dados</h2>
-                        <p className="text-xs text-white/40 font-medium">Vincule suas contas de redes sociais e sites para coletar métricas automaticamente</p>
+                        <h2 className="text-2xl font-black tracking-tight text-foreground mb-1">Conexões de Dados</h2>
+                        <p className="text-xs text-foreground/40 font-medium">Vincule suas contas de redes sociais e sites para coletar métricas automaticamente</p>
                       </div>
 
                       <div className="p-8 md:p-10">
@@ -479,10 +479,10 @@ export default function Profile() {
                           {/* Instagram Connect */}
                           <div className="bg-card border-border p-6 rounded-3xl flex flex-col items-center text-center hover:border-primary/50 transition-all shadow-sm group">
                             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform shrink-0">
-                              <Instagram className="w-7 h-7 text-white" />
+                              <Instagram className="w-7 h-7 text-foreground" />
                             </div>
-                            <h3 className="text-lg font-bold text-white mb-1 tracking-tight">Instagram</h3>
-                            <p className="text-[11px] text-white/40 mb-6 px-4 leading-relaxed line-clamp-2 h-8">Conecte seu perfil comercial para analisar Reels e Stories.</p>
+                            <h3 className="text-lg font-bold text-foreground mb-1 tracking-tight">Instagram</h3>
+                            <p className="text-[11px] text-foreground/40 mb-6 px-4 leading-relaxed line-clamp-2 h-8">Conecte seu perfil comercial para analisar Reels e Stories.</p>
                             <Button 
                               onClick={() => {
                                 const META_APP_ID = import.meta.env.VITE_META_APP_ID;
@@ -499,10 +499,10 @@ export default function Profile() {
                           {/* Facebook Connect */}
                           <div className="bg-card border-border p-6 rounded-3xl flex flex-col items-center text-center hover:border-primary/50 transition-all shadow-sm group">
                             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#1877f2] to-[#0a52b3] flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform shrink-0">
-                              <Facebook className="w-7 h-7 text-white" />
+                              <Facebook className="w-7 h-7 text-foreground" />
                             </div>
-                            <h3 className="text-lg font-bold text-white mb-1 tracking-tight">Facebook</h3>
-                            <p className="text-[11px] text-white/40 mb-6 px-4 leading-relaxed line-clamp-2 h-8">Gerencie o alcance da sua página e interações do público.</p>
+                            <h3 className="text-lg font-bold text-foreground mb-1 tracking-tight">Facebook</h3>
+                            <p className="text-[11px] text-foreground/40 mb-6 px-4 leading-relaxed line-clamp-2 h-8">Gerencie o alcance da sua página e interações do público.</p>
                             <Button 
                               onClick={() => {
                                 const META_APP_ID = import.meta.env.VITE_META_APP_ID;
@@ -519,10 +519,10 @@ export default function Profile() {
                           {/* YouTube Connect */}
                           <div className="bg-card border-border p-6 rounded-3xl flex flex-col items-center text-center hover:border-primary/50 transition-all shadow-sm group">
                             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#ff0000] to-[#b30000] flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform shrink-0">
-                              <Youtube className="w-7 h-7 text-white" />
+                              <Youtube className="w-7 h-7 text-foreground" />
                             </div>
-                            <h3 className="text-lg font-bold text-white mb-1 tracking-tight">YouTube</h3>
-                            <p className="text-[11px] text-white/40 mb-6 px-4 leading-relaxed line-clamp-2 h-8">Analise o desempenho dos seus vídeos longos e Shorts.</p>
+                            <h3 className="text-lg font-bold text-foreground mb-1 tracking-tight">YouTube</h3>
+                            <p className="text-[11px] text-foreground/40 mb-6 px-4 leading-relaxed line-clamp-2 h-8">Analise o desempenho dos seus vídeos longos e Shorts.</p>
                             <Button 
                               onClick={() => {
                                 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -539,10 +539,10 @@ export default function Profile() {
                           {/* Website Connect */}
                           <div className="bg-card border-border p-6 rounded-3xl flex flex-col items-center text-center hover:border-primary/50 transition-all shadow-sm group">
                             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#059669] to-[#047857] flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform shrink-0">
-                              <Globe className="w-7 h-7 text-white" />
+                              <Globe className="w-7 h-7 text-foreground" />
                             </div>
-                            <h3 className="text-lg font-bold text-white mb-1 tracking-tight">Site</h3>
-                            <p className="text-[11px] text-white/40 mb-6 px-4 leading-relaxed line-clamp-2 h-8">Vincule seu domínio para acessar tráfego e visualizações.</p>
+                            <h3 className="text-lg font-bold text-foreground mb-1 tracking-tight">Site</h3>
+                            <p className="text-[11px] text-foreground/40 mb-6 px-4 leading-relaxed line-clamp-2 h-8">Vincule seu domínio para acessar tráfego e visualizações.</p>
                             <Button className="w-full bg-muted hover:bg-muted/80 border border-border text-foreground rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]" onClick={() => setLocation("/website")}>
                               <LinkIcon className="w-3.5 h-3.5 mr-2" />
                               Vincular Site
