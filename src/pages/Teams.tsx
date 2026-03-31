@@ -355,7 +355,7 @@ export default function Teams() {
                      animate={{ scale: 1, opacity: 1, y: 0 }}
                      exit={{ scale: 0.95, opacity: 0, y: 20 }}
                      onClick={(e) => e.stopPropagation()}
-                     className="bg-card w-full max-w-md border border-border shadow-xl rounded-[2rem] overflow-hidden"
+                     className="bg-card w-full max-w-md border border-border shadow-xl rounded-3xl overflow-hidden"
                   >
                      <div className="p-6 border-b border-border flex justify-between items-center bg-card">
                         <div className="flex items-center gap-3">

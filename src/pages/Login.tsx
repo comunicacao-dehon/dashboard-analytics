@@ -212,7 +212,7 @@ export default function Login() {
               <Button 
                 type="submit" 
                 disabled={loading}
-                className="w-full h-15 rounded-2xl bg-amber-500 hover:bg-amber-600 text-[#050505] font-black text-lg shadow-xl shadow-amber-500/10 hover:-translate-y-1 transition-all duration-300 mt-4 group"
+                className="w-full h-15 rounded-xl bg-amber-500 hover:bg-amber-600 text-[#050505] font-black text-lg shadow-xl shadow-amber-500/10 hover:-translate-y-1 transition-all duration-300 mt-4 group"
               >
                 {loading ? (
                   <div className="flex items-center gap-3">

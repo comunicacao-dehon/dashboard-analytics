@@ -112,7 +112,7 @@ export default function Onboarding() {
            animate={{ opacity: 1, x: 0 }}
            exit={{ opacity: 0, x: -20 }}
            transition={{ duration: 0.3 }}
-           className="w-full max-w-md bg-card/60 backdrop-blur-xl border border-border/50 shadow-2xl rounded-[2rem] p-8"
+           className="w-full max-w-2xl bg-card border border-border shadow-2xl rounded-3xl overflow-hidden p-8"
         >
           {step === 0 && (
              <div className="space-y-6">
