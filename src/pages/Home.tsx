@@ -442,7 +442,7 @@ export default function Home() {
           <div className="w-8 h-8 rounded-xl bg-muted border border-border flex items-center justify-center">
             <Activity className="w-4 h-4 text-amber-600" />
           </div>
-          <p>© 2026 Utxica · Conventinho SCJ. Todos os direitos reservados.</p>
+          <p>© 2026 Utxica · Conventinho SCJ. Todos os direitos reservados. · <span className="opacity-50">v1.1.0-Fixed</span></p>
         </div>
       </footer>
     </div>
