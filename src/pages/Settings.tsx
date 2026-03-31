@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Settings as SettingsIcon, Instagram, Facebook, Youtube, CheckCircle2, Link2, Bell, Shield, Moon } from "lucide-react";
+import { Settings as SettingsIcon, Instagram, Facebook, Youtube, CheckCircle2, Link2, Bell, Shield, Moon, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { staggerContainer, slideUp } from "@/lib/animations";
 import { AnimatedCard } from "@/components/AnimatedCard";
