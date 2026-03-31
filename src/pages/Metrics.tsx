@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Instagram, 
@@ -353,15 +353,15 @@ export default function Metrics() {
                         />
                         <RechartsTooltip 
                           contentStyle={{ 
-                            backgroundColor: '#050505',
-                            borderColor: 'rgba(255,255,255,0.1)',
+                            backgroundColor: 'white',
+                            borderColor: '#e5e7eb',
                             borderRadius: '1rem',
-                            color: '#fff',
+                            color: '#111827',
                             fontSize: '10px',
                             fontWeight: '900',
                             textTransform: 'uppercase',
                             letterSpacing: '0.1em',
-                            boxShadow: '0 20px 40px -10px rgba(0,0,0,0.8)'
+                            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
                           }}
                           labelFormatter={(l) => new Date(l).toLocaleDateString()}
                         />
@@ -411,15 +411,15 @@ export default function Metrics() {
                         <RechartsTooltip 
                           cursor={{fill: 'rgba(255,255,255,0.05)'}}
                           contentStyle={{ 
-                            backgroundColor: '#050505',
-                            borderColor: 'rgba(255,255,255,0.1)',
+                            backgroundColor: 'white',
+                            borderColor: '#e5e7eb',
                             borderRadius: '1rem',
-                            color: '#fff',
+                            color: '#111827',
                             fontSize: '10px',
                             fontWeight: '900',
                             textTransform: 'uppercase',
                             letterSpacing: '0.1em',
-                            boxShadow: '0 20px 40px -10px rgba(0,0,0,0.8)'
+                            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
                           }}
                         />
                         <Bar dataKey="engagement" name="Engajamento" fill={activeColor} fillOpacity={0.8} radius={[3,3,0,0]} />

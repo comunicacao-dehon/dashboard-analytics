@@ -25,7 +25,7 @@ export default function Website() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-3xl font-black tracking-tight text-white mb-3"
+          className="text-3xl font-black tracking-tight text-foreground mb-3"
         >
           Site não vinculado
         </motion.h2>
@@ -34,7 +34,7 @@ export default function Website() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-white/40 max-w-md mb-10 font-medium"
+          className="text-muted-foreground max-w-md mb-10 font-medium"
         >
           Insira a URL do seu site para começar a rastrear visitantes, páginas acessadas e tempo de permanência de forma automática.
         </motion.p>
@@ -45,14 +45,14 @@ export default function Website() {
           transition={{ delay: 0.3 }}
           className="w-full max-w-md"
         >
-          <div className="flex bg-white/[0.04] p-1.5 rounded-2xl border border-white/10 mb-4 focus-within:border-emerald-500/50 transition-colors shadow-inner">
-            <span className="flex items-center pl-4 pr-2 text-white/40 font-bold">https://</span>
+          <div className="flex bg-muted p-1.5 rounded-2xl border border-border mb-4 focus-within:border-emerald-500/50 transition-colors shadow-inner">
+            <span className="flex items-center pl-4 pr-2 text-muted-foreground font-bold">https://</span>
             <input 
                 type="text" 
                 placeholder="seusite.com.br"
-                className="flex-1 bg-transparent border-none outline-none text-white font-bold tracking-tight placeholder:text-white/20 h-12"
+                className="flex-1 bg-transparent border-none outline-none text-foreground font-bold tracking-tight placeholder:text-muted-foreground/50 h-12"
             />
-            <Button className="rounded-xl h-12 px-6 ml-1 bg-emerald-500 hover:bg-emerald-600 text-[#050505] font-black uppercase tracking-widest text-xs shadow-[0_0_15px_rgba(16,185,129,0.3)] shrink-0">
+            <Button className="rounded-xl h-12 px-6 ml-1 bg-emerald-500 hover:bg-emerald-600 text-white font-black uppercase tracking-widest text-xs shadow-[0_0_15px_rgba(16,185,129,0.3)] shrink-0">
               Vincular
             </Button>
           </div>
@@ -96,7 +96,7 @@ export default function Website() {
               </div>
               <div>
                 <div className="flex items-center gap-2 justify-center md:justify-start">
-                   <h1 className="text-2xl font-black tracking-tight text-white mb-0.5">conventinho.com.br</h1>
+                   <h1 className="text-2xl font-black tracking-tight text-foreground mb-0.5">conventinho.com.br</h1>
                    <div className="bg-emerald-500/20 rounded-full p-1 opacity-80" aria-label="Verificado">
                      <Star className="w-3 h-3 text-emerald-400 fill-emerald-400" />
                    </div>
@@ -131,7 +131,7 @@ export default function Website() {
                         <ArrowUpRight className="w-2.5 h-2.5" />
                         {m.trend}
                       </span>
-                      <span className="text-[10px] text-white/30 uppercase font-bold tracking-wider">vs per. anterior</span>
+                      <span className="text-[10px] text-muted-foreground/60 uppercase font-bold tracking-wider">vs per. anterior</span>
                     </div>
                   </div>
                 </AnimatedCard>
