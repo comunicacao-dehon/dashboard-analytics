@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Loader2, ArrowRight, User, Phone, Mail, Lock, Eye, EyeOff, AlertTriangle } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
+import { useBranding } from "@/hooks/useBranding";
 
 export default function Login() {
   const [, setLocation] = useLocation();
@@ -17,6 +18,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
+  const branding = useBranding();
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -219,7 +221,7 @@ export default function Login() {
                   </div>
                 ) : (
                   <div className="flex items-center justify-center gap-2 uppercase tracking-widest">
-                    <span>{isSignUp ? "Criar Conta" : "Entrar No Painel"}</span>
+                    <span>{isSignUp ? "Criar Conta" : branding.welcomeMessage}</span>
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </div>
                 )}
@@ -264,7 +266,7 @@ export default function Login() {
       )}
 
       <div className="mb-8 mt-10 opacity-40 text-center">
-        <p className="text-[10px] uppercase tracking-[0.4em] text-white">Painel Utxica · Conventinho SCJ</p>
+        <p className="text-[10px] uppercase tracking-[0.4em] text-white">{branding.footerText}</p>
       </div>
     </div>
   );

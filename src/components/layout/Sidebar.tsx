@@ -22,6 +22,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { useBranding } from "@/hooks/useBranding";
 
 // ── Analytics section
 const analyticsItems = [
@@ -128,6 +129,7 @@ export function Sidebar() {
   const [location, setLocation] = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const { user, signOut } = useAuth();
+  const branding = useBranding();
 
   return (
     <motion.aside
@@ -142,11 +144,7 @@ export function Sidebar() {
           animate={{ rotate: collapsed ? 0 : 0 }}
           className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center overflow-hidden shrink-0 shadow-[0_0_15px_rgba(245,158,11,0.2)]"
         >
-          {user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br' ? (
-            <img src="/logo.png" alt="Logo" loading="lazy" className="w-5 h-5 object-contain" />
-          ) : (
-            <Activity className="w-4 h-4 text-amber-500" />
-          )}
+          <img src={branding.sidebarLogo} alt="Logo" loading="lazy" className="w-5 h-5 object-contain" />
         </motion.div>
         <AnimatePresence>
           {!collapsed && (
@@ -157,7 +155,7 @@ export function Sidebar() {
               transition={{ duration: 0.2 }}
               className="font-semibold text-base tracking-tight whitespace-nowrap overflow-hidden"
             >
-              Utxica
+              {branding.name}
             </motion.span>
           )}
         </AnimatePresence>
