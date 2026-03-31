@@ -130,6 +130,11 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const { user, signOut } = useAuth();
   const branding = useBranding();
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  const hideSidebar = urlParams.get('hide_sidebar') === 'true';
+
+  if (hideSidebar) return null;
 
   return (
     <motion.aside

@@ -8,6 +8,9 @@ interface LayoutProps {
 }
 
 export function Layout({ children }: LayoutProps) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const hideSidebar = urlParams.get('hide_sidebar') === 'true';
+
   return (
     <div className="flex min-h-screen bg-background text-foreground font-sans selection:bg-amber-500/30 overflow-hidden relative">
       {/* Background Decor matching Login */}
@@ -24,11 +27,11 @@ export function Layout({ children }: LayoutProps) {
         />
       </div>
 
-      <Sidebar />
-      <div className="flex-1 flex flex-col min-w-0 pb-20 md:pb-0 relative z-10 overflow-y-auto">
+      {!hideSidebar && <Sidebar />}
+      <div className={cn("flex-1 flex flex-col min-w-0 pb-20 md:pb-0 relative z-10 overflow-y-auto", hideSidebar && "pb-0")}>
         {children}
       </div>
-      <MobileNav />
+      {!hideSidebar && <MobileNav />}
     </div>
   );
 }
