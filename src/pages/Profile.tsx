@@ -307,10 +307,10 @@ export default function Profile() {
                                 </div>
                             </div>
                             <div className="space-y-3">
-                                <Label className="text-[10px] font-black text-white/50 uppercase tracking-widest ml-1">E-mail</Label>
+                                <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">E-mail</Label>
                                 <div className="relative">
                                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
-                                  <Input value={email} disabled className="h-12 pl-12 rounded-xl bg-white/[0.02] border-white/[0.04] opacity-50 cursor-not-allowed font-medium text-white/50" />
+                                  <Input value={email} disabled className="h-12 pl-12 rounded-xl bg-white/[0.02] border-white/[0.04] opacity-50 cursor-not-allowed font-medium text-muted-foreground" />
                                 </div>
                             </div>
                           </div>
@@ -333,7 +333,7 @@ export default function Profile() {
                    <AnimatedCard className="border-white/[0.08] bg-white/[0.02] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden">
                       <div className="p-8 md:p-10 border-b border-white/[0.08]">
                         <h2 className="text-2xl font-black tracking-tight text-white mb-1">Alterar Senha</h2>
-                        <p className="text-xs text-white/40 font-medium">Gerencie o acesso e a segurança da sua conta</p>
+                        <p className="text-xs text-muted-foreground font-medium">Gerencie o acesso e a segurança da sua conta</p>
                       </div>
                       <div className="p-8 md:p-10 space-y-6">
                         <div className="bg-primary/5 border border-primary/20 rounded-xl p-6 flex flex-col gap-4">
