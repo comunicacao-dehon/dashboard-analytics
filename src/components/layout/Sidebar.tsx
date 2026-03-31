@@ -114,7 +114,7 @@ function NavItem({ item, location, collapsed }: { item: typeof analyticsItems[0]
         </AnimatePresence>
         {collapsed && (
           <div className="absolute left-full ml-2 pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50">
-            <div className="bg-[#050505] border border-white/10 text-sm text-white px-3 py-1.5 rounded-xl shadow-2xl shadow-black whitespace-nowrap">
+            <div className="bg-popover border border-border text-sm text-popover-foreground px-3 py-1.5 rounded-xl shadow-xl whitespace-nowrap">
               {item.label}
             </div>
           </div>
@@ -201,7 +201,7 @@ export function Sidebar() {
             setLocation("/login");
           }}
           className={cn(
-            "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300 group text-white/40 hover:bg-red-500/10 hover:text-red-400 active:scale-95",
+            "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300 group text-muted-foreground hover:bg-red-500/10 hover:text-red-400 active:scale-95",
             collapsed && "justify-center"
           )}
         >
@@ -209,7 +209,7 @@ export function Sidebar() {
           {!collapsed && <span className="text-sm font-medium">Sair</span>}
           {collapsed && (
             <div className="absolute left-full ml-2 pl-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50">
-              <div className="bg-red-500 text-white text-sm px-3 py-1.5 rounded-xl shadow-2xl shadow-red-500/20">
+              <div className="bg-rose-500 text-white text-sm px-3 py-1.5 rounded-xl shadow-xl shadow-rose-500/20">
                 Sair
               </div>
             </div>
