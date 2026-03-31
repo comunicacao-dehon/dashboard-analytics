@@ -117,7 +117,7 @@ export default function Metrics() {
              }
           }
         } catch (error) {
-          console.error("Erro critico ao carregar mÃ©tricas (Metrics.tsx):", error);
+          console.error("Erro critico ao carregar métricas (Metrics.tsx):", error);
           if (active) setMetrics([]); 
         } finally {
           if (active) setLoading(false);
@@ -163,7 +163,7 @@ export default function Metrics() {
   }
 
   if (!isConventinho && !hasAccounts) {
-    return <EmptyPlatformState platform="MÃ©tricas Globais" icon={<Activity className="w-8 h-8 text-amber-500" />} description="Vincule suas redes sociais para acessar mÃ©tricas detalhadas de seguidores, alcance e engajamento." />;
+    return <EmptyPlatformState platform="Métricas Globais" icon={<Activity className="w-8 h-8 text-amber-500" />} description="Vincule suas redes sociais para acessar métricas detalhadas de seguidores, alcance e engajamento." />;
   }
 
   const currentMetrics = metrics.length > 0 ? metrics[metrics.length - 1] : null;
@@ -179,7 +179,7 @@ export default function Metrics() {
   const summaryCards = currentMetrics ? [
     { label: "Seguidores", value: currentMetrics.followers, prev: previousMetrics?.followers, icon: Users },
     { label: "Alcance", value: currentMetrics.reach, prev: previousMetrics?.reach, icon: Activity },
-    { label: "ImpressÃµes", value: currentMetrics.impressions, prev: previousMetrics?.impressions, icon: Eye },
+    { label: "Impressões", value: currentMetrics.impressions, prev: previousMetrics?.impressions, icon: Eye },
     { label: "Engajamento", value: currentMetrics.engagement, prev: previousMetrics?.engagement, icon: TrendingUp },
     { label: "Cliques", value: currentMetrics.clicks, prev: previousMetrics?.clicks, icon: MousePointerClick },
   ] : [];
@@ -195,8 +195,8 @@ export default function Metrics() {
               <Activity className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-foreground mb-1">MÃ©tricas Globais</h1>
-              <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">AnÃ¡lise profissional de redes sociais</p>
+              <h1 className="text-xl font-bold tracking-tight text-foreground mb-1">Métricas Globais</h1>
+              <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Análise profissional de redes sociais</p>
             </div>
           </div>
           <Button 
@@ -267,9 +267,9 @@ export default function Metrics() {
         ) : metrics.length === 0 ? (
            <div className="h-[400px] flex flex-col items-center justify-center border border-dashed border-border/50 rounded-2xl bg-muted/10">
               <Activity className="w-10 h-10 text-muted-foreground/30 mb-4" />
-              <h3 className="text-lg font-bold text-foreground">Ainda nÃ£o hÃ¡ dados aqui</h3>
+              <h3 className="text-lg font-bold text-foreground">Ainda não há dados aqui</h3>
               <p className="text-sm text-muted-foreground mt-2 max-w-sm text-center">
-                 Conecte suas contas ou aguarde a primeira sincronizaÃ§Ã£o para visualizar as mÃ©tricas.
+                 Conecte suas contas ou aguarde a primeira sincronização para visualizar as métricas.
               </p>
            </div>
         ) : (
@@ -323,8 +323,8 @@ export default function Metrics() {
                 <AnimatedCard className="p-6 border-white/[0.08] col-span-1 lg:col-span-2">
                   <div className="flex items-center justify-between mb-8">
                     <div>
-                      <h3 className="text-xl font-bold text-foreground tracking-tight">EvoluÃ§Ã£o de Alcance e ImpressÃµes</h3>
-                      <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground mt-1">Comparativo de performance diÃ¡ria</p>
+                      <h3 className="text-xl font-bold text-foreground tracking-tight">Evolução de Alcance e Impressões</h3>
+                      <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground mt-1">Comparativo de performance diária</p>
                     </div>
                   </div>
                   <div className="h-[300px] w-full">
@@ -378,7 +378,7 @@ export default function Metrics() {
                         <Line 
                           type="monotone" 
                           dataKey="impressions" 
-                          name="ImpressÃµes" 
+                          name="Impressões" 
                           stroke="hsl(var(--muted-foreground))" 
                           strokeWidth={2}
                           strokeDasharray="4 4"
@@ -393,8 +393,8 @@ export default function Metrics() {
                 {/* Engagement Bar Chart */}
                 <AnimatedCard className="p-6 border-white/[0.08]">
                   <div className="mb-8">
-                    <h3 className="text-xl font-bold text-foreground tracking-tight">Engajamento DiÃ¡rio</h3>
-                    <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground mt-1">Volume de interaÃ§Ãµes</p>
+                    <h3 className="text-xl font-bold text-foreground tracking-tight">Engajamento Diário</h3>
+                    <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground mt-1">Volume de interações</p>
                   </div>
                   <div className="h-[220px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
@@ -432,12 +432,12 @@ export default function Metrics() {
                 <AnimatedCard className="p-6 border-white/[0.08] flex flex-col justify-center">
                    <div className="mb-8">
                     <h3 className="text-xl font-bold text-foreground tracking-tight">Desempenho Base</h3>
-                    <p className="text-[10px] uppercase font-black tracking-widest text-white/40 mt-1">MÃ©tricas de conversÃ£o</p>
+                    <p className="text-[10px] uppercase font-black tracking-widest text-white/40 mt-1">Métricas de conversão</p>
                   </div>
                   <div className="space-y-5">
                      <div>
                         <div className="flex justify-between text-[10px] font-black tracking-widest uppercase mb-2 text-foreground/70">
-                           <span>VisualizaÃ§Ãµes Totais</span>
+                           <span>Visualizações Totais</span>
                            <span className="text-foreground">100%</span>
                         </div>
                         <div className="h-2 rounded-full bg-white/10 overflow-hidden shadow-inner flex">
@@ -455,7 +455,7 @@ export default function Metrics() {
                      </div>
                      <div>
                         <div className="flex justify-between text-[10px] font-black tracking-widest uppercase mb-2 text-foreground/70">
-                           <span>AÃ§Ãµes EstratÃ©gicas (Cliques)</span>
+                           <span>Ações Estratégicas (Cliques)</span>
                            <span className="text-foreground">{((currentMetrics?.clicks || 0) / (currentMetrics?.views || 1) * 100).toFixed(1)}%</span>
                         </div>
                         <div className="h-2 rounded-full bg-white/10 overflow-hidden shadow-inner flex">
