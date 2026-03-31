@@ -27,13 +27,20 @@ export const BRANDING_CONFIG: Record<string, Branding> = {
     welcomeMessage: "Entrar No Painel",
     footerText: "Painel Utxica · Conventinho SCJ",
   },
-  // Exemplo de uma nova empresa (Empresa X)
-  empresa_x: {
-    id: "empresa_x",
-    name: "Gestão Pro",
-    logo: "/logo_cliente.png", // O usuário precisará subir este arquivo
-    sidebarLogo: "/logo_cliente.png",
-    welcomeMessage: "Acessar Sistema",
-    footerText: "Gestão Pro · Integrado",
+  gestao: {
+    id: "gestao",
+    name: "Sistema Gestor",
+    logo: "/logo.png",
+    sidebarLogo: "/logo.png",
+    welcomeMessage: "Acessar Analytics",
+    footerText: "Analytics Integrado · Gestão Pro",
+  },
+  acme: {
+    id: "acme",
+    name: "Acme Analytics",
+    logo: "/logo1.png",
+    sidebarLogo: "/logo.png",
+    welcomeMessage: "Client Dashboard",
+    footerText: "Acme Corp · Powered by Utxica",
   }
 };
