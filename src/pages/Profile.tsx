@@ -29,6 +29,8 @@ import { AnimatedCard } from "@/components/AnimatedCard";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme, type ColorPalette } from "@/contexts/ThemeContext";
 import { cn } from "@/lib/utils";
+import { BRANDING_CONFIG } from "@/config/branding";
+import { useBranding } from "@/hooks/useBranding";
 
 import { startOAuth } from "@/lib/oauth";
 import { Link as LinkIcon, Instagram, Facebook, Youtube, Globe } from "lucide-react";
@@ -41,6 +43,7 @@ export default function Profile() {
   const { user: authUser, signOut } = useAuth();
   const { theme, palette, toggleTheme, setPalette } = useTheme();
   const [location, setLocation] = useLocation();
+  const branding = useBranding();
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -62,6 +65,16 @@ export default function Profile() {
     if (tab === 'conexoes') setLocation('/connections', { replace: true });
     else if (tab === 'preferencias' || tab === 'empresa') setLocation('/settings', { replace: true });
     else setLocation('/profile', { replace: true });
+  };
+
+  const handleSwitchBranding = (id: string) => {
+    const url = new URL(window.location.href);
+    if (id === 'default') {
+      url.searchParams.delete('tenant_id');
+    } else {
+      url.searchParams.set('tenant_id', id);
+    }
+    window.location.href = url.toString();
   };
   
   // Profile fields
@@ -459,6 +472,52 @@ export default function Profile() {
                                 <span className={cn("text-[10px] font-bold tracking-widest uppercase", palette === p.id ? "text-foreground" : "text-foreground/40")}>{p.label}</span>
                               </button>
                             ))}
+                          </div>
+                        </div>
+
+                        {/* Branding Preview (White Label) */}
+                        <div className="pt-8 border-t border-border">
+                          <div className="flex items-center justify-between mb-6">
+                            <div className="flex items-center gap-3">
+                              <Palette className="w-5 h-5 text-primary" />
+                              <h3 className="text-base font-bold text-foreground tracking-tight">Visualização de Marca (White Label)</h3>
+                            </div>
+                            <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded-md">Ativo: {branding.name}</span>
+                          </div>
+                          
+                          <p className="text-xs text-muted-foreground mb-6">Selecione uma marca para ver como o sistema se adapta a diferentes clientes (logos, nomes e mensagens).</p>
+                          
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {Object.values(BRANDING_CONFIG).map((brand) => (
+                              <button
+                                key={brand.id}
+                                onClick={() => handleSwitchBranding(brand.id)}
+                                className={cn(
+                                  "p-4 rounded-xl border flex items-center justify-between transition-all group",
+                                  branding.id === brand.id 
+                                    ? "border-primary bg-primary/10 shadow-sm" 
+                                    : "border-border bg-muted/30 hover:border-primary/40 hover:bg-muted"
+                                )}
+                              >
+                                <div className="flex items-center gap-3">
+                                  <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center overflow-hidden border border-white/10">
+                                    <img src={brand.sidebarLogo} alt="L" className="w-4 h-4 object-contain" />
+                                  </div>
+                                  <div className="text-left">
+                                    <p className="text-sm font-bold text-foreground">{brand.name}</p>
+                                    <p className="text-[10px] text-muted-foreground uppercase font-black tracking-widest">ID: {brand.id}</p>
+                                  </div>
+                                </div>
+                                <ArrowRight className={cn("w-4 h-4 transition-transform group-hover:translate-x-1", branding.id === brand.id ? "text-primary" : "text-foreground/20")} />
+                              </button>
+                            ))}
+                          </div>
+                          
+                          <div className="mt-8 p-4 bg-amber-500/5 border border-amber-500/20 rounded-xl">
+                             <p className="text-[10px] font-black uppercase tracking-widest text-amber-500 mb-2">Dica de Integração</p>
+                             <p className="text-[11px] text-muted-foreground leading-relaxed">
+                               Para iFrames, use <code className="text-amber-500 font-bold">?hide_sidebar=true</code> na URL.
+                             </p>
                           </div>
                         </div>
 
