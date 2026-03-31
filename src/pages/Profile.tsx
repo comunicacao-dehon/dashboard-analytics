@@ -310,7 +310,7 @@ export default function Profile() {
                                 <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">E-mail</Label>
                                 <div className="relative">
                                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
-                                  <Input value={email} disabled className="h-12 pl-12 rounded-xl bg-white/[0.02] border-white/[0.04] opacity-50 cursor-not-allowed font-medium text-muted-foreground" />
+                                  <Input value={email} disabled className="h-12 pl-12 rounded-xl bg-card border-white/[0.04] opacity-50 cursor-not-allowed font-medium text-muted-foreground" />
                                 </div>
                             </div>
                           </div>
@@ -330,9 +330,9 @@ export default function Profile() {
 
                  {/* Senha Tab */}
                  {activeTab === 'senha' && (
-                   <AnimatedCard className="border-white/[0.08] bg-white/[0.02] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden">
-                      <div className="p-8 md:p-10 border-b border-white/[0.08]">
-                        <h2 className="text-2xl font-black tracking-tight text-white mb-1">Alterar Senha</h2>
+                   <AnimatedCard className="border-border bg-card shadow-xl overflow-hidden">
+                      <div className="p-8 md:p-10 border-b border-border">
+                        <h2 className="text-2xl font-black tracking-tight text-foreground mb-1">Alterar Senha</h2>
                         <p className="text-xs text-muted-foreground font-medium">Gerencie o acesso e a segurança da sua conta</p>
                       </div>
                       <div className="p-8 md:p-10 space-y-6">
@@ -360,8 +360,8 @@ export default function Profile() {
 
                  {/* Empresa Tab */}
                  {activeTab === 'empresa' && (
-                    <AnimatedCard className="border-white/[0.08] bg-white/[0.02] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden">
-                      <div className="p-8 md:p-10 border-b border-white/[0.08]">
+                    <AnimatedCard className="border-border bg-card shadow-xl overflow-hidden">
+                      <div className="p-8 md:p-10 border-b border-border">
                         <h2 className="text-2xl font-black tracking-tight text-foreground mb-1">Perfil da Empresa</h2>
                         <p className="text-xs text-foreground/40 font-medium">Informações profissionais e de atuação no sistema</p>
                       </div>
@@ -412,8 +412,8 @@ export default function Profile() {
 
                  {/* Preferencias Tab */}
                  {activeTab === 'preferencias' && (
-                    <AnimatedCard className="border-white/[0.08] bg-white/[0.02] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden">
-                      <div className="p-8 md:p-10 border-b border-white/[0.08]">
+                    <AnimatedCard className="border-border bg-card shadow-xl overflow-hidden">
+                      <div className="p-8 md:p-10 border-b border-border">
                         <h2 className="text-2xl font-black tracking-tight text-foreground mb-1">Preferências</h2>
                         <p className="text-xs text-foreground/40 font-medium">Personalize a aparência do seu sistema Analytics</p>
                       </div>
@@ -423,11 +423,11 @@ export default function Profile() {
                         <div>
                           <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest ml-1 mb-4 flex">Modo de Exibição</Label>
                           <div className="grid grid-cols-2 gap-4">
-                            <button onClick={() => theme !== "light" && toggleTheme()} className={cn("flex items-center gap-3 p-4 rounded-xl border transition-all duration-300", theme === "light" ? "border-amber-500/60 bg-amber-500/10 shadow-[0_0_15px_rgba(245,158,11,0.2)]" : "border-white/10 bg-white/[0.02] hover:bg-white/[0.04]")}>
+                            <button onClick={() => theme !== "light" && toggleTheme()} className={cn("flex items-center gap-3 p-4 rounded-xl border transition-all duration-300", theme === "light" ? "border-amber-500/60 bg-amber-500/10 shadow-[0_0_15px_rgba(245,158,11,0.2)]" : "border-white/10 bg-card hover:bg-white/[0.04]")}>
                               <Sun className={cn("w-6 h-6", theme === "light" ? "text-amber-400" : "text-foreground/30")} />
                               <span className={cn("text-sm font-bold", theme === "light" ? "text-amber-400" : "text-foreground/40")}>Tema Claro</span>
                             </button>
-                            <button onClick={() => theme !== "dark" && toggleTheme()} className={cn("flex items-center gap-3 p-4 rounded-xl border transition-all duration-300", theme === "dark" ? "border-violet-500/60 bg-violet-500/10 shadow-[0_0_15px_rgba(139,92,246,0.2)]" : "border-white/10 bg-white/[0.02] hover:bg-white/[0.04]")}>
+                            <button onClick={() => theme !== "dark" && toggleTheme()} className={cn("flex items-center gap-3 p-4 rounded-xl border transition-all duration-300", theme === "dark" ? "border-violet-500/60 bg-violet-500/10 shadow-[0_0_15px_rgba(139,92,246,0.2)]" : "border-white/10 bg-card hover:bg-white/[0.04]")}>
                               <Moon className={cn("w-6 h-6", theme === "dark" ? "text-violet-400" : "text-foreground/30")} />
                               <span className={cn("text-sm font-bold", theme === "dark" ? "text-violet-400" : "text-foreground/40")}>Tema Escuro</span>
                             </button>
@@ -468,8 +468,8 @@ export default function Profile() {
 
                  {/* Conexoes Tab */}
                  {activeTab === 'conexoes' && (
-                    <AnimatedCard className="border-white/[0.08] bg-white/[0.02] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] overflow-hidden">
-                      <div className="p-8 md:p-10 border-b border-white/[0.08]">
+                    <AnimatedCard className="border-border bg-card shadow-xl overflow-hidden">
+                      <div className="p-8 md:p-10 border-b border-border">
                         <h2 className="text-2xl font-black tracking-tight text-foreground mb-1">Conexões de Dados</h2>
                         <p className="text-xs text-foreground/40 font-medium">Vincule suas contas de redes sociais e sites para coletar métricas automaticamente</p>
                       </div>

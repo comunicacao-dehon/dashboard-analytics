@@ -31,7 +31,7 @@ const RoleSelect = ({ value, onChange, disabled }: { value: Role, onChange: (r: 
       onChange={(e) => onChange(e.target.value as Role)}
       disabled={disabled}
       className={cn(
-        "bg-white/[0.04] border border-white/[0.08] text-white text-[10px] font-black uppercase tracking-widest rounded-xl focus:ring-amber-500/50 focus:border-amber-500 block w-full p-2.5 outline-none transition-all cursor-pointer",
+        "bg-white/[0.04] border border-border text-white text-[10px] font-black uppercase tracking-widest rounded-xl focus:ring-amber-500/50 focus:border-amber-500 block w-full p-2.5 outline-none transition-all cursor-pointer",
         disabled && "opacity-50 cursor-not-allowed"
       )}
     >
@@ -190,13 +190,13 @@ export default function Teams() {
       <motion.div initial="hidden" animate="visible" variants={slideUp} className="space-y-6">
         
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row shadow-[0_4px_20px_-10px_rgba(0,0,0,0.5)] bg-white/[0.04] backdrop-blur-[40px] border border-white/[0.08] rounded-[2rem] p-6 items-center justify-between gap-4">
+        <div className="flex flex-col md:flex-row shadow-[0_4px_20px_-10px_rgba(0,0,0,0.5)] bg-white/[0.04] backdrop-blur-[40px] border border-border rounded-[2rem] p-6 items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
               <Users className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-white mb-1">Equipe e Permissões</h1>
+              <h1 className="text-xl font-bold tracking-tight text-foreground mb-1">Equipe e Permissões</h1>
               <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Gerencie acessos e colabore</p>
             </div>
           </div>
@@ -240,7 +240,7 @@ export default function Teams() {
                       const isOwner = team?.owner_id === member.user_id;
 
                       return (
-                         <AnimatedCard key={member.id} className="p-5 border-white/[0.08] flex flex-col md:flex-row md:items-center justify-between gap-4">
+                         <AnimatedCard key={member.id} className="p-5 border-border flex flex-col md:flex-row md:items-center justify-between gap-4">
                             <div className="flex items-center gap-4">
                                <div className="w-10 h-10 rounded-[1rem] bg-gradient-to-br from-amber-500/20 to-amber-500/5 flex items-center justify-center border border-amber-500/10 shrink-0 text-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.1)]">
                                   <span className="text-xs font-black uppercase tracking-widest">
@@ -269,7 +269,7 @@ export default function Teams() {
 
                                {/* Ações (Apenas Admin vê) */}
                                {isAdmin && !isOwner && !isMe && (
-                                  <div className="flex items-center gap-2 ml-2 pl-4 border-l border-white/[0.08]">
+                                  <div className="flex items-center gap-2 ml-2 pl-4 border-l border-border">
                                      <RoleSelect 
                                         value={member.role} 
                                         onChange={(r) => handleUpdateRole(member.id, r)} 
@@ -292,14 +292,14 @@ export default function Teams() {
 
              {/* Convites Pendentes */}
              {(invitations.length > 0 || isAdmin) && (
-                <div className="space-y-4 pt-6 mt-6 border-t border-white/[0.08]">
+                <div className="space-y-4 pt-6 mt-6 border-t border-border">
                    <h3 className="text-[10px] uppercase font-black tracking-widest text-muted-foreground px-1 mb-2 flex items-center gap-2">
                       Convites Pendentes
                       <span className="text-[10px] bg-white/[0.08] text-white/70 px-2 py-0.5 rounded-full">{invitations.length}</span>
                    </h3>
 
                    {invitations.length === 0 ? (
-                      <div className="p-8 border border-dashed border-white/[0.08] rounded-[2rem] bg-white/[0.02] text-center flex flex-col items-center justify-center">
+                      <div className="p-8 border border-dashed border-border rounded-[2rem] bg-card text-center flex flex-col items-center justify-center">
                          <Mail className="w-6 h-6 text-white/20 mb-3" />
                          <span className="text-sm font-bold text-muted-foreground">Nenhum convite pendente.</span>
                          <span className="text-[10px] font-black uppercase tracking-widest text-white/30 mt-2">Clique em "Convidar" no topo para adicionar.</span>
@@ -307,7 +307,7 @@ export default function Teams() {
                    ) : (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                          {invitations.map((inv) => (
-                            <AnimatedCard key={inv.id} className="p-5 border-white/[0.08] border-dashed flex items-center justify-between gap-3 bg-white/[0.02]">
+                            <AnimatedCard key={inv.id} className="p-5 border-border border-dashed flex items-center justify-between gap-3 bg-card">
                                <div className="flex items-center gap-3 overflow-hidden">
                                   <div className="w-10 h-10 rounded-[1rem] bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
                                      <Mail className="w-4 h-4 text-white/40" />
@@ -357,7 +357,7 @@ export default function Teams() {
                      onClick={(e) => e.stopPropagation()}
                      className="bg-card w-full max-w-md border border-border shadow-xl rounded-[2rem] overflow-hidden"
                   >
-                     <div className="p-6 border-b border-white/[0.08] flex justify-between items-center bg-white/[0.02]">
+                     <div className="p-6 border-b border-border flex justify-between items-center bg-card">
                         <div className="flex items-center gap-3">
                            <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
                               <UserPlus className="w-4 h-4 text-amber-500" />
@@ -398,7 +398,7 @@ export default function Teams() {
                                        "p-4 rounded-[1.25rem] border cursor-pointer transition-all duration-300 flex items-start gap-4",
                                        inviteRole === role.id 
                                           ? "bg-amber-500/10 border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.15)]"
-                                          : "bg-white/[0.02] border-white/[0.08] hover:bg-white/[0.04] hover:border-white/[0.15]"
+                                          : "bg-card border-border hover:bg-white/[0.04] hover:border-white/[0.15]"
                                     )}
                                  >
                                     <div className={cn(

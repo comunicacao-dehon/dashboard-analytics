@@ -90,7 +90,7 @@ export default function Settings() {
         </motion.div>
 
         {/* Account Connections */}
-        <AnimatedCard className="p-8 mb-6 border-white/[0.08] bg-white/[0.02]">
+        <AnimatedCard className="p-8 mb-6 border-border bg-card">
           <div className="flex items-center gap-3 mb-6 pb-5 border-b border-white/[0.06]">
             <Link2 className="w-5 h-5 text-primary" />
             <h3 className="text-base font-bold text-white tracking-tight">Conexões de Conta</h3>
@@ -136,13 +136,13 @@ export default function Settings() {
               </motion.div>
             ))}
           </div>
-          <p className="text-[11px] text-white/30 font-bold mt-5 p-4 bg-white/[0.02] border border-white/[0.05] rounded-xl leading-relaxed">
+          <p className="text-[11px] text-white/30 font-bold mt-5 p-4 bg-card border border-white/[0.05] rounded-xl leading-relaxed">
             🔒 Suas credenciais são criptografadas e nunca armazenadas em texto puro. A integração utiliza OAuth 2.0 com as APIs oficiais das plataformas.
           </p>
         </AnimatedCard>
 
         {/* Preferences */}
-        <AnimatedCard delay={0.15} className="p-8 border-white/[0.08] bg-white/[0.02]">
+        <AnimatedCard delay={0.15} className="p-8 border-border bg-card">
           <h3 className="text-base font-bold text-white tracking-tight mb-6 pb-5 border-b border-white/[0.06]">Preferências</h3>
           <div className="space-y-3">
             {preferences.map((pref, i) => (

@@ -147,7 +147,7 @@ export default function Website() {
               </div>
               <div className="space-y-6">
                 {topPages.map((page, i) => (
-                  <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 hover:bg-white/[0.04] transition-colors relative overflow-hidden group">
+                  <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-card border border-white/5 hover:border-white/10 hover:bg-white/[0.04] transition-colors relative overflow-hidden group">
                      {/* Progress bar background */}
                      <div className="absolute top-0 left-0 h-full bg-emerald-500/5 transition-all duration-1000 -z-10" style={{ width: `${100 - (i * 15)}%` }} />
                      
