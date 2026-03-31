@@ -175,10 +175,10 @@ export default function Home() {
                 transition={{ delay: i * 0.1 }}
                 onClick={() => window.location.href = `/${acc.platform === 'youtube' ? 'youtube' : acc.platform === 'facebook' ? 'facebook' : 'instagram'}`}
                 className={cn(
-                  "cursor-pointer glass-dark border rounded-2xl p-6 flex items-center gap-4 group",
-                  acc.platform === "instagram" && "border-pink-500/30 hover:border-pink-500/60 shadow-[0_0_15px_transparent] hover:shadow-[0_0_15px_rgba(236,72,153,0.15)]",
-                  acc.platform === "facebook" && "border-blue-500/30 hover:border-blue-500/60 shadow-[0_0_15px_transparent] hover:shadow-[0_0_15px_rgba(59,130,246,0.15)]",
-                  acc.platform === "youtube" && "border-red-500/30 hover:border-red-500/60 shadow-[0_0_15px_transparent] hover:shadow-[0_0_15px_rgba(239,68,68,0.15)]",
+                  "cursor-pointer bg-card border rounded-2xl p-6 flex items-center gap-4 group shadow-sm hover:shadow-xl",
+                  acc.platform === "instagram" && "border-pink-500/20 bg-pink-500/5 hover:border-pink-500/40",
+                  acc.platform === "facebook" && "border-blue-500/20 bg-blue-500/5 hover:border-blue-500/40",
+                  acc.platform === "youtube" && "border-red-500/20 bg-red-500/5 hover:border-red-500/40",
                   "transition-all duration-300"
                 )}
               >
@@ -195,14 +195,14 @@ export default function Home() {
                   />
                 ) : (
                   <div className={cn(
-                    "w-14 h-14 rounded-full flex items-center justify-center group-hover:scale-105 transition-transform",
+                    "w-14 h-14 rounded-full flex items-center justify-center group-hover:scale-105 transition-transform shadow-inner",
                     acc.platform === "instagram" && "bg-gradient-to-br from-pink-500 to-purple-600",
                     acc.platform === "facebook" && "bg-blue-600",
                     acc.platform === "youtube" && "bg-red-600",
                   )}>
-                    {acc.platform === "instagram" && <Instagram className="w-7 h-7 text-foreground" />}
-                    {acc.platform === "facebook" && <Facebook className="w-7 h-7 text-foreground" />}
-                    {acc.platform === "youtube" && <Youtube className="w-7 h-7 text-foreground" />}
+                    {acc.platform === "instagram" && <Instagram className="w-7 h-7 text-white" />}
+                    {acc.platform === "facebook" && <Facebook className="w-7 h-7 text-white" />}
+                    {acc.platform === "youtube" && <Youtube className="w-7 h-7 text-white" />}
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
@@ -238,7 +238,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
-                className="group relative overflow-hidden rounded-[2rem] border border-border bg-muted backdrop-blur-[30px] p-5 flex items-center justify-between shadow-xl hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] hover:bg-white/[0.06] hover:-translate-y-1 cursor-pointer transition-all duration-300"
+                className="group relative overflow-hidden rounded-[2rem] border border-border bg-card p-5 flex items-center justify-between shadow-xl hover:shadow-2xl hover:-translate-y-1 cursor-pointer transition-all duration-300"
               >
                 {/* Subtle background glow */}
                 <div className={cn(
@@ -248,10 +248,10 @@ export default function Home() {
 
                 <div className="flex items-center gap-4 relative z-10">
                   <div className={cn(
-                    "w-12 h-12 rounded-[1rem] flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-sm border border-white/10 relative z-10",
-                    p.label === "Instagram" ? "bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-foreground" :
-                    p.label === "Facebook" ? "bg-gradient-to-br from-[#1877f2] to-[#0a52b3] text-foreground" :
-                    "bg-gradient-to-br from-[#ff0000] to-[#b30000] text-foreground"
+                    "w-12 h-12 rounded-[1rem] flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-md border border-white/20 relative z-10",
+                    p.label === "Instagram" ? "bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white" :
+                    p.label === "Facebook" ? "bg-gradient-to-br from-[#1877f2] to-[#0a52b3] text-white" :
+                    "bg-gradient-to-br from-[#ff0000] to-[#b30000] text-white"
                   )}>
                     <p.icon className="w-6 h-6" />
                   </div>
