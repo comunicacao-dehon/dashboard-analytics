@@ -386,6 +386,26 @@ export default function Home() {
         </div>
       </section>
 
+
+      {/* Hero (Moved and Reduced) */}
+      <section className="container py-12 border-t border-border/20">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="flex flex-col items-center text-center max-w-3xl mx-auto"
+        >
+          <motion.h2 variants={slideUp} className="text-2xl md:text-3xl font-black tracking-tight mb-6 text-foreground">
+            Evolução de <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">Performance</span> Digital
+          </motion.h2>
+
+          <motion.p variants={slideUp} className="text-sm text-muted-foreground mb-8 max-w-xl leading-relaxed font-medium">
+            Sincronize <strong className="text-foreground">redes sociais</strong> com Inteligência Artificial, detectando padrões virais 24/7.
+          </motion.p>
+        </motion.div>
+      </section>
+
       {/* CTA */}
       <section className="container py-24">
         <motion.div
