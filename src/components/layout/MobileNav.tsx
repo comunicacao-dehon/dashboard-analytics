@@ -24,7 +24,7 @@ export function MobileNav() {
   };
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/[0.04] backdrop-blur-[30px] border-t border-white/[0.08] shadow-[0_-20px_40px_-20px_rgba(0,0,0,0.5)] px-2 py-4 pb-6">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-sidebar backdrop-blur-[30px] border-t border-sidebar-border shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.1)] px-2 py-4 pb-6">
       <div className="flex items-center justify-around gap-1">
         {mobileItems.map((item) => {
           const isActive = item.href === "/dashboard" ? location === "/dashboard" : location.startsWith(item.href);
@@ -34,7 +34,7 @@ export function MobileNav() {
               <button 
                 key={item.href}
                 onClick={handleLogout}
-                className="flex flex-col items-center gap-1.5 px-3 py-2 rounded-2xl cursor-pointer transition-all duration-300 text-white/40 hover:text-red-400 hover:bg-red-500/10 active:scale-95"
+                className="flex flex-col items-center gap-1.5 px-3 py-2 rounded-2xl cursor-pointer transition-all duration-300 text-sidebar-foreground/40 hover:text-red-400 hover:bg-red-500/10 active:scale-95"
               >
                 <item.icon className="w-5 h-5 transition-transform duration-300" />
                 <span className="text-[9px] font-black tracking-widest uppercase opacity-60">{item.label}</span>
@@ -49,7 +49,7 @@ export function MobileNav() {
                   "flex flex-col items-center gap-1.5 px-3 py-2 rounded-2xl cursor-pointer transition-all duration-300 relative",
                   isActive 
                     ? "text-amber-500" 
-                    : "text-white/40 hover:text-white hover:bg-white/[0.06]"
+                    : "text-sidebar-foreground/40 hover:text-sidebar-foreground hover:bg-sidebar-accent"
                 )}
               >
                 <item.icon className={cn("w-5 h-5 transition-all duration-300", isActive && "scale-110 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]")} />
