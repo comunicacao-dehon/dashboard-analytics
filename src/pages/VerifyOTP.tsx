@@ -63,14 +63,14 @@ export default function VerifyOTP() {
             <CheckCircle2 className="w-10 h-10 text-green-500" />
           </div>
           <h2 className="text-3xl font-bold mb-2 text-white">Verificado!</h2>
-          <p className="text-white/60">Sua conta foi ativada. Redirecionando...</p>
+          <p className="text-muted-foreground">Sua conta foi ativada. Redirecionando...</p>
         </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#050505] p-6 relative overflow-hidden font-['Outfit']">
+    <div className="min-h-screen flex items-center justify-center bg-background p-6 relative overflow-hidden font-sans">
       {/* Background Decor */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-amber-500/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none" />
@@ -83,7 +83,7 @@ export default function VerifyOTP() {
       >
         <button 
           onClick={() => setLocation("/login")}
-          className="flex items-center gap-2 text-sm font-medium text-white/40 hover:text-white transition-colors mb-12 group"
+          className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mb-12 group"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
           Voltar para o login
@@ -95,7 +95,7 @@ export default function VerifyOTP() {
           </div>
 
           <h1 className="text-3xl font-bold tracking-tight mb-3 text-white">Verifique seu e-mail</h1>
-          <p className="text-white/40 leading-relaxed mb-10">
+          <p className="text-muted-foreground leading-relaxed mb-10">
             Enviamos um código de <span className="text-amber-500 font-bold">6 dígitos</span> para o e-mail <span className="text-white font-bold">{email}</span>. Insira-o abaixo para ativar sua conta.
           </p>
 
@@ -137,7 +137,7 @@ export default function VerifyOTP() {
           </form>
 
           <div className="mt-12 text-center pt-8 border-t border-white/5">
-            <p className="text-sm text-white/30 uppercase tracking-[0.2em] font-bold">
+            <p className="text-sm text-muted-foreground uppercase tracking-[0.2em] font-bold">
               Não recebeu o código?{" "}
               <button 
                 onClick={async () => {

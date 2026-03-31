@@ -35,9 +35,9 @@ const RoleSelect = ({ value, onChange, disabled }: { value: Role, onChange: (r: 
         disabled && "opacity-50 cursor-not-allowed"
       )}
     >
-      <option value="admin" className="bg-[#050505] text-white">Admin (Total)</option>
-      <option value="editor" className="bg-[#050505] text-white">Editor (Ação)</option>
-      <option value="viewer" className="bg-[#050505] text-white">View (Leitura)</option>
+      <option value="admin" className="bg-background text-foreground">Admin (Total)</option>
+      <option value="editor" className="bg-background text-foreground">Editor (Ação)</option>
+      <option value="viewer" className="bg-background text-foreground">View (Leitura)</option>
     </select>
   );
 };
@@ -197,7 +197,7 @@ export default function Teams() {
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight text-white mb-1">Equipe e Permissões</h1>
-              <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Gerencie acessos e colabore</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Gerencie acessos e colabore</p>
             </div>
           </div>
           <div className="flex gap-3">
@@ -233,7 +233,7 @@ export default function Teams() {
           <div className="space-y-8">
               {/* Membros Ativos */}
              <div className="space-y-4">
-                <h3 className="text-[10px] font-black uppercase tracking-widest px-1 text-white/50 mb-2">Membros Ativos ({members.length})</h3>
+                <h3 className="text-[10px] font-black uppercase tracking-widest px-1 text-muted-foreground mb-2">Membros Ativos ({members.length})</h3>
                 <div className="grid grid-cols-1 gap-3">
                    {members.map((member) => {
                       const isMe = member.user_id === user!.id;
@@ -250,7 +250,7 @@ export default function Teams() {
                                <div>
                                   <div className="flex items-center gap-2">
                                      <span className="font-bold text-sm text-white">
-                                        {member.profiles?.name || "Usuário"} {isMe && <span className="text-white/40 font-normal">(Você)</span>}
+                                        {member.profiles?.name || "Usuário"} {isMe && <span className="text-muted-foreground font-normal">(Você)</span>}
                                      </span>
                                      {isOwner && (
                                         <span title="Dono da Equipe">
@@ -258,7 +258,7 @@ export default function Teams() {
                                         </span>
                                      )}
                                   </div>
-                                  <span className="text-[10px] uppercase tracking-widest text-white/40 font-black">{member.profiles?.email}</span>
+                                  <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-black">{member.profiles?.email}</span>
                                </div>
                             </div>
                             
@@ -293,7 +293,7 @@ export default function Teams() {
              {/* Convites Pendentes */}
              {(invitations.length > 0 || isAdmin) && (
                 <div className="space-y-4 pt-6 mt-6 border-t border-white/[0.08]">
-                   <h3 className="text-[10px] uppercase font-black tracking-widest text-white/50 px-1 mb-2 flex items-center gap-2">
+                   <h3 className="text-[10px] uppercase font-black tracking-widest text-muted-foreground px-1 mb-2 flex items-center gap-2">
                       Convites Pendentes
                       <span className="text-[10px] bg-white/[0.08] text-white/70 px-2 py-0.5 rounded-full">{invitations.length}</span>
                    </h3>
@@ -301,7 +301,7 @@ export default function Teams() {
                    {invitations.length === 0 ? (
                       <div className="p-8 border border-dashed border-white/[0.08] rounded-[2rem] bg-white/[0.02] text-center flex flex-col items-center justify-center">
                          <Mail className="w-6 h-6 text-white/20 mb-3" />
-                         <span className="text-sm font-bold text-white/50">Nenhum convite pendente.</span>
+                         <span className="text-sm font-bold text-muted-foreground">Nenhum convite pendente.</span>
                          <span className="text-[10px] font-black uppercase tracking-widest text-white/30 mt-2">Clique em "Convidar" no topo para adicionar.</span>
                       </div>
                    ) : (
@@ -355,7 +355,7 @@ export default function Teams() {
                      animate={{ scale: 1, opacity: 1, y: 0 }}
                      exit={{ scale: 0.95, opacity: 0, y: 20 }}
                      onClick={(e) => e.stopPropagation()}
-                     className="bg-[#050505] w-full max-w-md border border-white/10 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)] rounded-[2rem] overflow-hidden"
+                     className="bg-card w-full max-w-md border border-border shadow-xl rounded-[2rem] overflow-hidden"
                   >
                      <div className="p-6 border-b border-white/[0.08] flex justify-between items-center bg-white/[0.02]">
                         <div className="flex items-center gap-3">
