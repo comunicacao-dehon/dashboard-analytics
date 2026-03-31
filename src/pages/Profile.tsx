@@ -452,7 +452,7 @@ export default function Profile() {
                                 onClick={() => setPalette(p.id as ColorPalette)}
                                 className={cn(
                                   "flex flex-col items-center gap-2 p-3 rounded-xl border transition-all duration-300 w-24",
-                                  palette === p.id ? "border-white/30 bg-white/[0.06]" : "border-white/5 bg-white/[0.02] hover:border-white/10"
+                                  palette === p.id ? "border-primary/50 bg-primary/10 shadow-sm" : "border-border bg-muted/30 hover:border-border/50"
                                 )}
                               >
                                 <div className={cn("w-8 h-8 rounded-full mb-1 transition-transform", palette === p.id && "scale-110")} style={{ backgroundColor: p.color, boxShadow: palette === p.id ? `0 0 16px 2px ${p.shadow}` : "none" }} />
@@ -477,7 +477,7 @@ export default function Profile() {
                       <div className="p-8 md:p-10">
                         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full">
                           {/* Instagram Connect */}
-                          <div className="glass-dark border border-white/10 p-6 rounded-3xl flex flex-col items-center text-center hover:border-pink-500/50 hover:shadow-[0_0_30px_rgba(236,72,153,0.15)] transition-all group">
+                          <div className="bg-card border-border p-6 rounded-3xl flex flex-col items-center text-center hover:border-primary/50 transition-all shadow-sm group">
                             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform shrink-0">
                               <Instagram className="w-7 h-7 text-white" />
                             </div>
@@ -489,7 +489,7 @@ export default function Profile() {
                                 if (!META_APP_ID) return toast.error("Meta App ID não configurado");
                                 startOAuth("instagram");
                               }}
-                              className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]"
+                              className="w-full bg-muted hover:bg-muted/80 border border-border text-foreground rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]"
                             >
                               <LinkIcon className="w-3.5 h-3.5 mr-2" />
                               Vincular Conta
@@ -497,7 +497,7 @@ export default function Profile() {
                           </div>
 
                           {/* Facebook Connect */}
-                          <div className="glass-dark border border-white/10 p-6 rounded-3xl flex flex-col items-center text-center hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] transition-all group">
+                          <div className="bg-card border-border p-6 rounded-3xl flex flex-col items-center text-center hover:border-primary/50 transition-all shadow-sm group">
                             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#1877f2] to-[#0a52b3] flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform shrink-0">
                               <Facebook className="w-7 h-7 text-white" />
                             </div>
@@ -509,7 +509,7 @@ export default function Profile() {
                                 if (!META_APP_ID) return toast.error("Meta App ID não configurado");
                                 startOAuth("facebook");
                               }}
-                              className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]"
+                              className="w-full bg-muted hover:bg-muted/80 border border-border text-foreground rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]"
                             >
                               <LinkIcon className="w-3.5 h-3.5 mr-2" />
                               Vincular Conta
@@ -517,7 +517,7 @@ export default function Profile() {
                           </div>
 
                           {/* YouTube Connect */}
-                          <div className="glass-dark border border-white/10 p-6 rounded-3xl flex flex-col items-center text-center hover:border-red-500/50 hover:shadow-[0_0_30px_rgba(239,68,68,0.15)] transition-all group">
+                          <div className="bg-card border-border p-6 rounded-3xl flex flex-col items-center text-center hover:border-primary/50 transition-all shadow-sm group">
                             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#ff0000] to-[#b30000] flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform shrink-0">
                               <Youtube className="w-7 h-7 text-white" />
                             </div>
@@ -529,7 +529,7 @@ export default function Profile() {
                                 if (!GOOGLE_CLIENT_ID) return toast.error("Google Client ID não configurado");
                                 startOAuth("youtube");
                               }}
-                              className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]"
+                              className="w-full bg-muted hover:bg-muted/80 border border-border text-foreground rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]"
                             >
                               <LinkIcon className="w-3.5 h-3.5 mr-2" />
                               Vincular Conta
@@ -537,13 +537,13 @@ export default function Profile() {
                           </div>
 
                           {/* Website Connect */}
-                          <div className="glass-dark border border-white/10 p-6 rounded-3xl flex flex-col items-center text-center hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)] transition-all group">
+                          <div className="bg-card border-border p-6 rounded-3xl flex flex-col items-center text-center hover:border-primary/50 transition-all shadow-sm group">
                             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#059669] to-[#047857] flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform shrink-0">
                               <Globe className="w-7 h-7 text-white" />
                             </div>
                             <h3 className="text-lg font-bold text-white mb-1 tracking-tight">Site</h3>
                             <p className="text-[11px] text-white/40 mb-6 px-4 leading-relaxed line-clamp-2 h-8">Vincule seu domínio para acessar tráfego e visualizações.</p>
-                            <Button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]" onClick={() => setLocation("/website")}>
+                            <Button className="w-full bg-muted hover:bg-muted/80 border border-border text-foreground rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]" onClick={() => setLocation("/website")}>
                               <LinkIcon className="w-3.5 h-3.5 mr-2" />
                               Vincular Site
                             </Button>
