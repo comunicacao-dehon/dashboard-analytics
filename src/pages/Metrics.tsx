@@ -189,7 +189,7 @@ export default function Metrics() {
       <motion.div initial="hidden" animate="visible" variants={slideUp} className="space-y-6">
         
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row shadow-xl bg-card border border-border rounded-[2rem] p-6 items-center justify-between gap-4">
+        <div className="flex flex-col md:flex-row shadow-xl bg-card border border-border rounded-3xl p-6 items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-sm">
               <Activity className="w-5 h-5" />
@@ -213,7 +213,7 @@ export default function Metrics() {
 
         {/* Controls (Platform & Period) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="flex bg-muted p-1.5 rounded-[1.5rem] border border-border gap-1 overflow-x-auto shadow-inner">
+          <div className="flex bg-muted p-1.5 rounded-2xl border border-border gap-1 overflow-x-auto shadow-inner">
             {(Object.keys(platformConfig) as Platform[]).map((platform) => {
               const config = platformConfig[platform];
               const isActive = selectedPlatform === platform;
@@ -236,7 +236,7 @@ export default function Metrics() {
             })}
           </div>
 
-          <div className="flex bg-muted p-1.5 rounded-[1.5rem] border border-border gap-1 shadow-inner">
+          <div className="flex bg-muted p-1.5 rounded-2xl border border-border gap-1 shadow-inner">
             {periods.map((period) => {
               const isActive = selectedPeriod === period.days;
               return (

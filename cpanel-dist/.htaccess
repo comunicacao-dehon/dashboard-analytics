@@ -1,0 +1,29 @@
+# CONFIGURAÇÃO APACHE PARA SPA (REACT + VITE) NO CPANEL
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  
+  # Suporte para URLs limpas nas APIs (ex: /api/generate-insights -> /api/generate-insights.php)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.php -f
+  RewriteRule ^api/(.*)$ api/$1.php [L,QSA]
+
+  # Redirecionar todas as outras rotas para index.html para o React Router
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !^/api/
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# Proteger arquivos sensíveis
+<FilesMatch "^\.|\.(php|env|json|yaml|yml|md)$">
+    # Note: Permitimos a pasta /api/ rodar PHP
+</FilesMatch>
+
+# Habilitar Gzip
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript
+</IfModule>

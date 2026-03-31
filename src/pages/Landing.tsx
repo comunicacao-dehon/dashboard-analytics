@@ -82,16 +82,16 @@ export default function Landing() {
           </motion.div>
           
           <motion.h1 
-            className="text-5xl md:text-7xl font-extrabold tracking-tight max-w-4xl mx-auto leading-tight mb-6"
+            className="text-4xl md:text-6xl font-black tracking-tighter max-w-4xl mx-auto leading-[1.1] mb-8 text-white"
             variants={fadeIn}
             initial="initial"
             animate="animate"
           >
-            Evolução da <span className="text-gradient-primary">Performance Digital</span> com Inteligência Artificial
+            Evolução da <span className="text-primary italic">Performance Digital</span> <br className="hidden md:block" /> com Inteligência Artificial
           </motion.h1>
           
           <motion.p 
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
+            className="text-base md:text-lg text-white/50 max-w-2xl mx-auto mb-10 leading-relaxed font-medium"
             variants={fadeIn}
             initial="initial"
             animate="animate"

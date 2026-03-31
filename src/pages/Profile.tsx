@@ -20,7 +20,8 @@ import {
   Moon,
   Loader2,
   Save,
-  X
+  X,
+  ArrowRight
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
