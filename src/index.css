@@ -43,104 +43,89 @@
 }
 
 :root {
-  /* ── Primário: Âmbar refinado — escuro o suficiente para não agredir ── */
-  --primary: #B45309;               /* Amber 700 — elegante, legível sobre branco */
-  --primary-foreground: #FFFBEB;    /* Amber 50 — quente, não cru */
-  --sidebar-primary: #B45309;
-  --sidebar-primary-foreground: #FFFBEB;
+  --radius: 1rem;
+  --background: #F8FAFC;            /* Slate 50 */
+  --foreground: #020617;            /* Slate 950 */
+  
+  --primary: #EF4444;               /* Red 500 */
+  --primary-foreground: #FFFFFF;
 
-  /* ── Fundo: Stone-50 — levemente aquecido, não cansa a vista ── */
-  --radius: 0.625rem;
-  --background: #FAFAF9;            /* Stone 50 */
-  --foreground: #1C1917;            /* Stone 900 — quase preto, mais suave */
-
-  /* ── Cards: Branco puro para destacar do fundo Stone ── */
   --card: #FFFFFF;
-  --card-foreground: #1C1917;
+  --card-foreground: #020617;
   --popover: #FFFFFF;
-  --popover-foreground: #1C1917;
+  --popover-foreground: #020617;
 
-  /* ── Secundário/Muted: Stone palette — coeso e suave ── */
-  --secondary: #F5F5F4;             /* Stone 100 */
-  --secondary-foreground: #44403C;  /* Stone 700 */
-  --muted: #F5F5F4;                 /* Stone 100 */
-  --muted-foreground: #78716C;      /* Stone 500 — warm gray */
+  --secondary: #F1F5F9;             /* Slate 100 */
+  --secondary-foreground: #0F172A;
+  --muted: #F1F5F9;
+  --muted-foreground: #64748B;      /* Slate 500 - Legível no claro */
+  --accent: #F1F5F9;
+  --accent-foreground: #0F172A;
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --border: #E2E8F0;                /* Slate 200 */
+  --input: #E2E8F0;
+  --ring: #EF4444;
 
-  /* ── Accent: Âmbar muito suave — destaque sem agressão ── */
-  --accent: #FEF3C7;                /* Amber 100 */
-  --accent-foreground: #78350F;     /* Amber 900 — escuro, legível */
+  --primary: #EF4444;               /* Red 500 */
+  --primary-foreground: #FFFFFF;
 
-  /* ── Estado, bordas e inputs ── */
-  --destructive: #DC2626;           /* Red 600 */
-  --destructive-foreground: #FEF2F2;
-  --border: #E7E5E4;                /* Stone 200 */
-  --input: #E7E5E4;
-  --ring: #B45309;
+  /* ... */
 
-  /* ── Sidebar: levemente diferente do fundo para hierarquia visual ── */
   --sidebar: #FFFFFF;
-  --sidebar-foreground: #1C1917;
-  --sidebar-accent: #F5F5F4;
-  --sidebar-accent-foreground: #44403C;
-  --sidebar-border: #E7E5E4;
-  --sidebar-ring: #B45309;
+  --sidebar-foreground: #64748B;
+  --sidebar-accent: #FEF2F2;        /* Red 50 */
+  --sidebar-accent-foreground: #EF4444;
+  --sidebar-border: #F1F5F9;
+  --sidebar-ring: #EF4444;
 
-  /* ── Gráficos: Índigo/Violeta para dados + âmbar para destaque ── */
-  --chart-1: #4F46E5;              /* Indigo 600 — contraste forte, confiável */
-  --chart-2: #7C3AED;              /* Violet 600 */
-  --chart-3: #0891B2;              /* Cyan 600 */
-  --chart-4: #B45309;              /* Amber 700 — brand */
-  --chart-5: #059669;              /* Emerald 600 */
+  --chart-1: #EF4444;
+  --chart-2: #3B82F6;
+  --chart-3: #8B5CF6;
+  --chart-4: #F59E0B;
+  --chart-5: #10B981;
 }
 
 .dark {
-  /* ── Primário: Amber 400 — brilha bem sobre dark sem queimar ── */
-  --primary: #FBBF24;               /* Amber 400 */
-  --primary-foreground: #1C1917;    /* Stone 900 */
-  --sidebar-primary: #FBBF24;
-  --sidebar-primary-foreground: #1C1917;
+  --primary: #EF4444;               /* Red 500 */
+  --primary-foreground: #FFFFFF;
+  --sidebar-primary: #EF4444;
+  --sidebar-primary-foreground: #FFFFFF;
 
-  /* ── Fundo: Stone-950 — quente, acolhedor, não frio azulado ── */
-  --background: #0C0A09;            /* Stone 950 */
-  --foreground: #FAFAF9;            /* Stone 50 */
+  --background: #020617;            /* Slate 950 */
+  --foreground: #F8FAFC;            /* Slate 50 */
 
-  /* ── Cards: Stone 900 para separar do fundo ── */
-  --card: #1C1917;                  /* Stone 900 */
-  --card-foreground: #FAFAF9;
-  --popover: #1C1917;
-  --popover-foreground: #FAFAF9;
+  --card: #0F172A;                  /* Slate 900 */
+  --card-foreground: #F8FAFC;
+  --popover: #0F172A;
+  --popover-foreground: #F8FAFC;
 
-  /* ── Secundário/Muted: Stone ── */
-  --secondary: #292524;             /* Stone 800 */
-  --secondary-foreground: #D6D3D1;  /* Stone 300 */
-  --muted: #292524;
-  --muted-foreground: #A8A29E;      /* Stone 400 */
+  --secondary: #1E293B;             /* Slate 800 */
+  --secondary-foreground: #F8FAFC;
+  --muted: #1E293B;
+  --muted-foreground: #94A3B8;      /* Slate 400 */
 
-  /* ── Accent: Stone sutilmente diferente ── */
-  --accent: #292524;
-  --accent-foreground: #FAFAF9;
+  --accent: #1E293B;
+  --accent-foreground: #F8FAFC;
 
-  /* ── Estado, bordas e inputs ── */
-  --destructive: #EF4444;
-  --destructive-foreground: #FEF2F2;
-  --border: rgba(255, 255, 255, 0.08);
-  --input: rgba(255, 255, 255, 0.10);
-  --ring: #FBBF24;
+  --destructive: #7F1D1D;
+  --destructive-foreground: #F8FAFC;
+  --border: #1E293B;
+  --input: #1E293B;
+  --ring: #EF4444;
 
-  /* ── Sidebar: Stone 900 ── */
-  --sidebar: #1C1917;
-  --sidebar-foreground: #FAFAF9;
-  --sidebar-accent: #292524;
-  --sidebar-accent-foreground: #FAFAF9;
-  --sidebar-border: rgba(255, 255, 255, 0.08);
-  --sidebar-ring: #FBBF24;
+  --sidebar: #020617;
+  --sidebar-foreground: #94A3B8;
+  --sidebar-accent: #EF444415;      /* Sutil destaque vermelho */
+  --sidebar-accent-foreground: #EF4444;
+  --sidebar-border: #1E293B;
+  --sidebar-ring: #EF4444;
 
-  /* ── Gráficos dark: versões mais claras ── */
-  --chart-1: #818CF8;              /* Indigo 400 */
-  --chart-2: #A78BFA;              /* Violet 400 */
-  --chart-3: #22D3EE;              /* Cyan 400 */
-  --chart-4: #FBBF24;              /* Amber 400 */
-  --chart-5: #34D399;              /* Emerald 400 */
+  --chart-1: #FCA5A5;              /* Red 300 */
+  --chart-2: #93C5FD;              /* Blue 300 */
+  --chart-3: #C4B5FD;              /* Violet 300 */
+  --chart-4: #FDE68A;              /* Amber 300 */
+  --chart-5: #6EE7B7;              /* Emerald 300 */
 }
 
 @layer base {

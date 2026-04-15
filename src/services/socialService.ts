@@ -110,8 +110,19 @@ export async function fetchInstagramMetrics(account: SocialAccount): Promise<Api
       `https://graph.facebook.com/v19.0/${account.platformUserId}/insights?metric=reach,impressions,follower_count&period=day&since=${sinceDate}&until=${untilDate}&access_token=${account.accessToken}`
     );
 
+    // 3. Buscar Demografia (Lifetime)
+    const demoRes = await fetch(
+      `https://graph.facebook.com/v19.0/${account.platformUserId}/insights?metric=audience_gender_age,audience_city,audience_country&period=lifetime&access_token=${account.accessToken}`
+    );
+
     let totalReach = 0;
     let totalImpressions = 0;
+    let demographics = {
+      gender: [] as any[],
+      age: [] as any[],
+      cities: [] as any[],
+      countries: [] as any[]
+    };
 
     const historicalData: any[] = [];
     const dateMap = new Map<string, any>();
@@ -159,6 +170,55 @@ export async function fetchInstagramMetrics(account: SocialAccount): Promise<Api
       }
     }
 
+    // Processar Demografia se disponível
+    if (demoRes.ok) {
+      const demoData = await demoRes.json();
+      for (const metric of demoData.data || []) {
+        const valueMap = metric.values?.[0]?.value || {};
+        
+        if (metric.name === "audience_gender_age") {
+          // Ex: { "F.18-24": 10, "M.18-24": 5 }
+          const genderCounts: Record<string, number> = { F: 0, M: 0, U: 0 };
+          const ageCounts: Record<string, number> = {};
+          
+          Object.entries(valueMap).forEach(([key, val]: [string, any]) => {
+            const [gender, age] = key.split('.');
+            if (gender) genderCounts[gender] = (genderCounts[gender] || 0) + val;
+            if (age) ageCounts[age] = (ageCounts[age] || 0) + val;
+          });
+
+          const total = Object.values(genderCounts).reduce((a, b) => a + b, 0);
+          demographics.gender = [
+            { name: "Mulheres", value: total > 0 ? parseFloat(((genderCounts.F / total) * 100).toFixed(1)) : 0 },
+            { name: "Homens", value: total > 0 ? parseFloat(((genderCounts.M / total) * 100).toFixed(1)) : 0 }
+          ];
+
+          demographics.age = Object.entries(ageCounts).map(([name, value]) => ({
+            name,
+            value: total > 0 ? parseFloat(((value / total) * 100).toFixed(1)) : 0
+          })).sort((a, b) => a.name.localeCompare(b.name));
+        }
+
+        if (metric.name === "audience_city" || metric.name === "audience_country") {
+          const sorted = Object.entries(valueMap)
+            .map(([name, value]: [string, any]) => ({ name, value }))
+            .sort((a,b) => b.value - a.value)
+            .slice(0, 10);
+          
+          const total = Object.values(valueMap).reduce((a: number, b: any) => a + b, 0) as number;
+          
+          const items = sorted.map((s, i) => ({
+             id: i + 1,
+             name: s.name,
+             percentage: total > 0 ? parseFloat(((s.value / total) * 100).toFixed(1)) : 0
+          }));
+
+          if (metric.name === "audience_city") demographics.cities = items;
+          if (metric.name === "audience_country") demographics.countries = items;
+        }
+      }
+    }
+
     // Mapear o Map ordenado de volta para um array
     dateMap.forEach((value) => {
         historicalData.push(value);
@@ -176,10 +236,12 @@ export async function fetchInstagramMetrics(account: SocialAccount): Promise<Api
         totalImpressions,
         reelsPlays: 0,
         storiesViews: 0,
+        storiesImpressions: 0,
         saves: 0,
         shares: 0,
         updatedAt: new Date().toISOString(),
-        historicalData
+        historicalData,
+        demographics
       },
       timestamp: new Date().toISOString(),
     };

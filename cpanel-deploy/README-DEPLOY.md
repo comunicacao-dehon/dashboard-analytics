@@ -1,4 +1,4 @@
-# GUIA DE DEPLOY — DASHBOARD UTXICA NO CPANEL (HOSTGATOR)
+# GUIA DE DEPLOY — COMUNICAÇÃO CONVENTINHO (HOSTGATOR)
 
 Este ambiente foi preparado para rodar o Dashboard React + APIs PHP de forma independente da Vercel.
 
@@ -15,7 +15,7 @@ Isso criará uma pasta chamada `cpanel-dist` com tudo pronto.
 1. No cPanel, vá em **Gerenciador de Arquivos**.
 2. Vá para a pasta principal da sua conta (geralmente `/home/seuusuario/`).
 3. Crie um arquivo chamado `config_analytics.php` **UM NÍVEL ACIMA** da `public_html`.
-4. Copie o conteúdo de `cpanel-deploy/config.php` para ele e preencha as chaves:
+4. Copie o conteúdo de `cpanel-deploy/config_analytics.php` para ele e preencha as chaves:
    - `SUPABASE_URL`
    - `SUPABASE_SERVICE_ROLE_KEY`
    - `GEMINI_API_KEY`

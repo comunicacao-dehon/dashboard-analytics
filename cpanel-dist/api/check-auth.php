@@ -1,40 +1,60 @@
 <?php
 /**
- * PONTE DE AUTENTICAÇÃO (SSO)
- * 
- * Este script verifica se o usuário já está logado no sistema principal (PHP)
- * e retorna os dados básicos para o Dashboard Analytics (React).
+ * PONTE DE AUTENTICAÇÃO (SSO) com Debug
  */
-
-// 1. Iniciar a sessão do PHP (deve ser a mesma do sistema principal)
 session_start();
 
-require_once dirname(__DIR__, 2) . '/config_analytics.php';
+// Procura o arquivo de configuração em mais de um lugar por conta do subdomínio
+$possiblePaths = [
+    dirname(__DIR__, 2) . '/config_analytics.php', // public_html/sistema.conventinho.org.br/
+    dirname(__DIR__, 3) . '/config_analytics.php'  // public_html/
+];
 
-// 2. Configurações de CORS (Permitir que o React leia esta API)
-header("Access-Control-Allow-Origin: " . ALLOWED_ORIGIN);
+$configFile = '';
+$hasConfig = false;
+
+foreach ($possiblePaths as $path) {
+    if (file_exists($path)) {
+        $configFile = $path;
+        $hasConfig = true;
+        break;
+    }
+}
+
+if ($hasConfig) {
+    require_once $configFile;
+    // Tenta usar a ALLOWED_ORIGIN se existir, senão permite baseada na requisição
+    $origin = defined('ALLOWED_ORIGIN') ? ALLOWED_ORIGIN : ($_SERVER['HTTP_ORIGIN'] ?? '*');
+    header("Access-Control-Allow-Origin: " . $origin);
+} else {
+    // Fallback absoluto para debug
+    $origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
+    header("Access-Control-Allow-Origin: " . $origin);
+}
+
 header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json");
 
-// 3. Lógica de Verificação
-// Ajuste os nomes das variáveis abaixo conforme o seu sistema atual usa!
 $isLoggedIn = false;
 $userData = null;
 
-// Exemplo comum: verificar se existe um ID de usuário na sessão
-if (isset($_SESSION['id_usuario']) || isset($_SESSION['user_id']) || isset($_SESSION['logged_in'])) {
+// Tenta achar as chaves
+if (isset($_SESSION['usuario_id']) || isset($_SESSION['logado'])) {
     $isLoggedIn = true;
     $userData = [
-        'id' => $_SESSION['id_usuario'] ?? $_SESSION['user_id'] ?? 'ext-user',
-        'email' => $_SESSION['email'] ?? $_SESSION['user_email'] ?? 'comunicacao@conventinho.org.br',
-        'name' => $_SESSION['nome_usuario'] ?? $_SESSION['user_name'] ?? 'Usuário Conventinho'
+        'id' => $_SESSION['usuario_id'] ?? 'ext-user',
+        'email' => $_SESSION['usuario_email'] ?? 'comunicacao@conventinho.org.br',
+        'name' => $_SESSION['usuario_nome'] ?? 'Usuário Conventinho'
     ];
 }
 
-// 4. Retornar Resultado
+// Retornar Resultado com debug pesado
 echo json_encode([
     'authenticated' => $isLoggedIn,
     'method' => 'php_session',
     'user' => $userData,
-    'debug_session_active' => !empty($_SESSION)
+    'debug_config_found' => $hasConfig,
+    'debug_config_path_tested' => $configFile,
+    'debug_session_active' => !empty($_SESSION),
+    'debug_session_keys' => empty($_SESSION) ? [] : array_keys($_SESSION)
 ]);

@@ -9,36 +9,43 @@ import { SocialGrowthChart } from "@/components/charts/SocialGrowthChart";
 import { InsightsPanel } from "@/components/social/InsightsPanel";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
+import { useProfile } from "@/hooks/useProfile";
+import { useStableUserId } from "@/hooks/useStableUserId";
 import { EmptyDashboard } from "@/components/layout/EmptyDashboard";
 import { getConnectedAccounts } from "@/services/socialService";
 import type { SocialAccount } from "@/types/social";
+import { useBranding } from "@/hooks/useBranding";
 
 export default function Home() {
   const { user } = useAuth();
+  const { profile } = useProfile();
+  const branding = useBranding();
+  const stableUserId = useStableUserId();
   const [accounts, setAccounts] = useState<SocialAccount[]>([]);
   const [loadingAccounts, setLoadingAccounts] = useState(true);
 
   useEffect(() => {
     async function load() {
-      if (!user) { 
+      if (!stableUserId) {
         console.log("Dashboard: No user found");
-        setLoadingAccounts(false); 
-        return; 
+        setLoadingAccounts(false);
+        return;
       }
-      console.log("Dashboard: Loading accounts for user", user.id);
-      const result = await getConnectedAccounts(user.id);
+      console.log("Dashboard: Loading accounts for user", stableUserId);
+      const result = await getConnectedAccounts(stableUserId);
       console.log("Dashboard: Found accounts:", result.length);
       setAccounts(result);
       setLoadingAccounts(false);
     }
     load();
-  }, [user]);
+  }, [stableUserId]);
 
   // Show loading spinner while checking for accounts
   if (loadingAccounts) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Activity className="w-8 h-8 text-amber-500 animate-pulse" />
+        <Activity className="w-8 h-8 text-primary animate-pulse" />
       </div>
     );
   }
@@ -57,20 +64,24 @@ export default function Home() {
 
   const avatarUrl = user?.user_metadata?.avatar_url;
   const primaryAccount = accounts[0];
-  const displayAvatar = primaryAccount?.profilePictureUrl || avatarUrl || "/logo.png";
+  const displayAvatar = primaryAccount?.profilePictureUrl || avatarUrl || "logo.png";
   const displayName = primaryAccount?.displayName || user?.user_metadata?.full_name || "Comunicação";
   const displayUsername = primaryAccount?.username ? `@${primaryAccount.username}` : (user?.email || "");
 
+  // Real Values from screenshots for Conventinho
+  const igFollowers = isConventinho ? "5.434" : "5.395";
+  const fbFollowers = isConventinho ? "17.662" : "17 mil";
+
   const instagramMetrics = [
-    { label: "Seguidores", value: "5.395", icon: Heart, trend: "+12%", href: "/instagram" },
+    { label: "Seguidores", value: igFollowers, icon: Heart, trend: isConventinho ? "-65%" : "+12%", href: "/instagram" },
     { label: "Taxa de Engajamento", value: "4,19%", icon: TrendingUp, trend: "+0.8%" },
     { label: "Alcance Médio", value: "2.482", icon: BarChart3, trend: "+24%" },
     { label: "Posts Totais", value: "838", icon: Share2, trend: "+5" },
   ];
 
   const platformSummary = [
-    { label: "Instagram", subLabel: "Seguidores", value: "5.395", icon: Instagram, color: "text-pink-500 bg-pink-50", href: "/instagram", trend: "+12%" },
-    { label: "Facebook", subLabel: "Seguidores", value: "17 mil", icon: Facebook, color: "text-blue-500 bg-blue-50", href: "/facebook", trend: "+4,2%" },
+    { label: "Instagram", subLabel: "Seguidores", value: igFollowers, icon: Instagram, color: "text-pink-500 bg-pink-50", href: "/instagram", trend: isConventinho ? "-65,7%" : "+12%" },
+    { label: "Facebook", subLabel: "Seguidores", value: fbFollowers, icon: Facebook, color: "text-blue-500 bg-blue-50", href: "/facebook", trend: isConventinho ? "+300%" : "+4,2%" },
     { label: "YouTube", subLabel: "Inscritos", value: "1.820", icon: Youtube, color: "text-red-500 bg-red-50", href: "/youtube", trend: "+10,3%" },
   ];
 
@@ -96,133 +107,78 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-transparent selection:bg-amber-500/20 font-['Outfit']">
-      {/* Decorative Background Blob */}
-      <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-br from-amber-500/10 via-transparent to-transparent opacity-50 pointer-events-none -z-10 blur-3xl" />
-
-      {/* Profile Card */}
-      <section className="container pt-8 pb-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative w-full rounded-3xl overflow-hidden bg-muted backdrop-blur-[40px] border border-border shadow-xl flex flex-col"
-        >
-          <div className="relative px-6 md:px-10 py-6 flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="flex flex-col sm:flex-row items-center gap-5">
-              <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-xl flex items-center justify-center overflow-hidden hover:-translate-y-1 hover:shadow-2xl transition-all duration-500 cursor-pointer group/avatar relative">
-                <div className="absolute inset-0 bg-amber-500/20 opacity-0 group-hover/avatar:opacity-100 transition-opacity blur-xl z-0" />
-                <img
-                  src={displayAvatar}
-                  alt={displayName}
-                  loading="lazy"
-                  className={cn("w-full h-full transition-transform duration-500 relative z-10 brightness-110", displayAvatar === "/logo.png" ? "object-contain p-2 group-hover/avatar:scale-110" : "object-cover")}
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    e.currentTarget.parentElement!.innerHTML = '<span class="text-4xl text-primary font-bold">C</span>';
-                  }}
-                />
-              </div>
-              <div className="text-center sm:text-left">
-                <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">{displayName}</h1>
-                <p className="text-base font-semibold text-white/60 mt-0.5">{displayUsername}</p>
-              </div>
-            </div>
-            <div className="flex flex-col items-end gap-3 shrink-0">
-              <div className="flex items-center gap-2 mb-1">
-                <Link href="/settings">
-                  <button className="p-2 rounded-full hover:bg-muted text-muted-foreground transition-colors" title="Configurações">
-                    <Settings className="w-4 h-4" />
-                  </button>
-                </Link>
-                <Link href="/profile">
-                  <button className="w-8 h-8 rounded-full overflow-hidden border border-border hover:border-primary transition-all flex items-center justify-center bg-muted" title="Meu Perfil">
-                    {avatarUrl ? (
-                      <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
-                    ) : (
-                      <User className="w-4 h-4 text-white/50" />
-                    )}
-                  </button>
-                </Link>
-              </div>
-              <div className="flex gap-3">
-                <Link href="/reports">
-                  <Button className="rounded-xl px-6 bg-amber-500 hover:bg-amber-600 text-[#050505] font-black h-12 shadow-[0_0_20px_rgba(245,158,11,0.2)]">
-                    <BarChart3 className="w-4 h-4 mr-2" />
-                    Ver Dados
-                  </Button>
-                </Link>
-                <Link href="/comparison">
-                  <Button variant="outline" className="rounded-xl px-5 h-12 border-border text-foreground hover:bg-muted font-bold">
-                    Comparar
-                  </Button>
-                </Link>
-              </div>
-            </div>
+    <div className="min-h-screen bg-transparent selection:bg-primary/20 font-['Outfit'] pb-20">
+      {/* Dashboard Header - Hidden on mobile, global header takes over */}
+      <header className="container pt-8 pb-6 hidden md:flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">Visão Geral</h1>
+          <p className="text-sm text-muted-foreground">Bem-vindo de volta, {profile?.fullName || user?.user_metadata?.full_name || "Comunicação"}</p>
+        </div>
+        
+        <div className="flex items-center gap-3">
+          <div className="relative w-full md:w-64">
+            <BarChart className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <input 
+              type="text" 
+              placeholder="Pesquisar métricas..." 
+              className="w-full h-10 pl-10 pr-4 rounded-full bg-slate-100 dark:bg-slate-800 border-none text-sm focus:ring-2 focus:ring-primary/20 transition-all"
+            />
           </div>
-        </motion.div>
-      </section>
+          <Link href="/profile">
+            <button className="w-10 h-10 rounded-full border border-border overflow-hidden hover:border-primary transition-all">
+              <img src={profile?.avatarUrl || displayAvatar} alt="Profile" className="w-full h-full object-cover" />
+            </button>
+          </Link>
+        </div>
+      </header>
 
-      {/* Connected Accounts Cards */}
+      {/* Mobile Title - Simple and elegant when global header is visible */}
+      <div className="md:hidden px-6 pt-6 pb-2">
+         <h2 className="text-2xl font-black tracking-tighter text-foreground">Visão Geral</h2>
+         <p className="text-xs text-muted-foreground font-medium">Benvindo, {profile?.fullName?.split(' ')[0] || user?.user_metadata?.full_name?.split(' ')[0] || "Comunicação"}</p>
+      </div>
+
+      {/* Connected Accounts Cards - Compact */}
       {hasAccounts && (
-        <section className="container pb-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <section className="container px-4 md:px-6 pb-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {accounts.map((acc, i) => (
               <motion.div
                 key={acc.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
+                transition={{ delay: i * 0.05 }}
                 onClick={() => window.location.href = `/${acc.platform === 'youtube' ? 'youtube' : acc.platform === 'facebook' ? 'facebook' : 'instagram'}`}
                 className={cn(
-                  "cursor-pointer bg-card border rounded-2xl p-6 flex items-center gap-4 group shadow-sm hover:shadow-xl",
-                  acc.platform === "instagram" && "border-pink-500/20 bg-pink-500/5 hover:border-pink-500/40",
-                  acc.platform === "facebook" && "border-blue-500/20 bg-blue-500/5 hover:border-blue-500/40",
-                  acc.platform === "youtube" && "border-red-500/20 bg-red-500/5 hover:border-red-500/40",
-                  "transition-all duration-300"
+                  "cursor-pointer bg-white dark:bg-slate-900 border border-border/40 rounded-2xl p-2.5 flex items-center gap-2.5 group shadow-sm hover:shadow-md transition-all duration-300",
+                  acc.platform === "instagram" && "hover:border-pink-500/30",
+                  acc.platform === "facebook" && "hover:border-blue-500/30",
+                  acc.platform === "youtube" && "hover:border-red-500/30"
                 )}
               >
-                {acc.profilePictureUrl ? (
-                  <img
-                    src={acc.profilePictureUrl}
-                    alt={acc.displayName}
-                    className={cn(
-                      "w-14 h-14 rounded-full object-cover border-2 group-hover:scale-105 transition-transform",
-                      acc.platform === "instagram" && "border-pink-500/40",
-                      acc.platform === "facebook" && "border-blue-500/40",
-                      acc.platform === "youtube" && "border-red-500/40",
-                    )}
-                  />
-                ) : (
-                  <div className={cn(
-                    "w-14 h-14 rounded-full flex items-center justify-center group-hover:scale-105 transition-transform shadow-inner",
-                    acc.platform === "instagram" && "bg-gradient-to-br from-pink-500 to-purple-600",
-                    acc.platform === "facebook" && "bg-blue-600",
-                    acc.platform === "youtube" && "bg-red-600",
-                  )}>
-                    {acc.platform === "instagram" && <Instagram className="w-7 h-7 text-white" />}
-                    {acc.platform === "facebook" && <Facebook className="w-7 h-7 text-white" />}
-                    {acc.platform === "youtube" && <Youtube className="w-7 h-7 text-white" />}
-                  </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    {acc.platform === "instagram" && <Instagram className="w-3.5 h-3.5 text-pink-400" />}
-                    {acc.platform === "facebook" && <Facebook className="w-3.5 h-3.5 text-blue-400" />}
-                    {acc.platform === "youtube" && <Youtube className="w-3.5 h-3.5 text-red-400" />}
-                    <span className={cn(
-                      "text-xs font-bold uppercase tracking-wide",
-                      acc.platform === "instagram" && "text-pink-400",
-                      acc.platform === "facebook" && "text-blue-400",
-                      acc.platform === "youtube" && "text-red-400",
+                <div className="relative shrink-0">
+                  {acc.profilePictureUrl ? (
+                    <img
+                      src={acc.profilePictureUrl}
+                      alt={acc.displayName}
+                      className="w-7 h-7 rounded-full object-cover border border-border"
+                    />
+                  ) : (
+                    <div className={cn(
+                      "w-7 h-7 rounded-full flex items-center justify-center text-white",
+                      acc.platform === "instagram" && "bg-pink-500",
+                      acc.platform === "facebook" && "bg-blue-600",
+                      acc.platform === "youtube" && "bg-red-600",
                     )}>
-                      {acc.platform}
-                    </span>
-                  </div>
-                  <p className="text-foreground font-bold truncate">{acc.displayName}</p>
-                  <p className="text-white/60 text-xs truncate">@{acc.username}</p>
+                      {acc.username?.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <div className="absolute -right-0.5 -bottom-0.5 w-2 h-2 rounded-full bg-emerald-400 border-2 border-white dark:border-slate-900" />
                 </div>
-                <div className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0" title="Conectado" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] font-bold text-foreground truncate">{acc.displayName}</p>
+                  <p className="text-[8px] text-muted-foreground truncate uppercase tracking-tighter font-black">{acc.platform}</p>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -230,7 +186,7 @@ export default function Home() {
       )}
 
       {/* Platform Quick Links */}
-      <section className="container pb-6">
+      <section className="container px-4 md:px-6 pb-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {platformSummary.map((p, i) => (
             <Link key={p.label} href={p.href}>
@@ -238,7 +194,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08, duration: 0.4 }}
-                className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 flex items-center justify-between shadow-xl hover:shadow-2xl hover:-translate-y-1 cursor-pointer transition-all duration-300"
+                className="group relative overflow-hidden rounded-2xl border border-border bg-card p-4 md:p-5 flex items-center justify-between shadow-xl hover:shadow-2xl hover:-translate-y-1 cursor-pointer transition-all duration-300"
               >
                 {/* Subtle background glow */}
                 <div className={cn(
@@ -246,22 +202,22 @@ export default function Home() {
                   p.label === "Instagram" ? "bg-pink-500" : p.label === "Facebook" ? "bg-blue-500" : "bg-red-500"
                 )} />
 
-                <div className="flex items-center gap-4 relative z-10">
+                <div className="flex items-center gap-3 md:gap-4 relative z-10">
                   <div className={cn(
-                    "w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-md border border-white/20 relative z-10",
+                    "w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-md border border-white/20 relative z-10",
                     p.label === "Instagram" ? "bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white" :
                     p.label === "Facebook" ? "bg-gradient-to-br from-[#1877f2] to-[#0a52b3] text-white" :
                     "bg-gradient-to-br from-[#ff0000] to-[#b30000] text-white"
                   )}>
-                    <p.icon className="w-6 h-6" />
+                    <p.icon className="w-5 h-5 md:w-6 md:h-6" />
                   </div>
                   <div>
-                    <p className="font-extrabold text-xl tracking-tight mb-0.5 text-foreground">{p.value}</p>
-                    <p className="text-[10px] font-black text-white/50 uppercase tracking-widest">{p.label}</p>
+                    <p className="font-extrabold text-lg md:text-xl tracking-tight mb-0.5 text-foreground">{p.value}</p>
+                    <p className="text-[10px] font-black text-foreground/50 uppercase tracking-widest">{p.label}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full relative z-10">
-                  <ArrowUpRight className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-1 text-[9px] md:text-[10px] font-black uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1.5 md:px-3 rounded-full relative z-10">
+                  <ArrowUpRight className="w-3 md:w-3.5 h-3 md:h-3.5" />
                   {p.trend}
                 </div>
               </motion.div>
@@ -272,42 +228,41 @@ export default function Home() {
 
 
 
-      {/* Instagram Metrics Bento Grid */}
-      <section className="container py-10">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] flex items-center justify-center shadow-[0_0_15px_rgba(225,48,108,0.3)]">
-            <Instagram className="w-5 h-5 text-foreground" />
-          </div>
-          <h2 className="text-xl font-bold text-foreground tracking-tight">Métricas do Instagram</h2>
+      {/* Metrics Section */}
+      <section className="container py-4">
+        <div className="flex items-center justify-between mb-4 px-2">
+          <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Métricas de Instagram</h2>
+          <span className="text-[10px] font-bold text-primary cursor-pointer hover:underline">Ver Histórico</span>
         </div>
+        
         <motion.div
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+          viewport={{ once: true }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-4"
         >
           {instagramMetrics.map((metric, idx) => {
             const Icon = metric.icon;
-            const cardContent = (
-              <AnimatedCard delay={idx * 0.1} className={`p-6 ${metric.href ? "hover:border-amber-500/50 cursor-pointer" : ""}`}>
-                <div className="flex justify-between items-start mb-6">
-                  <div className="p-3 bg-primary/10 rounded-xl border border-primary/20">
-                    <Icon className="w-5 h-5 text-primary" />
+            return (
+              <motion.div
+                key={idx}
+                variants={slideUp}
+                className="bg-white dark:bg-slate-900 p-5 rounded-[1.5rem] border border-border/40 shadow-sm hover:shadow-xl transition-all duration-500 group cursor-pointer"
+              >
+                <div className="flex justify-between items-start mb-4">
+                  <div className="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-xl group-hover:scale-110 transition-transform">
+                    <Icon className="w-4 h-4 text-primary" />
                   </div>
-                  <span className="flex items-center text-[10px] font-black tracking-wider uppercase text-emerald-600 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
-                    <ArrowUpRight className="w-3 h-3 mr-1" />
+                  <div className="flex items-center gap-1 text-[10px] font-bold text-emerald-500 bg-emerald-500/5 px-2 py-0.5 rounded-full border border-emerald-500/10">
+                    <ArrowUpRight className="w-3 h-3" />
                     {metric.trend}
-                  </span>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-3xl font-black tracking-tighter text-foreground mb-1">{metric.value}</h3>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-white/50">{metric.label}</p>
-                </div>
-              </AnimatedCard>
+                <h3 className="text-2xl font-bold tracking-tight text-foreground">{metric.value}</h3>
+                <p className="text-[11px] font-semibold text-muted-foreground mt-1">{metric.label}</p>
+              </motion.div>
             );
-            if (metric.href) return <Link key={idx} href={metric.href}>{cardContent}</Link>;
-            return <div key={idx}>{cardContent}</div>;
           })}
         </motion.div>
       </section>
@@ -333,7 +288,7 @@ export default function Home() {
           transition={{ duration: 0.7, ease: "easeOut" }}
           className="relative"
         >
-          <div className="absolute inset-0 bg-amber-500/5 blur-[100px] rounded-[3rem] -z-10" />
+          <div className="absolute inset-0 bg-primary/5 blur-[100px] rounded-[3rem] -z-10" />
           <div className="rounded-[2.5rem] border border-border shadow-xl overflow-hidden">
             <div className="h-12 border-b border-border bg-muted flex items-center px-4 gap-2">
               <div className="flex gap-1.5 ml-2">
@@ -341,8 +296,8 @@ export default function Home() {
                 <div className="w-3 h-3 rounded-full bg-amber-500 shadow-inner" />
                 <div className="w-3 h-3 rounded-full bg-emerald-500 shadow-inner" />
               </div>
-              <div className="mx-auto flex items-center text-[10px] uppercase tracking-widest font-black text-white/60 bg-muted border border-border px-3 py-1 rounded-full">
-                <BarChart className="w-3 h-3 mr-1.5 text-amber-500" />
+              <div className="mx-auto flex items-center text-[10px] uppercase tracking-widest font-black text-foreground/60 bg-muted border border-border px-3 py-1 rounded-full">
+                <BarChart className="w-3 h-3 mr-1.5 text-primary" />
                 Performance Engine
               </div>
             </div>
@@ -350,60 +305,31 @@ export default function Home() {
               <img
                 src="https://d2xsxph8kpxj0f.cloudfront.net/310519663439065181/9gdiPYzXKpmkHD9boSKSRi/chart1_performance_cc4535d6.png"
                 alt="Análise de Desempenho"
-                className="w-full h-auto rounded-xl filter invert hue-rotate-180 opacity-80 mix-blend-screen"
+                className="w-full h-auto rounded-xl dark:invert dark:hue-rotate-180 opacity-80 dark:mix-blend-screen transition-all duration-500"
               />
             </div>
           </div>
         </motion.div>
       </section>
 
-      {/* Strategies */}
-      <section className="bg-muted/30 py-20 border-y border-border/40">
-        <div className="container">
-          <div className="max-w-xl mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Estratégias de Crescimento</h2>
-            <p className="text-lg text-white/60">
-              Ações táticas recomendadas para maximizar o alcance das publicações.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {strategies.map((strategy, idx) => (
-              <AnimatedCard key={idx} delay={idx * 0.15} className="p-8 group">
-                <div className="text-4xl font-bold text-primary/10 mb-6 group-hover:text-primary/20 transition-colors">
-                  {strategy.number}
-                </div>
-                <h3 className="text-xl font-semibold mb-3">{strategy.title}</h3>
-                <p className="text-white/60 mb-6 line-clamp-2">{strategy.description}</p>
-                <div className="pt-4 border-t border-border/50">
-                  <span className="inline-flex items-center text-sm font-medium text-primary bg-primary/5 px-2.5 py-1 rounded-md">
-                    <Target className="w-4 h-4 mr-1.5" />
-                    {strategy.highlight}
-                  </span>
-                </div>
-              </AnimatedCard>
-            ))}
-          </div>
+      {/* Strategy Section Slim */}
+      <section className="container py-12">
+        <div className="max-w-2xl mb-8 px-2">
+          <h2 className="text-xl font-bold mb-2 text-foreground">Estratégias Ativas</h2>
+          <p className="text-sm text-muted-foreground">Recomendações táticas para aumentar seu engajamento.</p>
         </div>
-      </section>
-
-
-      {/* Hero (Moved and Reduced) */}
-      <section className="container py-12 border-t border-border/20">
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="flex flex-col items-center text-center max-w-3xl mx-auto"
-        >
-          <motion.h2 variants={slideUp} className="text-2xl md:text-3xl font-black tracking-tight mb-6 text-foreground">
-            Evolução de <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">Performance</span> Digital
-          </motion.h2>
-
-          <motion.p variants={slideUp} className="text-sm text-white/50 mb-8 max-w-xl leading-relaxed font-medium">
-            Sincronize <strong className="text-foreground">redes sociais</strong> com Inteligência Artificial, detectando padrões virais 24/7.
-          </motion.p>
-        </motion.div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {strategies.map((s, idx) => (
+            <div key={idx} className="p-6 rounded-[2rem] border border-border/50 bg-white/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-900 transition-colors shadow-sm group">
+              <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold mb-4 group-hover:scale-110 transition-transform">
+                {s.number}
+              </div>
+              <h3 className="font-bold mb-2 text-foreground">{s.title}</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{s.description}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* CTA */}
@@ -440,9 +366,9 @@ export default function Home() {
       <footer className="border-t border-border bg-transparent py-10 mt-10">
         <div className="container text-center text-white/40 text-[10px] uppercase tracking-widest font-black flex flex-col items-center gap-4">
           <div className="w-8 h-8 rounded-xl bg-muted border border-border flex items-center justify-center">
-            <Activity className="w-4 h-4 text-amber-600" />
+            <Activity className="w-4 h-4 text-primary" />
           </div>
-          <p>© 2026 Comunicação Conventinho · SCJ. Todos os direitos reservados. · <span className="opacity-50 text-white/30">v1.1.0-Fixed</span></p>
+          <p>{branding.footerText} · <span className="opacity-50 text-foreground/30">v1.1.0-Fixed</span></p>
         </div>
       </footer>
     </div>

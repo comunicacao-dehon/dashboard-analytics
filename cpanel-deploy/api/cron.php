@@ -6,12 +6,28 @@
  * Exemplo de comando no cPanel: /usr/local/bin/php /home/user/public_html/api/cron.php > /dev/null 2>&1
  */
 
-require_once dirname(__DIR__, 2) . '/config_analytics.php';
+require_once dirname(__DIR__, 3) . '/config_analytics.php';
 
 // Segurança opcional: verificar secret via GET se rodar via URL
 // if ($_GET['secret'] !== 'seu_cron_secret') { die('Unauthorized'); }
 
 header("Content-Type: application/json");
+
+// Função Auxiliar para cURL
+function fetch_curl($url) {
+    if (!$url) return null;
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'User-Agent: Analytics-Dashboard-Cpanel'
+    ]);
+    $response = curl_exec($ch);
+    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    return ($status === 200) ? $response : null;
+}
 
 try {
     // 1. Buscar contas ativas no Supabase
@@ -52,12 +68,12 @@ try {
             if ($platform === "facebook") {
                 // Seguidores
                 $fb_url = "https://graph.facebook.com/v19.0/$pid?fields=fan_count&access_token=$token";
-                $res = file_get_contents($fb_url);
+                $res = fetch_curl($fb_url);
                 if ($res) $followers = json_decode($res, true)['fan_count'] ?? 0;
 
                 // Insights
                 $ins_url = "https://graph.facebook.com/v19.0/$pid/insights?metric=page_views_total,page_post_engagements,page_impressions&period=day&date_preset=yesterday&access_token=$token";
-                $ins_res = file_get_contents($ins_url);
+                $ins_res = fetch_curl($ins_url);
                 if ($ins_res) {
                     $iData = json_decode($ins_res, true);
                     foreach ($iData['data'] ?? [] as $m) {
@@ -74,12 +90,12 @@ try {
             else if ($platform === "instagram") {
                 // Seguidores
                 $ig_url = "https://graph.facebook.com/v19.0/$pid?fields=followers_count&access_token=$token";
-                $res = file_get_contents($ig_url);
+                $res = fetch_curl($ig_url);
                 if ($res) $followers = json_decode($res, true)['followers_count'] ?? 0;
 
                 // Insights
                 $ins_url = "https://graph.facebook.com/v19.0/$pid/insights?metric=reach,impressions&period=day&date_preset=yesterday&access_token=$token";
-                $ins_res = file_get_contents($ins_url);
+                $ins_res = fetch_curl($ins_url);
                 if ($ins_res) {
                     $iData = json_decode($ins_res, true);
                     foreach ($iData['data'] ?? [] as $m) {
@@ -90,6 +106,16 @@ try {
                             $views = $val;
                         }
                     }
+                }
+            }
+            else if ($platform === "youtube") {
+                // Seguidores (Subscribers)
+                $yt_url = "https://www.googleapis.com/youtube/v3/channels?part=statistics&id=$pid&key=" . GOOGLE_API_KEY;
+                $res = fetch_curl($yt_url);
+                if ($res) {
+                    $yt_data = json_decode($res, true);
+                    $followers = $yt_data['items'][0]['statistics']['subscriberCount'] ?? 0;
+                    $views = $yt_data['items'][0]['statistics']['viewCount'] ?? 0;
                 }
             }
 

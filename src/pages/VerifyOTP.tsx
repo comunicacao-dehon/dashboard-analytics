@@ -72,7 +72,7 @@ export default function VerifyOTP() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-6 relative overflow-hidden font-sans">
       {/* Background Decor */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-amber-500/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none" />
 
       <motion.div 
@@ -90,13 +90,13 @@ export default function VerifyOTP() {
         </button>
 
         <div className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.8)] rounded-[2.5rem] p-10 md:p-14">
-          <div className="w-14 h-14 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center justify-center mb-8">
-            <Mail className="w-7 h-7 text-amber-500" />
+          <div className="w-14 h-14 bg-primary/10 border border-primary/20 rounded-2xl flex items-center justify-center mb-8">
+            <Mail className="w-7 h-7 text-primary" />
           </div>
 
           <h1 className="text-3xl font-bold tracking-tight mb-3 text-white">Verifique seu e-mail</h1>
           <p className="text-muted-foreground leading-relaxed mb-10">
-            Enviamos um código de <span className="text-amber-500 font-bold">6 dígitos</span> para o e-mail <span className="text-white font-bold">{email}</span>. Insira-o abaixo para ativar sua conta.
+            Enviamos um código de <span className="text-primary font-bold">6 dígitos</span> para o e-mail <span className="text-white font-bold">{email}</span>. Insira-o abaixo para ativar sua conta.
           </p>
 
           <form onSubmit={handleVerify} className="space-y-10">
@@ -113,7 +113,7 @@ export default function VerifyOTP() {
                     <InputOTPSlot 
                       key={i} 
                       index={i} 
-                      className="w-12 h-14 sm:w-14 sm:h-16 text-2xl font-black bg-white/[0.04] border-white/[0.1] text-white rounded-xl focus:ring-4 focus:ring-amber-500/10 transition-all"
+                      className="w-12 h-14 sm:w-14 sm:h-16 text-2xl font-black bg-white/[0.04] border-white/[0.1] text-white rounded-xl focus:ring-4 focus:ring-primary/10 transition-all"
                     />
                   ))}
                 </InputOTPGroup>
@@ -123,7 +123,7 @@ export default function VerifyOTP() {
             <Button 
                 type="submit"
                 disabled={loading || otp.length !== 6}
-                className="w-full h-15 rounded-2xl bg-amber-500 hover:bg-amber-600 text-[#050505] text-lg font-black uppercase tracking-widest shadow-xl shadow-amber-500/20 hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98]"
+                className="w-full h-15 rounded-2xl bg-primary hover:bg-red-600 text-white text-lg font-black uppercase tracking-widest shadow-xl shadow-primary/20 hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300 active:scale-[0.98]"
             >
               {loading ? (
                 <>
@@ -149,7 +149,7 @@ export default function VerifyOTP() {
                    if (error) toast.error(error.message);
                    else toast.success("Código enviado novamente!");
                 }}
-                className="text-amber-500 hover:text-amber-400 transition-colors"
+                className="text-primary hover:text-red-400 transition-colors"
               >
                 Reenviar
               </button>

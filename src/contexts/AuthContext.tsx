@@ -22,8 +22,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // 1. Check PHP Session Bridge (Hostgator)
     const checkPhpAuth = async () => {
       try {
-        const response = await fetch('/api/check-auth.php');
+        // Detect current base path (e.g., /analise)
+        const pathSegments = window.location.pathname.split('/');
+        const isAnaliseSubfolder = pathSegments.includes('analise');
+        const apiPath = isAnaliseSubfolder ? '/analise/api/check-auth.php' : '/api/check-auth.php';
+        
+        console.log("AuthBridge: Checking PHP session at", apiPath);
+        const response = await fetch(apiPath, { credentials: 'include' });
         const data = await response.json();
+        
         if (data.authenticated && data.user) {
           console.log("AuthBridge: Logged in via PHP", data.user);
           setUser({
@@ -37,7 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           return true;
         }
       } catch (e) {
-        console.warn("AuthBridge: PHP session not found or error", e);
+        console.warn("AuthBridge: PHP session check failed", e);
       }
       return false;
     };

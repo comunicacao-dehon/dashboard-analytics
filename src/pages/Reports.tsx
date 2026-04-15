@@ -12,6 +12,7 @@ import { useState, useEffect, useRef } from "react";
 import { getConnectedAccounts } from "@/services/socialService";
 import type { SocialAccount } from "@/types/social";
 import { useAuth } from "@/contexts/AuthContext";
+import { useStableUserId } from "@/hooks/useStableUserId";
 import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
@@ -19,6 +20,7 @@ import { toast } from "sonner";
 
 export default function Reports() {
   const { user } = useAuth();
+  const stableUserId = useStableUserId();
   const [accounts, setAccounts] = useState<SocialAccount[]>([]);
   const [loadingAccounts, setLoadingAccounts] = useState(true);
   
@@ -27,16 +29,16 @@ export default function Reports() {
 
   useEffect(() => {
     async function load() {
-      if (!user) {
+      if (!stableUserId) {
         setLoadingAccounts(false);
         return;
       }
-      const result = await getConnectedAccounts(user.id);
+      const result = await getConnectedAccounts(stableUserId);
       setAccounts(result);
       setLoadingAccounts(false);
     }
     load();
-  }, [user]);
+  }, [stableUserId]);
 
   const handleExportPDF = async () => {
     setIsExporting(true);

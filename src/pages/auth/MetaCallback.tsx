@@ -76,11 +76,14 @@ export default function MetaCallback() {
         const redirectUri = import.meta.env.VITE_META_REDIRECT_URI ||
           `${window.location.origin}/auth/callback/meta`;
 
+        // Usar e-mail unificado para garantir que os dados sigam o usuário em qualquer dispositivo
+        const stableUserId = `u-${btoa(user.email.toLowerCase()).replace(/=/g, "")}`;
+
         const { data, error: fnError } = await supabase.functions.invoke("meta-exchange", {
           body: {
             code,
             redirectUri,
-            userId: user.id,
+            userId: stableUserId,
           },
         });
 

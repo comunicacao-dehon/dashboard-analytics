@@ -3,21 +3,23 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useStableUserId } from "@/hooks/useStableUserId";
 import { getConnectedAccounts, connectAccount, disconnectAccount } from "@/services/socialService";
 import type { SocialAccount, SocialPlatform } from "@/types/social";
 
 export function useSocialAccounts() {
   const { user } = useAuth();
+  const stableUserId = useStableUserId();
   const [accounts, setAccounts] = useState<SocialAccount[]>([]);
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
-    if (!user?.id) return;
+    if (!stableUserId) return;
     setLoading(true);
-    const data = await getConnectedAccounts(user.id);
+    const data = await getConnectedAccounts(stableUserId);
     setAccounts(data);
     setLoading(false);
-  }, [user?.id]);
+  }, [stableUserId]);
 
   useEffect(() => {
     refresh();
@@ -32,8 +34,8 @@ export function useSocialAccounts() {
   };
 
   const disconnect = async (platform: SocialPlatform) => {
-    if (!user?.id) return;
-    await disconnectAccount(user.id, platform);
+    if (!stableUserId) return;
+    await disconnectAccount(stableUserId, platform);
     await refresh();
   };
 

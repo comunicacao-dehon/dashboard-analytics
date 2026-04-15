@@ -47,8 +47,15 @@ export interface SocialMetrics {
 export interface InstagramMetrics extends SocialMetrics {
   reelsPlays: number;
   storiesViews: number;
+  storiesImpressions?: number;
   saves: number;
   shares: number;
+  demographics?: {
+    gender: Array<{ name: string; value: number }>;
+    age: Array<{ name: string; value: number }>;
+    cities: Array<{ id: number; name: string; percentage: number }>;
+    countries: Array<{ id: number; name: string; percentage: number }>;
+  };
 }
 
 export interface FacebookMetrics extends SocialMetrics {

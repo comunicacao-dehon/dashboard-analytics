@@ -46,7 +46,7 @@ export function EmptyPlatformState({ platform, icon, description }: Props) {
         transition={{ delay: 0.3 }}
       >
         <Link href="/dashboard">
-          <Button className="rounded-xl h-12 px-8 bg-amber-500 hover:bg-amber-600 text-[#050505] font-black uppercase tracking-widest text-xs">
+          <Button className="rounded-xl h-12 px-8 bg-primary hover:bg-red-600 text-[#FFFFFF] font-black uppercase tracking-widest text-xs">
             <LinkIcon className="w-4 h-4 mr-2" />
             Vincular Conta
           </Button>

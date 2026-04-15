@@ -28,6 +28,7 @@ import { useBranding } from "@/hooks/useBranding";
 const analyticsItems = [
   { label: "Visão Geral", href: "/dashboard", icon: LayoutDashboard },
   { label: "Métricas", href: "/metrics", icon: Activity },
+  { label: "Planejamento", href: "/planning", icon: FileText },
   { label: "Instagram", href: "/instagram", icon: Instagram },
   { label: "Facebook", href: "/facebook", icon: Facebook },
   { label: "YouTube", href: "/youtube", icon: Youtube },
@@ -45,32 +46,10 @@ const accountItems = [
   { label: "Configurações", href: "/settings", icon: Settings },
 ];
 
-const platformStyle: Record<string, { bg: string; glow: string; text: string }> = {
-  "/instagram": {
-    bg: "bg-gradient-to-br from-[#f9ce34] via-[#ee2a7b] to-[#6228d7]",
-    glow: "shadow-[0_0_12px_rgba(225,48,108,0.35)]",
-    text: "text-white",
-  },
-  "/facebook": {
-    bg: "bg-gradient-to-br from-[#1877f2] to-[#0a52b3]",
-    glow: "shadow-[0_0_12px_rgba(24,119,242,0.35)]",
-    text: "text-white",
-  },
-  "/youtube": {
-    bg: "bg-gradient-to-br from-[#ff0000] to-[#b30000]",
-    glow: "shadow-[0_0_12px_rgba(255,0,0,0.3)]",
-    text: "text-white",
-  },
-  "/website": {
-    bg: "bg-gradient-to-br from-[#059669] to-[#047857]",
-    glow: "shadow-[0_0_12px_rgba(16,185,129,0.3)]",
-    text: "text-white",
-  },
-};
+// Removido platformStyle para design mais clean e minimalista conforme solicitado
 
 function NavItem({ item, location, collapsed }: { item: typeof analyticsItems[0]; location: string; collapsed: boolean }) {
   const isActive = item.href === "/" ? location === "/" : location.startsWith(item.href);
-  const style = platformStyle[item.href];
 
   return (
     <Link key={item.href} href={item.href}>
@@ -78,28 +57,20 @@ function NavItem({ item, location, collapsed }: { item: typeof analyticsItems[0]
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         className={cn(
-          "flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300 group relative",
+          "flex items-center gap-3 px-3 py-2 rounded-full cursor-pointer transition-all duration-300 group relative mx-1 my-0.5",
           isActive
-            ? "bg-amber-500/10 text-amber-500 shadow-[0_4px_20px_-5px_rgba(245,158,11,0.3)] ring-1 ring-amber-500/20"
-            : "hover:bg-sidebar-accent text-white/40 hover:text-white"
+            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+            : "hover:bg-slate-100 dark:hover:bg-slate-800/80 text-sidebar-foreground/70 hover:text-foreground"
         )}
       >
-        {style && !isActive ? (
-          <div className={cn(
-            "w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300",
-            style.bg, style.text,
-            "group-hover:ring-2 group-hover:ring-white/20 group-hover:scale-110"
-          )}>
-            <item.icon className="w-3.5 h-3.5" />
-          </div>
-        ) : (
-          <item.icon
-            className={cn(
-              "w-5 h-5 shrink-0 transition-colors drop-shadow-sm",
-              isActive ? "text-amber-500" : "group-hover:text-amber-500/70"
-            )}
-          />
-        )}
+        <div className={cn(
+          "w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300",
+          isActive 
+            ? "bg-white/20 text-white" 
+            : "bg-slate-100 dark:bg-slate-800 text-primary group-hover:bg-primary/10"
+        )}>
+          {item.icon && <item.icon className="w-4 h-4 transition-transform group-hover:rotate-3" />}
+        </div>
         <AnimatePresence>
           {!collapsed && (
             <motion.span
@@ -147,7 +118,7 @@ export function Sidebar() {
       <div className="flex items-center gap-3 px-4 h-16 border-b border-sidebar-border shrink-0">
         <motion.div
           animate={{ rotate: collapsed ? 0 : 0 }}
-          className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center overflow-hidden shrink-0 shadow-[0_0_15px_rgba(245,158,11,0.2)]"
+          className="w-8 h-8 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center overflow-hidden shrink-0 shadow-[0_0_15px_rgba(var(--primary-rgb),0.2)]"
         >
           <img src={branding.sidebarLogo} alt="Logo" loading="lazy" className="w-5 h-5 object-contain" />
         </motion.div>
@@ -182,7 +153,7 @@ export function Sidebar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-[9px] font-black text-white/30 uppercase tracking-[0.2em] px-3 mb-1"
+              className="text-[9px] font-black text-sidebar-foreground/30 uppercase tracking-[0.2em] px-3 mb-1"
             >
               Conta
             </motion.p>
@@ -204,7 +175,7 @@ export function Sidebar() {
             setLocation("/login");
           }}
           className={cn(
-            "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300 group text-white/50 hover:bg-red-500/10 hover:text-red-400 active:scale-95",
+            "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300 group text-sidebar-foreground/50 hover:bg-red-500/10 hover:text-red-400 active:scale-95",
             collapsed && "justify-center"
           )}
         >
@@ -223,7 +194,7 @@ export function Sidebar() {
       {/* Collapse Toggle */}
       <button
         onClick={() => setCollapsed((c) => !c)}
-        className="flex items-center justify-center m-3 p-2 rounded-xl hover:bg-sidebar-accent transition-colors text-white/40 hover:text-white border-t border-sidebar-border"
+        className="flex items-center justify-center m-3 p-2 rounded-xl hover:bg-sidebar-accent transition-colors text-sidebar-foreground/70 hover:text-sidebar-foreground border-t border-sidebar-border"
       >
         {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
       </button>

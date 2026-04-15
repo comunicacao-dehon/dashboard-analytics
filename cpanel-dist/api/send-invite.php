@@ -5,7 +5,7 @@
  * Substitui o endpoint Vercel /api/send-invite
  */
 
-require_once dirname(__DIR__, 2) . '/config_analytics.php';
+require_once dirname(__DIR__, 3) . '/config_analytics.php';
 
 header("Access-Control-Allow-Origin: " . ALLOWED_ORIGIN);
 header("Access-Control-Allow-Methods: POST, OPTIONS");

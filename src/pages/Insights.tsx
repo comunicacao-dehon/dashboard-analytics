@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils";
 const typeConfig = {
   growth: { icon: TrendingUp, color: "text-emerald-500", text: "text-emerald-500", bg: "bg-emerald-500/10", border: "border-emerald-500/20" },
   drop: { icon: TrendingDown, color: "text-rose-500", text: "text-rose-500", bg: "bg-rose-500/10", border: "border-rose-500/20" },
-  viral: { icon: Zap, color: "text-amber-500", text: "text-amber-500", bg: "bg-amber-500/10", border: "border-amber-500/20" },
+  viral: { icon: Zap, color: "text-primary", text: "text-primary", bg: "bg-primary/10", border: "border-primary/20" },
   suggestion: { icon: Lightbulb, color: "text-blue-500", text: "text-blue-500", bg: "bg-blue-500/10", border: "border-blue-500/20" },
 };
 
@@ -178,7 +178,7 @@ export default function Insights() {
                            <div className="p-4 rounded-xl bg-muted/30 border border-border/50">
                               <div className="flex items-center gap-2 mb-2">
                                  <CheckCircle2 className="w-4 h-4 text-primary" />
-                                 <span className="text-xs font-black uppercase tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-primary to-amber-500">
+                                 <span className="text-xs font-black uppercase tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-primary to-rose-500">
                                     O que fazer agora?
                                  </span>
                               </div>

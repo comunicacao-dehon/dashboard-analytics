@@ -23,9 +23,9 @@ export function EmptyDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-transparent selection:bg-amber-500/20 font-['Outfit'] pb-20">
+    <div className="min-h-screen bg-transparent selection:bg-primary/20 font-['Outfit'] pb-20">
       {/* Background Glow */}
-      <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-br from-amber-500/5 via-transparent to-transparent opacity-50 pointer-events-none -z-10 blur-3xl" />
+      <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-50 pointer-events-none -z-10 blur-3xl" />
 
       <main className="container pt-12 md:pt-24 flex flex-col items-center justify-center min-h-[80vh] text-center">
         
@@ -33,10 +33,10 @@ export function EmptyDashboard() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="w-20 h-20 rounded-2xl bg-white/[0.05] border border-white/10 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(245,158,11,0.15)] relative"
+          className="w-20 h-20 rounded-2xl bg-white/[0.05] border border-white/10 flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(var(--primary-rgb),0.15)] relative"
         >
-          <div className="absolute inset-0 bg-amber-500/20 blur-xl rounded-full" />
-          <Activity className="w-8 h-8 text-amber-500 relative z-10" />
+          <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
+          <Activity className="w-8 h-8 text-primary relative z-10" />
         </motion.div>
 
         <motion.h1 

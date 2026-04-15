@@ -31,7 +31,7 @@ const RoleSelect = ({ value, onChange, disabled }: { value: Role, onChange: (r: 
       onChange={(e) => onChange(e.target.value as Role)}
       disabled={disabled}
       className={cn(
-        "bg-muted border border-border text-foreground text-[10px] font-black uppercase tracking-widest rounded-xl focus:ring-amber-500/50 focus:border-amber-500 block w-full p-2.5 outline-none transition-all cursor-pointer",
+        "bg-muted border border-border text-foreground text-[10px] font-black uppercase tracking-widest rounded-xl focus:ring-primary/50 focus:border-primary block w-full p-2.5 outline-none transition-all cursor-pointer",
         disabled && "opacity-50 cursor-not-allowed"
       )}
     >
@@ -173,7 +173,7 @@ export default function Teams() {
 
   const roleColors = {
     admin: "bg-red-500/10 text-red-500 ring-red-500/20",
-    editor: "bg-amber-500/10 text-amber-500 ring-amber-500/20",
+    editor: "bg-primary/10 text-primary ring-primary/20",
     viewer: "bg-blue-500/10 text-blue-500 ring-blue-500/20",
   };
 
@@ -192,7 +192,7 @@ export default function Teams() {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row shadow-[0_4px_20px_-10px_rgba(0,0,0,0.5)] bg-muted backdrop-blur-[40px] border border-border rounded-[2rem] p-6 items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-[0_0_15px_rgba(239,68,68,0.2)]">
               <Users className="w-5 h-5" />
             </div>
             <div>
@@ -214,7 +214,7 @@ export default function Teams() {
              {isAdmin && (
                 <Button 
                    size="sm"
-                   className="h-12 px-6 rounded-xl font-black uppercase tracking-widest bg-emerald-500 hover:bg-emerald-600 text-[#050505] shadow-[0_0_20px_rgba(16,185,129,0.2)]"
+                   className="h-12 px-6 rounded-xl font-black uppercase tracking-widest bg-primary hover:bg-red-600 text-[#FFFFFF] shadow-[0_0_20px_rgba(239,68,68,0.2)]"
                    onClick={() => setIsInviteModalOpen(true)}
                  >
                    <UserPlus className="w-4 h-4 mr-2" />
@@ -242,7 +242,7 @@ export default function Teams() {
                       return (
                          <AnimatedCard key={member.id} className="p-5 border-border flex flex-col md:flex-row md:items-center justify-between gap-4">
                             <div className="flex items-center gap-4">
-                               <div className="w-10 h-10 rounded-[1rem] bg-gradient-to-br from-amber-500/20 to-amber-500/5 flex items-center justify-center border border-amber-500/10 shrink-0 text-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.1)]">
+                               <div className="w-10 h-10 rounded-[1rem] bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border border-primary/10 shrink-0 text-primary shadow-[0_0_15px_rgba(239,68,68,0.1)]">
                                   <span className="text-xs font-black uppercase tracking-widest">
                                      {member.profiles?.name?.charAt(0) || member.profiles?.email?.charAt(0) || "U"}
                                   </span>
@@ -254,7 +254,7 @@ export default function Teams() {
                                      </span>
                                      {isOwner && (
                                         <span title="Dono da Equipe">
-                                           <Shield className="w-3.5 h-3.5 text-amber-500" />
+                                           <Shield className="w-3.5 h-3.5 text-primary" />
                                         </span>
                                      )}
                                   </div>
@@ -315,7 +315,7 @@ export default function Teams() {
                                   <div className="truncate">
                                      <p className="text-sm font-bold text-foreground truncate max-w-[150px]">{inv.email}</p>
                                      <p className="text-[10px] text-foreground/40 uppercase tracking-widest font-black mt-1">
-                                        Como: <span className="text-amber-500">{roleLabels[inv.role as keyof typeof roleLabels]}</span>
+                                        Como: <span className="text-primary">{roleLabels[inv.role as keyof typeof roleLabels]}</span>
                                      </p>
                                   </div>
                                </div>
@@ -359,8 +359,8 @@ export default function Teams() {
                   >
                      <div className="p-6 border-b border-border flex justify-between items-center bg-card">
                         <div className="flex items-center gap-3">
-                           <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-                              <UserPlus className="w-4 h-4 text-amber-500" />
+                           <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20 shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                              <UserPlus className="w-4 h-4 text-primary" />
                            </div>
                            <h2 className="text-lg font-bold text-foreground tracking-tight">Convidar Membro</h2>
                         </div>
@@ -379,7 +379,7 @@ export default function Teams() {
                               value={inviteEmail}
                               onChange={(e) => setInviteEmail(e.target.value)}
                               required
-                              className="h-12 rounded-xl bg-muted border-white/10 text-foreground placeholder:text-foreground/30 focus:border-amber-500 focus:ring-amber-500/20"
+                              className="h-12 rounded-xl bg-muted border-white/10 text-foreground placeholder:text-foreground/30 focus:border-primary focus:ring-primary/20"
                            />
                         </div>
 
@@ -397,15 +397,15 @@ export default function Teams() {
                                     className={cn(
                                        "p-4 rounded-[1.25rem] border cursor-pointer transition-all duration-300 flex items-start gap-4",
                                        inviteRole === role.id 
-                                          ? "bg-amber-500/10 border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.15)]"
+                                          ? "bg-primary/10 border-primary/40 shadow-[0_0_15px_rgba(239,68,68,0.15)]"
                                           : "bg-card border-border hover:bg-muted hover:border-white/[0.15]"
                                     )}
                                  >
                                     <div className={cn(
                                        "w-5 h-5 rounded-full mt-0.5 border-2 flex items-center justify-center shrink-0 transition-colors duration-300",
-                                       inviteRole === role.id ? "border-amber-500 bg-amber-500/20" : "border-white/20"
+                                       inviteRole === role.id ? "border-primary bg-primary/20" : "border-white/20"
                                     )}>
-                                       {inviteRole === role.id && <div className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />}
+                                       {inviteRole === role.id && <div className="w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_8px_rgba(239,68,68,0.8)]" />}
                                     </div>
                                     <div>
                                        <p className={cn("text-sm font-bold tracking-tight", inviteRole === role.id ? "text-foreground" : "text-foreground/70")}>
@@ -422,7 +422,7 @@ export default function Teams() {
                            <Button type="button" variant="outline" className="flex-1 rounded-xl h-12 border-white/20 bg-transparent hover:bg-white/5 text-foreground font-bold" onClick={() => setIsInviteModalOpen(false)}>
                               Cancelar
                            </Button>
-                           <Button type="submit" className="flex-1 rounded-xl h-12 bg-amber-500 hover:bg-amber-600 text-[#050505] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(245,158,11,0.2)]" disabled={isInviting || !inviteEmail}>
+                           <Button type="submit" className="flex-1 rounded-xl h-12 bg-primary hover:bg-red-600 text-[#FFFFFF] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(239,68,68,0.2)]" disabled={isInviting || !inviteEmail}>
                               {isInviting ? (
                                  <Loader2 className="w-5 h-5 animate-spin" />
                               ) : "Enviar Convite"}

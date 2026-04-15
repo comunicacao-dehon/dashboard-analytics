@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 type Theme = "light" | "dark";
 
 export type ColorPalette =
+  | "red"
   | "amber"
   | "blue"
   | "violet"
@@ -25,31 +26,42 @@ interface ThemeProviderProps {
   switchable?: boolean;
 }
 
-const paletteVars: Record<ColorPalette, { primary: string; ring: string; sidebarPrimary: string }> = {
+const paletteVars: Record<ColorPalette, { primary: string; ring: string; sidebarPrimary: string; foreground: string }> = {
+  red: {
+    primary: "#EF4444",
+    ring: "#EF4444",
+    sidebarPrimary: "#EF4444",
+    foreground: "#FFFFFF",
+  },
   amber: {
     primary: "#f59e0b",
     ring: "#f59e0b",
     sidebarPrimary: "#f59e0b",
+    foreground: "#FFFFFF",
   },
   blue: {
     primary: "#3b82f6",
     ring: "#3b82f6",
     sidebarPrimary: "#3b82f6",
+    foreground: "#FFFFFF",
   },
   violet: {
     primary: "#8b5cf6",
     ring: "#8b5cf6",
     sidebarPrimary: "#8b5cf6",
+    foreground: "#FFFFFF",
   },
   emerald: {
     primary: "#10b981",
     ring: "#10b981",
     sidebarPrimary: "#10b981",
+    foreground: "#FFFFFF",
   },
   cyan: {
     primary: "#06b6d4",
     ring: "#06b6d4",
     sidebarPrimary: "#06b6d4",
+    foreground: "#FFFFFF",
   },
 };
 
@@ -59,9 +71,8 @@ function applyPaletteToDOM(palette: ColorPalette) {
   root.style.setProperty("--primary", vars.primary);
   root.style.setProperty("--ring", vars.ring);
   root.style.setProperty("--sidebar-primary", vars.sidebarPrimary);
-  // Also update primary-foreground consistently
-  root.style.setProperty("--primary-foreground", "#050505");
-  root.style.setProperty("--sidebar-primary-foreground", "#050505");
+  root.style.setProperty("--primary-foreground", vars.foreground);
+  root.style.setProperty("--sidebar-primary-foreground", vars.foreground);
 }
 
 export function ThemeProvider({
@@ -82,7 +93,7 @@ export function ThemeProvider({
       const stored = localStorage.getItem("color-palette");
       if (stored && stored in paletteVars) return stored as ColorPalette;
     } catch {}
-    return "amber";
+    return "red";
   });
 
   // Apply theme class to <html>

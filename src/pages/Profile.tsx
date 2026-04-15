@@ -21,7 +21,14 @@ import {
   Loader2,
   Save,
   X,
-  ArrowRight
+  ArrowRight,
+  CheckCircle2,
+  Link as LinkIcon, 
+  Instagram, 
+  Facebook, 
+  Youtube, 
+  Globe,
+  Activity
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
@@ -32,11 +39,14 @@ import { useTheme, type ColorPalette } from "@/contexts/ThemeContext";
 import { cn } from "@/lib/utils";
 import { BRANDING_CONFIG } from "@/config/branding";
 import { useBranding } from "@/hooks/useBranding";
+import { useBrandingContext } from "@/contexts/BrandingContext";
+import { brandingService } from "@/services/brandingService";
 
 import { startOAuth } from "@/lib/oauth";
-import { Link as LinkIcon, Instagram, Facebook, Youtube, Globe } from "lucide-react";
-import { getConnectedAccounts } from "@/services/socialService";
-import type { SocialAccount } from "@/types/social";
+import { getConnectedAccounts, disconnectAccount } from "@/services/socialService";
+import type { SocialAccount, SocialPlatform } from "@/types/social";
+import { useStableUserId } from "@/hooks/useStableUserId";
+import { profileService, type UserProfile } from "@/services/profileService";
 
 type Tab = 'minha-conta' | 'senha' | 'empresa' | 'preferencias' | 'conexoes';
 
@@ -45,6 +55,7 @@ export default function Profile() {
   const { theme, palette, toggleTheme, setPalette } = useTheme();
   const [location, setLocation] = useLocation();
   const branding = useBranding();
+  const stableUserId = useStableUserId();
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -89,7 +100,20 @@ export default function Profile() {
   const [bio, setBio] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
   
+  // Branding fields (Dynamic)
+  const { branding: currentBranding, refreshBranding } = useBrandingContext();
+  const [companyName, setCompanyName] = useState("");
+  const [motto, setMotto] = useState("");
+  const [welcomeMessage, setWelcomeMessage] = useState("");
+  const [footerText, setFooterText] = useState("");
+  const [primaryColor, setPrimaryColor] = useState("#8B0000");
+  const [logoUrl, setLogoUrl] = useState("");
+  const [sidebarLogoUrl, setSidebarLogoUrl] = useState("");
+  const [savingBranding, setSavingBranding] = useState(false);
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const logoInputRef = useRef<HTMLInputElement>(null);
+  const sidebarLogoInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchProfile();
@@ -97,23 +121,66 @@ export default function Profile() {
 
   const fetchProfile = async () => {
     try {
-      const { data: { user }, error } = await supabase.auth.getUser();
-      if (error) throw error;
-      
-      if (user) {
-        setUser(user);
-        setEmail(user.email || "");
-        
-        const userAccounts = await getConnectedAccounts(user.id);
+      const { data: { user: supabaseUser } } = await supabase.auth.getUser();
+      const resolvedUser = supabaseUser || authUser;
+
+      if (resolvedUser && stableUserId) {
+        setUser(resolvedUser);
+        setEmail(resolvedUser.email || "");
+
+        // 1. Busca perfil unificado no banco de dados primeiro
+        const unifiedProfile = await profileService.getProfile(stableUserId);
+
+        // 2. Busca contas vinculadas
+        const userAccounts = await getConnectedAccounts(stableUserId);
         setAccounts(userAccounts);
         const primaryAccount = userAccounts[0];
 
-        setFullName(user.user_metadata?.full_name || primaryAccount?.displayName || "");
-        setPhone(user.user_metadata?.phone || "");
-        setRole(user.user_metadata?.role || "");
-        setLocationName(user.user_metadata?.location || "");
-        setBio(user.user_metadata?.bio || "");
-        setAvatarUrl(user.user_metadata?.avatar_url || primaryAccount?.profilePictureUrl || "");
+        if (unifiedProfile) {
+          // Se já existe no banco central, usa apenas ele
+          setFullName(unifiedProfile.fullName);
+          setPhone(unifiedProfile.phone || "");
+          setRole(unifiedProfile.role || "");
+          setLocationName(unifiedProfile.location || "");
+          setBio(unifiedProfile.bio || "");
+          setAvatarUrl(unifiedProfile.avatarUrl || "");
+        } else {
+          // Fallback para dados da sessão (primeira vez)
+          const fallbackName = resolvedUser.user_metadata?.full_name || resolvedUser.name || primaryAccount?.displayName || "";
+          const fallbackAvatar = resolvedUser.user_metadata?.avatar_url || primaryAccount?.profilePictureUrl || "";
+          
+          setFullName(fallbackName);
+          setPhone(resolvedUser.user_metadata?.phone || "");
+          setRole(resolvedUser.user_metadata?.role || "");
+          setLocationName(resolvedUser.user_metadata?.location || "");
+          setBio(resolvedUser.user_metadata?.bio || "");
+          setAvatarUrl(fallbackAvatar);
+
+          // Opcionalmente: Já cria a linha no banco para o futuro
+          if (fallbackName) {
+            await profileService.upsertProfile({
+              userId: stableUserId,
+              fullName: fallbackName,
+              email: resolvedUser.email || "",
+              avatarUrl: fallbackAvatar,
+              phone: resolvedUser.user_metadata?.phone,
+              role: resolvedUser.user_metadata?.role,
+              location: resolvedUser.user_metadata?.location,
+              bio: resolvedUser.user_metadata?.bio
+            });
+          }
+        }
+
+        // CARREGA BRANDING
+        if (currentBranding) {
+          setCompanyName(currentBranding.name || "");
+          setMotto(currentBranding.motto || "");
+          setWelcomeMessage(currentBranding.welcomeMessage || "");
+          setFooterText(currentBranding.footerText || "");
+          setPrimaryColor(currentBranding.primaryColor || "#8B0000");
+          setLogoUrl(currentBranding.logo || "");
+          setSidebarLogoUrl(currentBranding.sidebarLogo || "");
+        }
       }
     } catch (error: any) {
       toast.error("Erro ao carregar perfil");
@@ -122,11 +189,89 @@ export default function Profile() {
     }
   };
 
+  const handleSaveBranding = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!stableUserId) return;
+    
+    setSavingBranding(true);
+    try {
+      const { success, error } = await brandingService.upsertBranding({
+        id: stableUserId,
+        name: companyName,
+        motto,
+        welcomeMessage,
+        footerText,
+        primaryColor,
+        logo: logoUrl,
+        sidebarLogo: sidebarLogoUrl
+      });
+
+      if (success) {
+        toast.success("Identidade da empresa atualizada!");
+        await refreshBranding();
+      } else {
+        throw new Error(error);
+      }
+    } catch (error: any) {
+      toast.error("Erro ao salvar marca: " + error.message);
+    } finally {
+      setSavingBranding(false);
+    }
+  };
+
+  const handleBrandingAssetUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'logo' | 'sidebar') => {
+    try {
+      setUploading(true);
+      if (!e.target.files || e.target.files.length === 0 || !stableUserId) return;
+      
+      const file = e.target.files[0];
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${type}_${Math.random()}.${fileExt}`;
+      const filePath = `${stableUserId}/branding/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars') // Reusando o bucket de avatars por enquanto
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      if (type === 'logo') setLogoUrl(publicUrl);
+      else setSidebarLogoUrl(publicUrl);
+      
+      toast.success(`${type === 'logo' ? 'Logo' : 'Ícone'} carregado! Clique em salvar para aplicar.`);
+    } catch (error: any) {
+      toast.error("Erro no upload: " + error.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDisconnect = async (platform: SocialPlatform) => {
+    try {
+      if (!confirm(`Tem certeza que deseja desvincular sua conta do ${platform}?`)) return;
+      
+      const res = await disconnectAccount(stableUserId!, platform);
+      if (res.success) {
+        toast.success("Conta desvinculada com sucesso!");
+        fetchProfile();
+      } else {
+        throw new Error(res.error);
+      }
+    } catch (error: any) {
+      toast.error("Erro ao desvincular: " + error.message);
+    }
+  };
+
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     setUpdating(true);
     try {
-      const { error } = await supabase.auth.updateUser({
+      // 1. Atualiza metadados do Supabase (para manter compatibilidade local)
+      await supabase.auth.updateUser({
         data: {
           full_name: fullName,
           phone: phone,
@@ -136,8 +281,22 @@ export default function Profile() {
           avatar_url: avatarUrl
         }
       });
-      if (error) throw error;
-      toast.success("Perfil atualizado com sucesso!");
+
+      // 2. Atualiza banco de dados centralizado (para sincronizar entre dispositivos)
+      if (stableUserId) {
+        await profileService.upsertProfile({
+          userId: stableUserId,
+          fullName,
+          email,
+          phone,
+          role,
+          location: locationName,
+          bio,
+          avatarUrl
+        });
+      }
+
+      toast.success("Perfil atualizado em todos os seus dispositivos!");
     } catch (error: any) {
       toast.error(error.message || "Erro ao atualizar perfil");
     } finally {
@@ -167,11 +326,25 @@ export default function Profile() {
 
       setAvatarUrl(publicUrl);
       
+      // Atualiza ambos os locais
       await supabase.auth.updateUser({
         data: { avatar_url: publicUrl }
       });
 
-      toast.success("Foto de perfil atualizada!");
+      if (stableUserId) {
+        await profileService.upsertProfile({
+          userId: stableUserId,
+          fullName,
+          email,
+          avatarUrl: publicUrl,
+          phone,
+          role,
+          location: locationName,
+          bio
+        });
+      }
+
+      toast.success("Foto de perfil atualizada em todos os dispositivos!");
     } catch (error: any) {
       toast.error("Erro no upload: " + (error.message || "Tente novamente"));
     } finally {
@@ -277,7 +450,7 @@ export default function Profile() {
                           <div className="flex items-center gap-6">
                             <div className="relative group">
                               <div className={cn(
-                                "w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-md flex items-center justify-center relative z-10 shadow-2xl transition-all",
+                                "w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border border-border bg-muted flex items-center justify-center relative z-10 shadow-2xl transition-all",
                                 uploading && "opacity-50"
                               )}>
                                 {avatarUrl ? (
@@ -323,9 +496,25 @@ export default function Profile() {
                             <div className="space-y-3">
                                 <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">E-mail</Label>
                                 <div className="relative">
-                                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
-                                  <Input value={email} disabled className="h-12 pl-12 rounded-lg bg-card border-white/[0.04] opacity-50 cursor-not-allowed font-medium text-muted-foreground" />
+                                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/20" />
+                                  <Input value={email} disabled className="h-12 pl-12 rounded-lg bg-muted/50 border-border opacity-50 cursor-not-allowed font-medium text-muted-foreground" />
                                 </div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              <div className="space-y-3">
+                                  <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Telefone / WhatsApp</Label>
+                                  <div className="relative group">
+                                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/30 group-focus-within:text-primary transition-colors" />
+                                    <Input value={phone} onChange={(e) => setPhone(e.target.value)} className="h-12 pl-12 rounded-lg bg-muted border-border text-foreground focus:border-primary focus:ring-primary/20 font-medium" placeholder="+55 (00) 00000-0000" />
+                                  </div>
+                              </div>
+                              <div className="space-y-3">
+                                  <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Cargo / Função</Label>
+                                  <div className="relative group">
+                                    <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/30 group-focus-within:text-primary transition-colors" />
+                                    <Input value={role} onChange={(e) => setRole(e.target.value)} className="h-12 pl-12 rounded-lg bg-muted border-border text-foreground focus:border-primary focus:ring-primary/20 font-medium" placeholder="Ex: Gestor de Redes" />
+                                  </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -365,7 +554,7 @@ export default function Profile() {
                               )}
                             >
                               <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-md bg-white/5 flex items-center justify-center overflow-hidden border border-white/10">
+                                <div className="w-8 h-8 rounded-md bg-muted flex items-center justify-center overflow-hidden border border-border">
                                   <img src={brand.sidebarLogo} alt="L" className="w-4 h-4 object-contain" />
                                 </div>
                                 <div className="text-left">
@@ -411,52 +600,93 @@ export default function Profile() {
                    </AnimatedCard>
                  )}
 
-                 {/* Empresa Tab */}
+                 {/* Empresa Tab (BRANDING EDITOR) */}
                  {activeTab === 'empresa' && (
                     <AnimatedCard className="border-border bg-card shadow-xl overflow-hidden rounded-2xl">
-                      <div className="p-8 md:p-10 border-b border-border">
-                        <h2 className="text-2xl font-black tracking-tight text-foreground mb-1">Perfil da Empresa</h2>
-                        <p className="text-xs text-foreground/40 font-medium">Informações profissionais e de atuação no sistema</p>
+                      <div className="p-8 md:p-10 border-b border-border bg-primary/5">
+                        <h2 className="text-2xl font-black tracking-tight text-foreground mb-1">Identidade da Empresa</h2>
+                        <p className="text-xs text-muted-foreground font-medium">Personalize como o sistema aparece para seus clientes e equipe</p>
                       </div>
 
-                      <form onSubmit={handleUpdate}>
-                        <div className="p-8 md:p-10 space-y-6">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <form onSubmit={handleSaveBranding}>
+                        <div className="p-8 md:p-10 space-y-10">
+                          
+                          {/* Brand Assets */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {/* Large Logo */}
+                            <div className="space-y-4">
+                               <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Logo Principal (Login)</Label>
+                               <div className="h-32 rounded-2xl border border-dashed border-border flex flex-col items-center justify-center gap-3 bg-muted/30 group relative transition-all hover:bg-muted">
+                                 {logoUrl ? (
+                                   <img src={logoUrl} alt="Logo" className="max-h-16 object-contain" />
+                                 ) : (
+                                   <div className="text-center p-4">
+                                     <Camera className="w-6 h-6 text-muted-foreground/30 mx-auto mb-2" />
+                                     <p className="text-[10px] text-muted-foreground font-bold">CARREGAR LOGO</p>
+                                   </div>
+                                 )}
+                                 <button type="button" onClick={() => logoInputRef.current?.click()} className="absolute inset-0 w-full h-full cursor-pointer" />
+                                 <input type="file" ref={logoInputRef} className="hidden" accept="image/*" onChange={(e) => handleBrandingAssetUpload(e, 'logo')} />
+                               </div>
+                               <p className="text-[10px] text-muted-foreground leading-relaxed italic">* Recomendado: PNG transparente, 400x120px</p>
+                            </div>
+
+                            {/* Sidebar Logo / Icon */}
+                            <div className="space-y-4">
+                               <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Ícone da Sidebar</Label>
+                               <div className="h-32 rounded-2xl border border-dashed border-border flex flex-col items-center justify-center gap-3 bg-muted/30 group relative transition-all hover:bg-muted">
+                                 <div className="w-12 h-12 rounded-xl bg-card border border-border flex items-center justify-center overflow-hidden">
+                                    {sidebarLogoUrl ? (
+                                      <img src={sidebarLogoUrl} alt="Icon" className="w-8 h-8 object-contain" />
+                                    ) : (
+                                      <Activity className="w-6 h-6 text-primary" />
+                                    )}
+                                 </div>
+                                 <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Alterar Ícone</p>
+                                 <button type="button" onClick={() => sidebarLogoInputRef.current?.click()} className="absolute inset-0 w-full h-full cursor-pointer" />
+                                 <input type="file" ref={sidebarLogoInputRef} className="hidden" accept="image/*" onChange={(e) => handleBrandingAssetUpload(e, 'sidebar')} />
+                               </div>
+                               <p className="text-[10px] text-muted-foreground leading-relaxed italic">* Recomendado: Proporção 1:1 (Quadrado)</p>
+                            </div>
+                          </div>
+
+                          <div className="space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                               <div className="space-y-3">
+                                   <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Nome da Marca</Label>
+                                   <Input value={companyName} onChange={(e) => setCompanyName(e.target.value)} className="h-12 px-4 rounded-lg bg-muted border-border text-foreground focus:border-primary font-bold" placeholder="Ex: Comunicação Conventinho" />
+                               </div>
+                               <div className="space-y-3">
+                                   <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Cor Primária do Sistema</Label>
+                                   <div className="flex gap-3">
+                                     <div className="w-12 h-12 rounded-lg border border-border shrink-0" style={{ backgroundColor: primaryColor }} />
+                                     <Input value={primaryColor} onChange={(e) => setPrimaryColor(e.target.value)} className="h-12 px-4 rounded-lg bg-muted border-border text-foreground focus:border-primary font-mono" placeholder="#HEXCOLOR" />
+                                   </div>
+                               </div>
+                            </div>
+                            
                             <div className="space-y-3">
-                                <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest ml-1">Telefone / WhatsApp</Label>
-                                <div className="relative group">
-                                  <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/20 group-focus-within:text-amber-500 transition-colors" />
-                                  <Input value={phone} onChange={(e) => setPhone(e.target.value)} className="h-12 pl-12 rounded-lg bg-white/[0.04] border-white/10 text-foreground focus:border-amber-500 focus:ring-amber-500/20 font-medium" placeholder="+55 (00) 00000-0000" />
-                                </div>
+                               <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Slogan / Frase de Impacto (Motto)</Label>
+                               <Input value={motto} onChange={(e) => setMotto(e.target.value)} className="h-12 px-4 rounded-lg bg-muted border-border text-foreground focus:border-primary" placeholder="Ex: Tudo por Ele, tudo com Ele..." />
                             </div>
-                            <div className="space-y-3">
-                                <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest ml-1">Cargo / Função</Label>
-                                <div className="relative group">
-                                  <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/20 group-focus-within:text-amber-500 transition-colors" />
-                                  <Input value={role} onChange={(e) => setRole(e.target.value)} className="h-12 pl-12 rounded-lg bg-white/[0.04] border-white/10 text-foreground focus:border-amber-500 focus:ring-amber-500/20 font-medium" placeholder="Ex: Gestor de Redes" />
-                                </div>
-                            </div>
-                            <div className="space-y-3 md:col-span-2">
-                                <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest ml-1">Localização</Label>
-                                <div className="relative group">
-                                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/20 group-focus-within:text-amber-500 transition-colors" />
-                                  <Input value={locationName} onChange={(e) => setLocationName(e.target.value)} className="h-12 pl-12 rounded-lg bg-white/[0.04] border-white/10 text-foreground focus:border-amber-500 focus:ring-amber-500/20 font-medium" placeholder="Ex: São Paulo, SP" />
-                                </div>
-                            </div>
-                            <div className="space-y-3 md:col-span-2">
-                                <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest ml-1">Biografia</Label>
-                                <div className="relative group">
-                                  <Info className="absolute left-4 top-5 w-4 h-4 text-foreground/20 group-focus-within:text-amber-500 transition-colors" />
-                                  <textarea value={bio} onChange={(e) => setBio(e.target.value)} rows={4} className="w-full pl-12 pr-4 py-4 rounded-lg bg-white/[0.04] border border-white/10 text-foreground placeholder:text-foreground/30 focus:border-amber-500 focus:ring-amber-500/20 font-medium resize-none outline-none" placeholder="Conte um pouco sobre a atuação..." />
-                                </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                               <div className="space-y-3">
+                                   <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Boas-vindas (Botão Login)</Label>
+                                   <Input value={welcomeMessage} onChange={(e) => setWelcomeMessage(e.target.value)} className="h-12 px-4 rounded-lg bg-muted border-border text-foreground focus:border-primary" placeholder="Ex: Entrar no Painel" />
+                               </div>
+                               <div className="space-y-3">
+                                   <Label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Texto de Rodapé</Label>
+                                   <Input value={footerText} onChange={(e) => setFooterText(e.target.value)} className="h-12 px-4 rounded-lg bg-muted border-border text-foreground focus:border-primary" placeholder="Ex: Dashboard Analytics · 2024" />
+                               </div>
                             </div>
                           </div>
                         </div>
                         <div className="bg-muted border-t border-border p-6 px-8 md:px-10 flex items-center justify-end gap-3">
-                          <Button type="button" variant="ghost" onClick={fetchProfile} className="rounded-lg text-muted-foreground hover:text-foreground">Cancelar</Button>
-                          <Button type="submit" disabled={updating} className="rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 shadow-lg">
-                            {updating ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-                            Salvar informações
+                          <button type="button" onClick={fetchProfile} className="px-6 py-2 rounded-lg bg-transparent border border-border text-muted-foreground hover:bg-muted font-bold text-sm transition-all focus:outline-none">Restaurar</button>
+                          <Button type="submit" disabled={savingBranding} className="rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-8 shadow-lg">
+                            {savingBranding ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+                            APLICAR EM TODO O SISTEMA
                           </Button>
                         </div>
                       </form>
@@ -476,11 +706,11 @@ export default function Profile() {
                         <div>
                           <Label className="text-[10px] font-black text-foreground/50 uppercase tracking-widest ml-1 mb-4 flex">Modo de Exibição</Label>
                           <div className="grid grid-cols-2 gap-4">
-                            <button onClick={() => theme !== "light" && toggleTheme()} className={cn("flex items-center gap-3 p-4 rounded-xl border transition-all duration-300", theme === "light" ? "border-amber-500/60 bg-amber-500/10 shadow-[0_0_15px_rgba(245,158,11,0.2)]" : "border-white/10 bg-card hover:bg-white/[0.04]")}>
+                            <button onClick={() => theme !== "light" && toggleTheme()} className={cn("flex items-center gap-3 p-4 rounded-xl border transition-all duration-300", theme === "light" ? "border-amber-500/60 bg-amber-500/10 shadow-[0_0_15px_rgba(245,158,11,0.2)]" : "border-border bg-muted/30 hover:bg-muted")}>
                               <Sun className={cn("w-6 h-6", theme === "light" ? "text-amber-400" : "text-foreground/30")} />
                               <span className={cn("text-sm font-bold", theme === "light" ? "text-amber-400" : "text-foreground/40")}>Tema Claro</span>
                             </button>
-                            <button onClick={() => theme !== "dark" && toggleTheme()} className={cn("flex items-center gap-3 p-4 rounded-xl border transition-all duration-300", theme === "dark" ? "border-violet-500/60 bg-violet-500/10 shadow-[0_0_15px_rgba(139,92,246,0.2)]" : "border-white/10 bg-card hover:bg-white/[0.04]")}>
+                            <button onClick={() => theme !== "dark" && toggleTheme()} className={cn("flex items-center gap-3 p-4 rounded-xl border transition-all duration-300", theme === "dark" ? "border-violet-500/60 bg-violet-500/10 shadow-[0_0_15px_rgba(139,92,246,0.2)]" : "border-border bg-muted/30 hover:bg-muted")}>
                               <Moon className={cn("w-6 h-6", theme === "dark" ? "text-violet-400" : "text-foreground/30")} />
                               <span className={cn("text-sm font-bold", theme === "dark" ? "text-violet-400" : "text-foreground/40")}>Tema Escuro</span>
                             </button>
@@ -493,6 +723,7 @@ export default function Profile() {
                           <div className="flex flex-wrap gap-4">
                             {(
                               [
+                                { id: "red",     label: "Vermelho",  color: "#EF4444", shadow: "rgba(239,68,68,0.35)"  },
                                 { id: "amber",   label: "Âmbar",     color: "#f59e0b", shadow: "rgba(245,158,11,0.35)"  },
                                 { id: "blue",    label: "Azul",      color: "#3b82f6", shadow: "rgba(59,130,246,0.35)"  },
                                 { id: "violet",  label: "Violeta",   color: "#8b5cf6", shadow: "rgba(139,92,246,0.35)"  },
@@ -535,17 +766,34 @@ export default function Profile() {
                             </div>
                             <h3 className="text-lg font-bold text-foreground mb-1 tracking-tight">Instagram</h3>
                             <p className="text-[11px] text-foreground/40 mb-6 px-4 leading-relaxed line-clamp-2 h-8">Conecte seu perfil comercial para analisar Reels e Stories.</p>
-                            <Button 
-                              onClick={() => {
-                                const META_APP_ID = import.meta.env.VITE_META_APP_ID;
-                                if (!META_APP_ID) return toast.error("Meta App ID não configurado");
-                                startOAuth("instagram");
-                              }}
-                              className="w-full bg-muted hover:bg-muted/80 border border-border text-foreground rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]"
-                            >
-                              <LinkIcon className="w-3.5 h-3.5 mr-2" />
-                              Vincular Conta
-                            </Button>
+                            {accounts.some(a => a.platform === "instagram") ? (
+                              <div className="flex flex-col gap-2 w-full mt-auto">
+                                <Button className="w-full bg-emerald-500/10 hover:bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 rounded-xl h-11 font-bold uppercase tracking-widest text-[10px] cursor-default">
+                                  <CheckCircle2 className="w-3.5 h-3.5 mr-2" />
+                                  Instagram Vinculado
+                                </Button>
+                                <Button 
+                                  variant="ghost" 
+                                  onClick={() => handleDisconnect('instagram')}
+                                  className="text-[9px] text-destructive hover:text-destructive hover:bg-destructive/5 font-bold uppercase tracking-tighter h-8"
+                                >
+                                  <Trash2 className="w-3 h-3 mr-1" />
+                                  Desvincular
+                                </Button>
+                              </div>
+                            ) : (
+                              <Button 
+                                onClick={() => {
+                                  const META_APP_ID = import.meta.env.VITE_META_APP_ID;
+                                  if (!META_APP_ID) return toast.error("Meta App ID não configurado");
+                                  startOAuth("instagram");
+                                }}
+                                className="w-full bg-muted hover:bg-muted/80 border border-border text-foreground rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]"
+                              >
+                                <LinkIcon className="w-3.5 h-3.5 mr-2" />
+                                Vincular Conta
+                              </Button>
+                            )}
                           </div>
 
                           {/* Facebook Connect */}
@@ -555,17 +803,34 @@ export default function Profile() {
                             </div>
                             <h3 className="text-lg font-bold text-foreground mb-1 tracking-tight">Facebook</h3>
                             <p className="text-[11px] text-foreground/40 mb-6 px-4 leading-relaxed line-clamp-2 h-8">Gerencie o alcance da sua página e interações do público.</p>
-                            <Button 
-                              onClick={() => {
-                                const META_APP_ID = import.meta.env.VITE_META_APP_ID;
-                                if (!META_APP_ID) return toast.error("Meta App ID não configurado");
-                                startOAuth("facebook");
-                              }}
-                              className="w-full bg-muted hover:bg-muted/80 border border-border text-foreground rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]"
-                            >
-                              <LinkIcon className="w-3.5 h-3.5 mr-2" />
-                              Vincular Conta
-                            </Button>
+                            {accounts.some(a => a.platform === "facebook") ? (
+                              <div className="flex flex-col gap-2 w-full mt-auto">
+                                <Button className="w-full bg-emerald-500/10 hover:bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 rounded-xl h-11 font-bold uppercase tracking-widest text-[10px] cursor-default">
+                                  <CheckCircle2 className="w-3.5 h-3.5 mr-2" />
+                                  Facebook Vinculado
+                                </Button>
+                                <Button 
+                                  variant="ghost" 
+                                  onClick={() => handleDisconnect('facebook')}
+                                  className="text-[9px] text-destructive hover:text-destructive hover:bg-destructive/5 font-bold uppercase tracking-tighter h-8"
+                                >
+                                  <Trash2 className="w-3 h-3 mr-1" />
+                                  Desvincular
+                                </Button>
+                              </div>
+                            ) : (
+                              <Button 
+                                onClick={() => {
+                                  const META_APP_ID = import.meta.env.VITE_META_APP_ID;
+                                  if (!META_APP_ID) return toast.error("Meta App ID não configurado");
+                                  startOAuth("facebook");
+                                }}
+                                className="w-full bg-muted hover:bg-muted/80 border border-border text-foreground rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]"
+                              >
+                                <LinkIcon className="w-3.5 h-3.5 mr-2" />
+                                Vincular Conta
+                              </Button>
+                            )}
                           </div>
 
                           {/* YouTube Connect */}
@@ -575,17 +840,24 @@ export default function Profile() {
                             </div>
                             <h3 className="text-lg font-bold text-foreground mb-1 tracking-tight">YouTube</h3>
                             <p className="text-[11px] text-foreground/40 mb-6 px-4 leading-relaxed line-clamp-2 h-8">Analise o desempenho dos seus vídeos longos e Shorts.</p>
-                            <Button 
-                              onClick={() => {
-                                const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-                                if (!GOOGLE_CLIENT_ID) return toast.error("Google Client ID não configurado");
-                                startOAuth("youtube");
-                              }}
-                              className="w-full bg-muted hover:bg-muted/80 border border-border text-foreground rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]"
-                            >
-                              <LinkIcon className="w-3.5 h-3.5 mr-2" />
-                              Vincular Conta
-                            </Button>
+                            {accounts.some(a => a.platform === "youtube") ? (
+                              <Button className="w-full bg-emerald-500/10 hover:bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px] cursor-default">
+                                <CheckCircle2 className="w-3.5 h-3.5 mr-2" />
+                                Conta Vinculada
+                              </Button>
+                            ) : (
+                              <Button 
+                                onClick={() => {
+                                  const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+                                  if (!GOOGLE_CLIENT_ID) return toast.error("Google Client ID não configurado");
+                                  startOAuth("youtube");
+                                }}
+                                className="w-full bg-muted hover:bg-muted/80 border border-border text-foreground rounded-xl h-11 mt-auto font-bold uppercase tracking-widest text-[10px]"
+                              >
+                                <LinkIcon className="w-3.5 h-3.5 mr-2" />
+                                Vincular Conta
+                              </Button>
+                            )}
                           </div>
 
                           {/* Website Connect */}

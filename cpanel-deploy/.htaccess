@@ -2,7 +2,7 @@
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /
+  RewriteBase /analise/
   
   # Suporte para URLs limpas nas APIs (ex: /api/generate-insights -> /api/generate-insights.php)
   RewriteCond %{REQUEST_FILENAME} !-f
@@ -15,7 +15,7 @@
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_URI} !^/api/
-  RewriteRule . /index.html [L]
+  RewriteRule . index.html [L]
 </IfModule>
 
 # Proteger arquivos sensíveis

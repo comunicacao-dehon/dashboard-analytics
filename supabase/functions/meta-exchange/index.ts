@@ -60,9 +60,10 @@ serve(async (req) => {
     const expiresIn = longTokenData.expires_in; // em segundos
 
     // 3 & 4. Buscar perfil de usuário (Facebook) e páginas do usuário em paralelo
+    // IMPORTANTE: inclui 'access_token' nas páginas para obter o Page Access Token
     const [meRes, pagesRes] = await Promise.all([
       fetch(`https://graph.facebook.com/v19.0/me?fields=id,name,picture&access_token=${accessToken}`),
-      fetch(`https://graph.facebook.com/v19.0/me/accounts?fields=id,name,picture,instagram_business_account&access_token=${accessToken}`)
+      fetch(`https://graph.facebook.com/v19.0/me/accounts?fields=id,name,picture,access_token,instagram_business_account&access_token=${accessToken}`)
     ]);
 
     const meData = await meRes.json();
@@ -79,13 +80,15 @@ serve(async (req) => {
       ? new Date(Date.now() + expiresIn * 1000).toISOString()
       : null;
 
-    // Salvar conta do Facebook
+    // Salvar conta do Facebook — usa o PAGE ACCESS TOKEN se disponível
     const firstPage = pages[0];
     const fbPlatformId = firstPage?.id || meData.id;
     const fbUsername = firstPage?.name || meData.name;
     const fbPicture = firstPage?.picture?.data?.url || meData.picture?.data?.url || "";
+    // 🔑 Token da Página (permite acesso a insights) ou fallback para token do usuário
+    const fbPageToken = firstPage?.access_token || accessToken;
 
-    console.log("Upserting Facebook account for user:", userId);
+    console.log("Upserting Facebook account for user:", userId, "| page:", fbUsername, "| has page token:", !!firstPage?.access_token);
     const { error: fbError } = await supabase.from("social_accounts").upsert({
       user_id: userId,
       platform: "facebook",
@@ -93,7 +96,8 @@ serve(async (req) => {
       username: fbUsername.toLowerCase().replace(/\s+/g, ""),
       display_name: fbUsername,
       profile_picture_url: fbPicture,
-      access_token: accessToken,
+      access_token: fbPageToken,         // ← Page Token (não user token)
+      refresh_token: accessToken,         // ← User token guardado como refresh
       token_expires_at: tokenExpiresAt,
       connected_at: new Date().toISOString(),
       is_active: true,
@@ -116,6 +120,7 @@ serve(async (req) => {
 
         if (!igData.error) {
           console.log("Upserting Instagram account:", igData.username);
+          // Instagram usa o mesmo Page Token do Facebook para suas chamadas de API
           const { error: igError } = await supabase.from("social_accounts").upsert({
             user_id: userId,
             platform: "instagram",
@@ -123,7 +128,7 @@ serve(async (req) => {
             username: igData.username || igData.name,
             display_name: igData.name || igData.username,
             profile_picture_url: igData.profile_picture_url || "",
-            access_token: accessToken,
+            access_token: fbPageToken,   // ← Page Token (necessário para IG insights)
             token_expires_at: tokenExpiresAt,
             connected_at: new Date().toISOString(),
             is_active: true,

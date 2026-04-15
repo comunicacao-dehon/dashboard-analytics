@@ -36,29 +36,29 @@ const platformConfig = {
   instagram: {
     icon: Instagram,
     label: "Instagram",
-    color: "#f59e0b", // Amber theme override
-    textClass: "text-amber-500",
-    activeClass: "bg-amber-500/10 text-amber-500 ring-1 ring-amber-500/30",
+    color: "#EF4444", 
+    textClass: "text-primary",
+    activeClass: "bg-primary/10 text-primary ring-1 ring-primary/30",
     hoverClass: "hover:bg-muted hover:text-foreground",
-    borderClass: "border-amber-500/10"
+    borderClass: "border-primary/10"
   },
   facebook: {
     icon: Facebook,
     label: "Facebook",
-    color: "#f59e0b",
-    textClass: "text-amber-500",
-    activeClass: "bg-amber-500/10 text-amber-500 ring-1 ring-amber-500/30",
+    color: "#EF4444",
+    textClass: "text-primary",
+    activeClass: "bg-primary/10 text-primary ring-1 ring-primary/30",
     hoverClass: "hover:bg-muted hover:text-foreground",
-    borderClass: "border-amber-500/10"
+    borderClass: "border-primary/10"
   },
   youtube: {
     icon: Youtube,
     label: "YouTube",
-    color: "#f59e0b",
-    textClass: "text-amber-500",
-    activeClass: "bg-amber-500/10 text-amber-500 ring-1 ring-amber-500/30",
+    color: "#EF4444",
+    textClass: "text-primary",
+    activeClass: "bg-primary/10 text-primary ring-1 ring-primary/30",
     hoverClass: "hover:bg-muted hover:text-foreground",
-    borderClass: "border-amber-500/10"
+    borderClass: "border-primary/10"
   }
 };
 

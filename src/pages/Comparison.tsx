@@ -38,30 +38,32 @@ const tooltipStyle = {
 };
 
 const platformStats = [
-  { name: "Instagram", icon: Instagram, color: "text-pink-500 bg-pink-50", seguidores: "5.395", engajamento: "4,19%", alcance: "24.679", melhorPost: "Reels" },
-  { name: "Facebook", icon: Facebook, color: "text-blue-500 bg-blue-50", seguidores: "17 mil", engajamento: "1.079", alcance: "37.074", melhorPost: "Vídeo" },
+  { name: "Instagram", icon: Instagram, color: "text-pink-500 bg-pink-50", seguidores: "5.434", engajamento: "1.698", alcance: "9.800", melhorPost: "Reels" },
+  { name: "Facebook", icon: Facebook, color: "text-blue-500 bg-blue-50", seguidores: "17.662", engajamento: "2.200", alcance: "46.700", melhorPost: "Vídeo" },
   { name: "YouTube", icon: Youtube, color: "text-red-500 bg-red-50", seguidores: "1.820", engajamento: "5,10%", alcance: "36.800", melhorPost: "Ao Vivo" },
 ];
 import { useAuth } from "@/contexts/AuthContext";
+import { useStableUserId } from "@/hooks/useStableUserId";
 import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 
 export default function Comparison() {
   const { user } = useAuth();
+  const stableUserId = useStableUserId();
   const [accounts, setAccounts] = useState<SocialAccount[]>([]);
   const [loadingAccounts, setLoadingAccounts] = useState(true);
 
   useEffect(() => {
     async function load() {
-      if (!user) {
+      if (!stableUserId) {
         setLoadingAccounts(false);
         return;
       }
-      const result = await getConnectedAccounts(user.id);
+      const result = await getConnectedAccounts(stableUserId);
       setAccounts(result);
       setLoadingAccounts(false);
     }
     load();
-  }, [user]);
+  }, [stableUserId]);
 
   if (loadingAccounts) {
     return (

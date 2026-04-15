@@ -55,6 +55,7 @@ const tooltipStyle = {
   },
 };
 import { useAuth } from "@/contexts/AuthContext";
+import { useStableUserId } from "@/hooks/useStableUserId";
 import { EmptyPlatformState } from "@/components/layout/EmptyPlatformState";
 import { useEffect, useState } from "react";
 import { getConnectedAccounts } from "@/services/socialService";
@@ -62,18 +63,19 @@ import type { SocialAccount } from "@/types/social";
 
 export default function YouTube() {
   const { user } = useAuth();
+  const stableUserId = useStableUserId();
   const [accounts, setAccounts] = useState<SocialAccount[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function load() {
-      if (!user) return;
-      const result = await getConnectedAccounts(user.id);
+      if (!stableUserId) return;
+      const result = await getConnectedAccounts(stableUserId);
       setAccounts(result);
       setLoading(false);
     }
     load();
-  }, [user]);
+  }, [stableUserId]);
 
   const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
   const hasYouTube = accounts.some(a => a.platform === "youtube");

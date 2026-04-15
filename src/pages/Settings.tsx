@@ -228,10 +228,10 @@ export default function Settings() {
             ))}
           </div>
           
-          <div className="mt-8 p-4 bg-amber-500/5 border border-amber-500/20 rounded-xl">
-             <p className="text-[10px] font-black uppercase tracking-widest text-amber-500 mb-2">Dica de Integração</p>
+          <div className="mt-8 p-4 bg-primary/5 border border-primary/20 rounded-xl">
+             <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-2">Dica de Integração</p>
              <p className="text-[11px] text-muted-foreground leading-relaxed">
-               Para integrar este painel em outro sistema, utilize a URL com <code className="text-amber-500">?hide_sidebar=true</code> no final. Isso removerá a navegação lateral, deixando apenas o conteúdo para um iFrame perfeito.
+               Para integrar este painel em outro sistema, utilize a URL com <code className="text-primary">?hide_sidebar=true</code> no final. Isso removerá a navegação lateral, deixando apenas o conteúdo para um iFrame perfeito.
              </p>
           </div>
         </AnimatedCard>

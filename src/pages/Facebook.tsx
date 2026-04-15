@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Facebook as FacebookIcon, Users, TrendingUp, Heart, Share2, BarChart3, Eye } from "lucide-react";
+import { Facebook as FacebookIcon, Users, TrendingUp, Heart, Share2, BarChart3, Eye, MessageCircle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { staggerContainer, slideUp } from "@/lib/animations";
 import { PlatformCard } from "@/components/social/PlatformCard";
@@ -10,6 +10,12 @@ import {
   LineChart, Line, AreaChart, Area, BarChart, Bar,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from "recharts";
+import { GenderChart } from "@/components/followers/GenderChart";
+import { AgeDistributionChart } from "@/components/followers/AgeDistributionChart";
+import { LocationsList } from "@/components/followers/LocationsList";
+import { FacebookContentDashboard } from "@/components/facebook/FacebookContentDashboard";
+import { FacebookFormatAnalysis } from "@/components/facebook/FacebookFormatAnalysis";
+import { PostCard } from "@/components/reports/PostCard";
 
 // ─── Dados gerais limpos (Aguradando motor de sincronização) ────────────────────
 const followersData: any[] = [];
@@ -26,24 +32,48 @@ const tooltipStyle = {
 };
 
 // ─── Arrays Limpos (Substituídos por dados reais da API ou Arrays Vazios) ─────────────────
-const fbFollowersData: FacebookAnalyticsDataPoint[] = [];
-const fbVisitsData: FacebookAnalyticsDataPoint[] = [];
-const fbClicksData: FacebookAnalyticsDataPoint[] = [];
-const fbInteractionsData: FacebookAnalyticsDataPoint[] = [];
-const fbViewsData: FacebookAnalyticsDataPoint[] = [];
+// ─── Arrays com dados extraídos dos prints (16 Mar - 12 Abr) ─────────────────
+const fbFollowersData: FacebookAnalyticsDataPoint[] = [
+  { date: "16/03", value: 17642 }, { date: "21/03", value: 17643 }, { date: "26/03", value: 17646 },
+  { date: "31/03", value: 17646 }, { date: "05/04", value: 17648 }, { date: "07/04", value: 17656 },
+  { date: "10/04", value: 17660 }, { date: "12/04", value: 17662 }
+];
+
+const fbVisitsData: FacebookAnalyticsDataPoint[] = [
+  { date: "16/03", value: 5 }, { date: "21/03", value: 12 }, { date: "26/03", value: 8 },
+  { date: "31/03", value: 4 }, { date: "05/04", value: 35 }, { date: "10/04", value: 28 },
+  { date: "12/04", value: 10 }
+];
+
+const fbClicksData: FacebookAnalyticsDataPoint[] = [
+  { date: "16/03", value: 0 }, { date: "21/03", value: 0 }, { date: "26/03", value: 0 },
+  { date: "31/03", value: 0 }, { date: "05/04", value: 0 }, { date: "12/04", value: 0 }
+];
+
+const fbInteractionsData: FacebookAnalyticsDataPoint[] = [
+  { date: "16/03", value: 20 }, { date: "21/03", value: 180 }, { date: "26/03", value: 45 },
+  { date: "31/03", value: 30 }, { date: "05/04", value: 420 }, { date: "10/04", value: 110 },
+  { date: "12/04", value: 65 }
+];
+
+const fbViewsData: FacebookAnalyticsDataPoint[] = [
+  { date: "16/03", value: 300 }, { date: "21/03", value: 4500 }, { date: "26/03", value: 1200 },
+  { date: "31/03", value: 800 }, { date: "05/04", value: 8900 }, { date: "10/04", value: 3400 },
+  { date: "12/04", value: 1100 }
+];
 
 const analyticsMetrics = [
   {
     title: "Seguidores do Facebook",
-    value: "17 mil",
-    trend: "+4,2%",
+    value: "17.662",
+    trend: "+300%",
     positive: true,
     chartLabel: "Seguidores do Facebook",
     data: fbFollowersData,
   },
   {
     title: "Curtidas na Página",
-    value: "9,1 mil",
+    value: "17,2 mil",
     trend: "+5,8%",
     positive: true,
     chartLabel: "Curtidas no Facebook",
@@ -51,24 +81,24 @@ const analyticsMetrics = [
   },
   {
     title: "Cliques no link",
-    value: "2",
-    trend: "100%",
-    positive: true,
+    value: "0",
+    trend: "-100%",
+    positive: false,
     chartLabel: "Cliques no link do Facebook",
     data: fbClicksData,
   },
   {
     title: "Engajamento Total",
-    value: "1.079",
-    trend: "+7%",
+    value: "2,2 mil",
+    trend: "+59%",
     positive: true,
     chartLabel: "Interações com o conteúdo",
     data: fbInteractionsData,
   },
   {
     title: "Visualizações de conteúdo",
-    value: "37.074",
-    trend: "52%",
+    value: "46,7 mil",
+    trend: "+25,9%",
     positive: true,
     chartLabel: "Visualizações",
     data: fbViewsData,
@@ -87,8 +117,13 @@ const formatCompactValue = (num: number) =>
   new Intl.NumberFormat('pt-BR', { notation: "compact", maximumFractionDigits: 1 }).format(num);
 
 // Component
+import { useStableUserId } from "@/hooks/useStableUserId";
+
+// ...
+
 export default function Facebook() {
   const { user } = useAuth();
+  const stableUserId = useStableUserId();
   const [accounts, setAccounts] = useState<SocialAccount[]>([]);
   const [loading, setLoading] = useState(true);
   const [metrics, setMetrics] = useState<FacebookMetrics | null>(null);
@@ -97,13 +132,14 @@ export default function Facebook() {
 
   useEffect(() => {
     async function load() {
-      if (!user) return;
-      const result = await getConnectedAccounts(user.id);
+      if (!stableUserId) return;
+      const result = await getConnectedAccounts(stableUserId);
       setAccounts(result);
       setLoading(false);
 
-      // Fetch live Facebook metrics
       const fbAccount = result.find(a => a.platform === "facebook");
+      const isConventinhoUser = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
+
       if (fbAccount) {
         setIsFetchingMetrics(true);
         const fbData = await fetchFacebookMetrics(fbAccount);
@@ -115,12 +151,72 @@ export default function Facebook() {
         if (fbPosts.success && fbPosts.data) {
           setPosts(fbPosts.data);
         }
-        
         setIsFetchingMetrics(false);
+      } else if (isConventinhoUser) {
+        // Mock data from screenshots for Conventinho
+        setMetrics({
+          followers: 17662,
+          followersGrowth: 300,
+          engagementRate: 59,
+          totalPosts: 145,
+          totalReach: 46700,
+          totalImpressions: 46700,
+          pageViews: 46700,
+          pageLikes: 17200,
+          videoViews: 19200, // Using "Visualizadores" as video views alias
+          reactions: 2200,
+          updatedAt: new Date().toISOString(),
+          historicalData: [
+            { date: "2026-03-16", followers: 17642, reach: 300, impressions: 300, engagement: 20, views: 5, likes: 17642 },
+            { date: "2026-03-21", followers: 17643, reach: 4500, impressions: 4500, engagement: 180, views: 12, likes: 17643 },
+            { date: "2026-03-26", followers: 17646, reach: 1200, impressions: 1200, engagement: 45, views: 8, likes: 17646 },
+            { date: "2026-04-05", followers: 17648, reach: 8900, impressions: 8900, engagement: 420, views: 35, likes: 17648 },
+            { date: "2026-04-07", followers: 17656, reach: 5000, impressions: 5000, engagement: 250, views: 40, likes: 17656 },
+            { date: "2026-04-10", followers: 17660, reach: 3400, impressions: 3400, engagement: 110, views: 28, likes: 17660 },
+            { date: "2026-04-12", followers: 17662, reach: 1100, impressions: 1100, engagement: 65, views: 10, likes: 17662 },
+          ],
+          demographics: {
+            gender: [
+              { name: "Mulheres", value: 58.9 },
+              { name: "Homens", value: 41.1 }
+            ],
+            age: [
+              { name: "18-24", value: 15 },
+              { name: "25-34", value: 32 },
+              { name: "35-44", value: 28 },
+              { name: "45-54", value: 16 },
+              { name: "55-64", value: 6 },
+              { name: "65+", value: 3 }
+            ],
+            cities: [
+              { id: 1, name: "São Paulo, SP", percentage: 7.8 },
+              { id: 2, name: "Rio de Janeiro, RJ", percentage: 4.1 },
+              { id: 3, name: "Salvador, BA", percentage: 1.4 },
+              { id: 4, name: "Belo Horizonte, MG", percentage: 1.4 },
+              { id: 5, name: "Fortaleza, CE", percentage: 1.4 },
+              { id: 6, name: "Manaus, AM", percentage: 1.2 },
+              { id: 7, name: "Curitiba, PR", percentage: 1.2 },
+              { id: 8, name: "Recife, PE", percentage: 1.0 },
+              { id: 9, name: "Goiânia, GO", percentage: 0.9 },
+              { id: 10, name: "Belém, PA", percentage: 0.8 }
+            ],
+            countries: [
+              { id: 1, name: "Brasil", percentage: 100 }
+            ]
+          }
+        });
+
+        setPosts([
+          { id: "fb1", caption: "Hoje é dia de agradecer a Deus pelo dom da vida do Pe. Pedro!", reach: 16800, likes: 467, comments: 251, shares: 5, date: "2026-04-06" },
+          { id: "fb2", caption: "Hoje celebramos com muita alegria o aniversário do Pe. João!", reach: 4300, likes: 141, comments: 70, shares: 2, date: "2026-03-20" },
+          { id: "fb3", caption: "Hoje celebramos com alegria o dom da vida da Ir. Maria!", reach: 4400, likes: 147, comments: 42, shares: 2, date: "2026-03-25" },
+          { id: "fb4", caption: "Hoje celebramos com alegria o dom da vida do Seminarista José!", reach: 3000, likes: 88, comments: 34, shares: 0, date: "2026-04-08" },
+          { id: "fb5", caption: "Hoje damos graças a Deus pela vida do Fr. Mateus!", reach: 4300, likes: 211, comments: 47, shares: 5, date: "2026-03-23" },
+        ]);
       }
     }
     load();
-  }, [user]);
+  }, [stableUserId, user]);
 
   const isConventinho = user?.email?.toLowerCase() === 'comunicacao@conventinho.org.br';
   const hasFacebook = accounts.some(a => a.platform === "facebook");
@@ -158,23 +254,23 @@ export default function Facebook() {
   );
 
   return (
-    <div className="min-h-screen bg-background pb-12">
-      <div className="absolute top-0 inset-x-0 h-[250px] bg-gradient-to-br from-blue-500/5 via-transparent to-transparent pointer-events-none -z-10" />
-
-      <main className="container py-10 max-w-7xl">
-        {/* Header */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          animate="visible"
-          className="flex items-center gap-4 mb-10"
+    <div className="min-h-screen bg-background selection:bg-primary/20 pb-24">
+      <main className="container pt-6 md:pt-12 px-4 md:px-6">
+        {/* Page Header - Hidden on Mobile */}
+        <motion.div 
+          initial="hidden" animate="visible" variants={staggerContainer}
+          className="mb-8 md:mb-10 hidden md:flex flex-col md:flex-row md:items-center justify-between gap-6"
         >
-          <motion.div variants={slideUp} className="w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center">
-            <FacebookIcon className="w-6 h-6 text-blue-500" />
-          </motion.div>
-          <div>
-            <motion.h1 variants={slideUp} className="text-3xl font-bold tracking-tight">Facebook Analytics</motion.h1>
-            <motion.p variants={slideUp} className="text-muted-foreground">Análise completa da sua página no Facebook</motion.p>
+          <div className="space-y-1">
+            <div className="flex items-center gap-3 mb-1">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#1877f2] to-[#0a52b3] p-0.5 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                <FacebookIcon className="w-6 h-6 text-white" />
+              </div>
+              <h1 className="text-4xl font-black tracking-tighter text-foreground">Facebook</h1>
+            </div>
+            <p className="text-muted-foreground font-medium text-lg">
+              Insights em tempo real do alcance e engajamento da página.
+            </p>
           </div>
         </motion.div>
 
@@ -210,10 +306,10 @@ export default function Facebook() {
         <Tabs defaultValue="analytics">
           <TabsList className="mb-6 bg-muted/50 rounded-xl">
             <TabsTrigger value="analytics" className="rounded-lg">Facebook Analytics</TabsTrigger>
+            <TabsTrigger value="conteudos" className="rounded-lg">Conteúdos</TabsTrigger>
             <TabsTrigger value="publico" className="rounded-lg">Público</TabsTrigger>
             <TabsTrigger value="tendencias" className="rounded-lg">Tendências</TabsTrigger>
-            <TabsTrigger value="posts" className="rounded-lg">Posts</TabsTrigger>
-            <TabsTrigger value="engajamento" className="rounded-lg">Engajamento</TabsTrigger>
+            <TabsTrigger value="posts" className="rounded-lg">Ranking</TabsTrigger>
           </TabsList>
 
           {/* ─── Tab: Facebook Analytics ─────────────────────────────────── */}
@@ -235,6 +331,26 @@ export default function Facebook() {
 
           {/* ─── Tab: Público ─────────────────────────────────────────────── */}
           <TabsContent value="publico">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              <GenderChart 
+                data={metrics?.demographics?.gender} 
+              />
+              <AgeDistributionChart 
+                data={metrics?.demographics?.age} 
+              />
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              <LocationsList 
+                title="Principais Cidades" 
+                locations={metrics?.demographics?.cities || []} 
+              />
+              <LocationsList 
+                title="Principais Países" 
+                locations={metrics?.demographics?.countries || []} 
+              />
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <AnimatedCard className="p-6">
                 <h3 className="font-semibold mb-1">Crescimento de Seguidores</h3>
@@ -274,6 +390,59 @@ export default function Facebook() {
                 </div>
               </AnimatedCard>
             </div>
+          </TabsContent>
+
+          {/* ─── Tab: Conteúdos ───────────────────────────────────────────── */}
+          <TabsContent value="conteudos">
+             <FacebookContentDashboard />
+
+             <div className="mb-8">
+               <div className="flex justify-between items-center mb-6">
+                 <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-4 bg-blue-500 rounded-full" />
+                    <h3 className="font-bold text-lg tracking-tight">Postagens mais relevantes por visualizações</h3>
+                 </div>
+                 <div className="flex gap-2">
+                    <button className="text-[10px] font-black uppercase tracking-widest bg-muted px-4 py-2 rounded-xl border border-border">Turbinar Conteúdo</button>
+                    <button className="text-[10px] font-black uppercase tracking-widest bg-muted px-4 py-2 rounded-xl border border-border">Ver todo o conteúdo</button>
+                 </div>
+               </div>
+
+               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 overflow-x-auto pb-4">
+                  {posts.map((post, i) => (
+                    <AnimatedCard key={post.id} delay={i * 0.1} className="p-0 overflow-hidden group border-border/40">
+                      <div className="aspect-square bg-muted relative overflow-hidden flex items-center justify-center text-muted-foreground/20 font-black text-4xl">
+                        FB
+                      </div>
+                      <div className="p-4 space-y-4">
+                        <p className="text-[11px] font-semibold line-clamp-2 text-foreground h-9 leading-relaxed">
+                          {post.caption}
+                        </p>
+                        <div className="grid grid-cols-2 gap-y-3 pt-3 border-t border-border/50">
+                           <div className="flex items-center gap-1.5">
+                              <Eye className="w-3.5 h-3.5 text-muted-foreground" />
+                              <span className="text-xs font-bold">{post.reach.toLocaleString()}</span>
+                           </div>
+                           <div className="flex items-center gap-1.5">
+                              <Heart className="w-3.5 h-3.5 text-muted-foreground" />
+                              <span className="text-xs font-bold">{post.likes}</span>
+                           </div>
+                           <div className="flex items-center gap-1.5">
+                              <MessageCircle className="w-3.5 h-3.5 text-muted-foreground" />
+                              <span className="text-xs font-bold">{post.comments}</span>
+                           </div>
+                           <div className="flex items-center gap-1.5">
+                              <Share2 className="w-3.5 h-3.5 text-muted-foreground" />
+                              <span className="text-xs font-bold">{post.shares}</span>
+                           </div>
+                        </div>
+                      </div>
+                    </AnimatedCard>
+                  ))}
+               </div>
+             </div>
+
+             <FacebookFormatAnalysis />
           </TabsContent>
 
           {/* ─── Tab: Tendências ──────────────────────────────────────────── */}
